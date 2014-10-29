@@ -1,0 +1,478 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		03F474331A013506003A7A86 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F474321A013506003A7A86 /* main.m */; };
+		03F474361A013506003A7A86 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F474351A013506003A7A86 /* AppDelegate.m */; };
+		03F474391A013506003A7A86 /* WTADataExample.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 03F474371A013506003A7A86 /* WTADataExample.xcdatamodeld */; };
+		03F4743C1A013506003A7A86 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F4743B1A013506003A7A86 /* ViewController.m */; };
+		03F4743F1A013506003A7A86 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03F4743D1A013506003A7A86 /* Main.storyboard */; };
+		03F474411A013506003A7A86 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 03F474401A013506003A7A86 /* Images.xcassets */; };
+		03F474441A013506003A7A86 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03F474421A013506003A7A86 /* LaunchScreen.xib */; };
+		03F474501A013506003A7A86 /* WTADataExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F4744F1A013506003A7A86 /* WTADataExampleTests.m */; };
+		03F4745B1A0135B1003A7A86 /* WTAData.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F4745A1A0135B1003A7A86 /* WTAData.m */; };
+		03F4745C1A0135B1003A7A86 /* WTAData.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F4745A1A0135B1003A7A86 /* WTAData.m */; };
+		03F474601A013821003A7A86 /* NSManagedObjectContext+WTAData.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F4745F1A013821003A7A86 /* NSManagedObjectContext+WTAData.m */; };
+		03F474611A013821003A7A86 /* NSManagedObjectContext+WTAData.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F4745F1A013821003A7A86 /* NSManagedObjectContext+WTAData.m */; };
+		03F474641A01836D003A7A86 /* Entity.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F474631A01836D003A7A86 /* Entity.m */; };
+		03F474651A01836D003A7A86 /* Entity.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F474631A01836D003A7A86 /* Entity.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		03F4744A1A013506003A7A86 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 03F474251A013506003A7A86 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 03F4742C1A013506003A7A86;
+			remoteInfo = WTADataExample;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		03F4742D1A013506003A7A86 /* WTADataExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WTADataExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		03F474311A013506003A7A86 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		03F474321A013506003A7A86 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		03F474341A013506003A7A86 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		03F474351A013506003A7A86 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		03F474381A013506003A7A86 /* WTADataExample.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WTADataExample.xcdatamodel; sourceTree = "<group>"; };
+		03F4743A1A013506003A7A86 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		03F4743B1A013506003A7A86 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		03F4743E1A013506003A7A86 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		03F474401A013506003A7A86 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		03F474431A013506003A7A86 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		03F474491A013506003A7A86 /* WTADataExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WTADataExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		03F4744E1A013506003A7A86 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		03F4744F1A013506003A7A86 /* WTADataExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WTADataExampleTests.m; sourceTree = "<group>"; };
+		03F474591A0135B1003A7A86 /* WTAData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WTAData.h; path = ../WTAData/WTAData.h; sourceTree = "<group>"; };
+		03F4745A1A0135B1003A7A86 /* WTAData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WTAData.m; path = ../WTAData/WTAData.m; sourceTree = "<group>"; };
+		03F4745E1A013821003A7A86 /* NSManagedObjectContext+WTAData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSManagedObjectContext+WTAData.h"; path = "../WTAData/categories/NSManagedObjectContext+WTAData.h"; sourceTree = "<group>"; };
+		03F4745F1A013821003A7A86 /* NSManagedObjectContext+WTAData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObjectContext+WTAData.m"; path = "../WTAData/categories/NSManagedObjectContext+WTAData.m"; sourceTree = "<group>"; };
+		03F474621A01836D003A7A86 /* Entity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Entity.h; path = Models/Entity.h; sourceTree = "<group>"; };
+		03F474631A01836D003A7A86 /* Entity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Entity.m; path = Models/Entity.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		03F4742A1A013506003A7A86 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		03F474461A013506003A7A86 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		03F474241A013506003A7A86 = {
+			isa = PBXGroup;
+			children = (
+				03F4745D1A0135B7003A7A86 /* WTAData */,
+				03F4742F1A013506003A7A86 /* WTADataExample */,
+				03F4744C1A013506003A7A86 /* WTADataExampleTests */,
+				03F4742E1A013506003A7A86 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		03F4742E1A013506003A7A86 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				03F4742D1A013506003A7A86 /* WTADataExample.app */,
+				03F474491A013506003A7A86 /* WTADataExampleTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		03F4742F1A013506003A7A86 /* WTADataExample */ = {
+			isa = PBXGroup;
+			children = (
+				03F474341A013506003A7A86 /* AppDelegate.h */,
+				03F474351A013506003A7A86 /* AppDelegate.m */,
+				03F4743A1A013506003A7A86 /* ViewController.h */,
+				03F4743B1A013506003A7A86 /* ViewController.m */,
+				03F4743D1A013506003A7A86 /* Main.storyboard */,
+				03F474401A013506003A7A86 /* Images.xcassets */,
+				03F474421A013506003A7A86 /* LaunchScreen.xib */,
+				03F474371A013506003A7A86 /* WTADataExample.xcdatamodeld */,
+				03F474621A01836D003A7A86 /* Entity.h */,
+				03F474631A01836D003A7A86 /* Entity.m */,
+				03F474301A013506003A7A86 /* Supporting Files */,
+			);
+			path = WTADataExample;
+			sourceTree = "<group>";
+		};
+		03F474301A013506003A7A86 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				03F474311A013506003A7A86 /* Info.plist */,
+				03F474321A013506003A7A86 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		03F4744C1A013506003A7A86 /* WTADataExampleTests */ = {
+			isa = PBXGroup;
+			children = (
+				03F4744F1A013506003A7A86 /* WTADataExampleTests.m */,
+				03F4744D1A013506003A7A86 /* Supporting Files */,
+			);
+			path = WTADataExampleTests;
+			sourceTree = "<group>";
+		};
+		03F4744D1A013506003A7A86 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				03F4744E1A013506003A7A86 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		03F4745D1A0135B7003A7A86 /* WTAData */ = {
+			isa = PBXGroup;
+			children = (
+				03F474591A0135B1003A7A86 /* WTAData.h */,
+				03F4745A1A0135B1003A7A86 /* WTAData.m */,
+				03F4745E1A013821003A7A86 /* NSManagedObjectContext+WTAData.h */,
+				03F4745F1A013821003A7A86 /* NSManagedObjectContext+WTAData.m */,
+			);
+			name = WTAData;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		03F4742C1A013506003A7A86 /* WTADataExample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 03F474531A013506003A7A86 /* Build configuration list for PBXNativeTarget "WTADataExample" */;
+			buildPhases = (
+				03F474291A013506003A7A86 /* Sources */,
+				03F4742A1A013506003A7A86 /* Frameworks */,
+				03F4742B1A013506003A7A86 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WTADataExample;
+			productName = WTADataExample;
+			productReference = 03F4742D1A013506003A7A86 /* WTADataExample.app */;
+			productType = "com.apple.product-type.application";
+		};
+		03F474481A013506003A7A86 /* WTADataExampleTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 03F474561A013506003A7A86 /* Build configuration list for PBXNativeTarget "WTADataExampleTests" */;
+			buildPhases = (
+				03F474451A013506003A7A86 /* Sources */,
+				03F474461A013506003A7A86 /* Frameworks */,
+				03F474471A013506003A7A86 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				03F4744B1A013506003A7A86 /* PBXTargetDependency */,
+			);
+			name = WTADataExampleTests;
+			productName = WTADataExampleTests;
+			productReference = 03F474491A013506003A7A86 /* WTADataExampleTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		03F474251A013506003A7A86 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+				ORGANIZATIONNAME = WillowTreeApps;
+				TargetAttributes = {
+					03F4742C1A013506003A7A86 = {
+						CreatedOnToolsVersion = 6.1;
+					};
+					03F474481A013506003A7A86 = {
+						CreatedOnToolsVersion = 6.1;
+						TestTargetID = 03F4742C1A013506003A7A86;
+					};
+				};
+			};
+			buildConfigurationList = 03F474281A013506003A7A86 /* Build configuration list for PBXProject "WTADataExample" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 03F474241A013506003A7A86;
+			productRefGroup = 03F4742E1A013506003A7A86 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				03F4742C1A013506003A7A86 /* WTADataExample */,
+				03F474481A013506003A7A86 /* WTADataExampleTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		03F4742B1A013506003A7A86 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03F4743F1A013506003A7A86 /* Main.storyboard in Resources */,
+				03F474441A013506003A7A86 /* LaunchScreen.xib in Resources */,
+				03F474411A013506003A7A86 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		03F474471A013506003A7A86 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		03F474291A013506003A7A86 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03F474641A01836D003A7A86 /* Entity.m in Sources */,
+				03F474601A013821003A7A86 /* NSManagedObjectContext+WTAData.m in Sources */,
+				03F474361A013506003A7A86 /* AppDelegate.m in Sources */,
+				03F474331A013506003A7A86 /* main.m in Sources */,
+				03F4743C1A013506003A7A86 /* ViewController.m in Sources */,
+				03F474391A013506003A7A86 /* WTADataExample.xcdatamodeld in Sources */,
+				03F4745B1A0135B1003A7A86 /* WTAData.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		03F474451A013506003A7A86 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03F474651A01836D003A7A86 /* Entity.m in Sources */,
+				03F474611A013821003A7A86 /* NSManagedObjectContext+WTAData.m in Sources */,
+				03F4745C1A0135B1003A7A86 /* WTAData.m in Sources */,
+				03F474501A013506003A7A86 /* WTADataExampleTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		03F4744B1A013506003A7A86 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 03F4742C1A013506003A7A86 /* WTADataExample */;
+			targetProxy = 03F4744A1A013506003A7A86 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		03F4743D1A013506003A7A86 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				03F4743E1A013506003A7A86 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		03F474421A013506003A7A86 /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				03F474431A013506003A7A86 /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		03F474511A013506003A7A86 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		03F474521A013506003A7A86 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		03F474541A013506003A7A86 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = WTADataExample/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		03F474551A013506003A7A86 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = WTADataExample/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		03F474571A013506003A7A86 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = WTADataExampleTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WTADataExample.app/WTADataExample";
+			};
+			name = Debug;
+		};
+		03F474581A013506003A7A86 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = WTADataExampleTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WTADataExample.app/WTADataExample";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		03F474281A013506003A7A86 /* Build configuration list for PBXProject "WTADataExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				03F474511A013506003A7A86 /* Debug */,
+				03F474521A013506003A7A86 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		03F474531A013506003A7A86 /* Build configuration list for PBXNativeTarget "WTADataExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				03F474541A013506003A7A86 /* Debug */,
+				03F474551A013506003A7A86 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		03F474561A013506003A7A86 /* Build configuration list for PBXNativeTarget "WTADataExampleTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				03F474571A013506003A7A86 /* Debug */,
+				03F474581A013506003A7A86 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		03F474371A013506003A7A86 /* WTADataExample.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				03F474381A013506003A7A86 /* WTADataExample.xcdatamodel */,
+			);
+			currentVersion = 03F474381A013506003A7A86 /* WTADataExample.xcdatamodel */;
+			path = WTADataExample.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 03F474251A013506003A7A86 /* Project object */;
+}
