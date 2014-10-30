@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
+#import "WTAData.h"
+#import "Entity.h"
 
 @interface WTADataExampleTests : XCTestCase
 
@@ -25,16 +27,79 @@
     [super tearDown];
 }
 
-- (void)testExample {
-    // This is an example of a functional test case.
-    XCTAssert(YES, @"Pass");
+- (void)testSaveInContext
+{
+    XCTestExpectation *expectation = [self expectationWithDescription:@"testSaveInContext"];
+    
+    WTAData *data = [[WTAData alloc] initWithModelNamed:@"WTADataExample"];
+    __block Entity *entity;
+    [data saveInContext:data.mainContext wait:NO work:^(NSManagedObjectContext *context) {
+        entity = [NSEntityDescription insertNewObjectForEntityForName:[[Entity class] description]
+                                               inManagedObjectContext:context];
+        entity.stringAttribute = @"TestSaveInContext";
+    } completion:^(BOOL savedChanges, NSError *error) {
+
+        Entity *backgroundThreadEntity = (Entity *)[data.backgroundContext existingObjectWithID:entity.objectID error:nil];
+        XCTAssertNotNil(backgroundThreadEntity);
+        XCTAssertEqualObjects(backgroundThreadEntity.stringAttribute, @"TestSaveInContext");
+        
+        [data saveInContext:data.mainContext wait:NO work:^(NSManagedObjectContext *context){
+            Entity *localEntity = (Entity *)[data.backgroundContext existingObjectWithID:backgroundThreadEntity.objectID error:nil];
+            localEntity.stringAttribute = @"TestUpdateInContext";
+        } completion:^(BOOL savedChanges, NSError *error) {
+            XCTAssertEqualObjects(backgroundThreadEntity.stringAttribute, @"TestUpdateInContext");
+            [expectation fulfill];
+        }];
+    }];
+    
+    [self waitForExpectationsWithTimeout:100000.0 handler:^(NSError *error) {
+        XCTAssertNil(error);
+    }];
 }
 
-- (void)testPerformanceExample {
-    // This is an example of a performance test case.
-    [self measureBlock:^{
-        // Put the code you want to measure the time of here.
+- (void)testSaveInBackground
+{
+    XCTestExpectation *expectation = [self expectationWithDescription:@"testSaveInBackground"];
+    
+    WTAData *data = [[WTAData alloc] initWithModelNamed:@"WTADataExample"];
+    __block Entity *entity;
+    [data saveInBackground:^(NSManagedObjectContext *context) {
+        entity = [NSEntityDescription insertNewObjectForEntityForName:[[Entity class] description]
+                                                       inManagedObjectContext:context];
+        entity.stringAttribute = @"TestSaveInBackground";
+    } completion:^(BOOL savedChanges, NSError *error) {
+        
+        Entity *mainThreadEntity = (Entity *)[data.mainContext existingObjectWithID:entity.objectID error:nil];
+        XCTAssertNotNil(mainThreadEntity);
+        XCTAssertEqualObjects(mainThreadEntity.stringAttribute, @"TestSaveInBackground");
+        
+        [data saveInBackground:^(NSManagedObjectContext *context) {
+            Entity *localEntity = (Entity *)[data.backgroundContext existingObjectWithID:mainThreadEntity.objectID error:nil];
+            localEntity.stringAttribute = @"TestUpdateInBackground";
+        } completion:^(BOOL savedChanges, NSError *error) {
+            XCTAssertEqualObjects(mainThreadEntity.stringAttribute, @"TestUpdateInBackground");
+            [expectation fulfill];
+        }];
     }];
+    
+    [self waitForExpectationsWithTimeout:100000.0 handler:^(NSError *error) {
+        XCTAssertNil(error);
+    }];
+}
+
+- (void)testSaveInBackgroundAndWait
+{
+    WTAData *data = [[WTAData alloc] initWithModelNamed:@"WTADataExample"];
+    __block Entity *entity;
+    [data saveInBackgroundAndWait:^(NSManagedObjectContext *context) {
+        entity = [NSEntityDescription insertNewObjectForEntityForName:[[Entity class] description]
+                                               inManagedObjectContext:context];
+        entity.stringAttribute = @"TestSaveInBackgroundAndWait";
+    }];
+    
+    Entity *mainThreadEntity = (Entity *)[data.mainContext existingObjectWithID:entity.objectID error:nil];
+    XCTAssertNotNil(mainThreadEntity);
+    XCTAssertEqualObjects(mainThreadEntity.stringAttribute, @"TestSaveInBackgroundAndWait");
 }
 
 @end
