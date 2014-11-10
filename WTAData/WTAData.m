@@ -8,6 +8,7 @@
 #import "WTAData.h"
 
 #import "NSManagedObjectContext+WTAData.h"
+#import "NSManagedObject+WTAData.h"
 
 @implementation WTAData
 
@@ -19,6 +20,17 @@
 - (instancetype)initWithModelNamed:(NSString *)modelName
              deleteOnModelMismatch:(BOOL)deleteOnModelMismatch
 {
+    return [self initWithModelNamed:modelName deleteOnModelMismatch:deleteOnModelMismatch inMemory:NO];
+}
+
+- (instancetype)initInMemoryStackWithModelNamed:(NSString*)modelName
+{
+    return [self initWithModelNamed:modelName deleteOnModelMismatch:NO inMemory:YES];
+}
+
+- (instancetype)initWithModelNamed:(NSString *)modelName
+             deleteOnModelMismatch:(BOOL)deleteOnModelMismatch inMemory:(BOOL)inMemory
+{
     self = [super init];
     if (self)
     {
@@ -27,14 +39,20 @@
             modelName = [self defaultStoreName];
         }
         
-        [self setupContextsForModelNamed:modelName deleteOnModelMismatch:deleteOnModelMismatch];
+        [self setupContextsForModelNamed:modelName];
+        if (inMemory) {
+            [self setupPersistentStoreInMemory];
+        }
+        else {
+            [self setupPersistentStoreForModelNamed:modelName deleteOnModelMismatch:deleteOnModelMismatch];
+        }
     }
     
     return self;
 }
 
--(void)setupContextsForModelNamed:(NSString*)modelName
-            deleteOnModelMismatch:(BOOL)deleteOnModelMismatch
+
+- (void)setupContextsForModelNamed:(NSString *)modelName
 {
     NSURL* modelURL = [[NSBundle mainBundle] URLForResource:modelName withExtension:@"momd"];
     self.managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
@@ -57,6 +75,31 @@
                                                  name:NSManagedObjectContextDidSaveNotification
                                                object:self.backgroundContext];
     
+}
+
+- (void)setupPersistentStoreInMemory
+{
+    NSDictionary *options = @{
+                              NSMigratePersistentStoresAutomaticallyOption: @(NO),
+                              NSInferMappingModelAutomaticallyOption: @(YES)
+                              };
+    
+    NSError *error;
+    NSPersistentStore *persistentStore = [[self persistentStoreCoordinator] addPersistentStoreWithType:NSInMemoryStoreType
+                                                                                         configuration:nil
+                                                                                                   URL:nil
+                                                                                               options:options
+                                                                                                 error:&error];
+    if (!persistentStore) {
+        if (error) {
+            abort();
+        }
+    }
+}
+
+- (void)setupPersistentStoreForModelNamed:(NSString*)modelName
+            deleteOnModelMismatch:(BOOL)deleteOnModelMismatch
+{
     [self createDirectoryAtPath:[[self databaseDirectory] relativePath]];
     
     NSDictionary *options = @{
@@ -119,7 +162,10 @@
 
 - (void)cleanUp
 {
-    
+    self.mainContext = nil;
+    self.backgroundContext = nil;
+    self.managedObjectModel = nil;
+    self.persistentStoreCoordinator = nil;
 }
 
 
@@ -176,10 +222,10 @@
     [self saveInContext:self.backgroundContext
                    wait:NO
                    work:^(NSManagedObjectContext *localContext) {
-                       NSArray* entityNames = [[self.managedObjectModel entities] valueForKey:@"name"];
-                       for (NSString* entityName in entityNames) {
-//                           Class class = NSClassFromString(entityName);
-//                           [class MR_truncateAllInContext:localContext];
+                       NSArray *entityNames = [[self.managedObjectModel entities] valueForKey:@"name"];
+                       for (NSString *entityName in entityNames) {
+                           Class class = NSClassFromString(entityName);
+                           [class truncateAllInContext:localContext];
                        }
                    } completion:^(BOOL contextDidSave, NSError *error) {
                        completion(error);
