@@ -47,6 +47,16 @@
 - (instancetype)initWithModelNamed:(NSString *)modelName
              deleteOnModelMismatch:(BOOL)deleteOnModelMismatch;
 
+
+/**
+ Initialize an in-memory data stack using the specified model.
+ 
+ :param: modelName name of the managed object model to load
+ 
+ :returns: instance of the WTAData class
+ */
+- (instancetype)initInMemoryStackWithModelNamed:(NSString*)modelName;
+
 - (void)cleanUp;
 
 /**
