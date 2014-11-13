@@ -86,12 +86,12 @@
     return result;
 }
 
-+ (void)truncateAllInContext:(NSManagedObjectContext *)context
++ (void)deleteAllInContext:(NSManagedObjectContext *)context
 {
-    [self truncateAllInContext:context predicate:nil];
+    [self deleteAllInContext:context predicate:nil];
 }
 
-+ (void)truncateAllInContext:(NSManagedObjectContext *)context predicate:(NSPredicate *)predicate
++ (void)deleteAllInContext:(NSManagedObjectContext *)context predicate:(NSPredicate *)predicate
 {
     NSArray *objects = [self fetchInContext:context predicate:predicate error:nil];
     for (NSManagedObject *object in objects)
@@ -373,6 +373,16 @@
     return results;
 }
 
++ (NSArray *)fetchInContext:(NSManagedObjectContext *)context
+                 withAttribute:(NSString *)attribute
+                       equalTo:(id)value
+                         error:(NSError *__autoreleasing *)error
+{
+    NSString *predicateFormat = [NSString stringWithFormat:@"%@ = %%@", attribute];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:predicateFormat, value];
+    return [self fetchInContext:context predicate:predicate error:error];
+}
+
 + (instancetype)fetchFirstInContext:(NSManagedObjectContext *)context error:(NSError **)error
 {
     return [[self fetchInContext:context predicate:nil error:error] firstObject];
@@ -388,9 +398,9 @@
     return [[self fetchInContext:context predicate:predicate sortDescriptors:sortDescriptors error:error] firstObject];
 }
 
-+ (instancetype)fetchFirstInContext:(NSManagedObjectContext *)context whereKey:(NSString *)key equalTo:(id)value error:(NSError **)error
++ (instancetype)fetchFirstInContext:(NSManagedObjectContext *)context withAttribute:(NSString *)attribute equalTo:(id)value error:(NSError *__autoreleasing *)error
 {
-    NSString *predicateFormat = [NSString stringWithFormat:@"%@ = %%@", key];
+    NSString *predicateFormat = [NSString stringWithFormat:@"%@ = %%@", attribute];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:predicateFormat, value];
     return [self fetchFirstInContext:context predicate:predicate error:error];
 }

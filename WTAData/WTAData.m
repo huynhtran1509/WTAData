@@ -225,7 +225,7 @@
                        NSArray *entityNames = [[self.managedObjectModel entities] valueForKey:@"name"];
                        for (NSString *entityName in entityNames) {
                            Class class = NSClassFromString(entityName);
-                           [class truncateAllInContext:localContext];
+                           [class deleteAllInContext:localContext];
                        }
                    } completion:^(BOOL contextDidSave, NSError *error) {
                        completion(error);

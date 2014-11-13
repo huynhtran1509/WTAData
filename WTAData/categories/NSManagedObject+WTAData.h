@@ -31,10 +31,10 @@
 + (instancetype)importEntityFromObject:(NSDictionary *)object context:(NSManagedObjectContext *)context;
 
 //  Delete all entities
-+ (void)truncateAllInContext:(NSManagedObjectContext *)context;
++ (void)deleteAllInContext:(NSManagedObjectContext *)context;
 
 //  Delete all entities with a predicate
-+ (void)truncateAllInContext:(NSManagedObjectContext *)context predicate:(NSPredicate *)predicate;
++ (void)deleteAllInContext:(NSManagedObjectContext *)context predicate:(NSPredicate *)predicate;
 
 // Creates an NSAsynchronousFetchRequests with the given params for this entity
 + (NSAsynchronousFetchRequest *)asyncFetchRequestWithPredicate:(NSPredicate *)predicate sortDescriptors:(NSArray *)sortDescriptors completion:(NSPersistentStoreAsynchronousFetchResultCompletionBlock)completion;
@@ -50,12 +50,12 @@
 + (NSArray *)fetchInContext:(NSManagedObjectContext *)context error:(NSError **)error;
 + (NSArray *)fetchInContext:(NSManagedObjectContext *)context predicate:(NSPredicate *)predicate error:(NSError **)error;
 + (NSArray *)fetchInContext:(NSManagedObjectContext *)context predicate:(NSPredicate *)predicate sortDescriptors:(NSArray *)sortDescriptors error:(NSError **)error;
++ (NSArray *)fetchInContext:(NSManagedObjectContext *)context withAttribute:(NSString *)attribute equalTo:(id)value error:(NSError **)error;
 
 // Fetches first instance of this entity. nil if it does not exist
 + (instancetype)fetchFirstInContext:(NSManagedObjectContext *)context error:(NSError **)error;
 + (instancetype)fetchFirstInContext:(NSManagedObjectContext *)context predicate:(NSPredicate *)predicate error:(NSError **)error;
 + (instancetype)fetchFirstInContext:(NSManagedObjectContext *)context predicate:(NSPredicate *)predicate sortDescriptors:(NSArray *)sortDescriptors error:(NSError **)error;
-
-+ (instancetype)fetchFirstInContext:(NSManagedObjectContext *)context whereKey:(NSString *)key equalTo:(id)value error:(NSError **)error;
++ (instancetype)fetchFirstInContext:(NSManagedObjectContext *)context withAttribute:(NSString *)attribute equalTo:(id)value error:(NSError **)error;
 
 @end
