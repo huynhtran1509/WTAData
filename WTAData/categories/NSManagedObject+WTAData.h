@@ -58,4 +58,17 @@
 + (instancetype)fetchFirstInContext:(NSManagedObjectContext *)context predicate:(NSPredicate *)predicate sortDescriptors:(NSArray *)sortDescriptors error:(NSError **)error;
 + (instancetype)fetchFirstInContext:(NSManagedObjectContext *)context withAttribute:(NSString *)attribute equalTo:(id)value error:(NSError **)error;
 
+// Helper functions to return a NSFetchedResultsController
++ (NSFetchedResultsController*)fetchControllerInContext:(NSManagedObjectContext *)context
+                                              groupedBy:(NSString*)groupKey
+                                          withPredicate:(NSPredicate*)predicate
+                                        sortDescriptors:(NSArray*)sortDescriptors;
+
+
++ (NSFetchedResultsController*)fetchControllerInContext:(NSManagedObjectContext *)context
+                                              groupedBy:(NSString*)groupKey
+                                          withPredicate:(NSPredicate*)predicate
+                                               sortedBy:(NSString*)key
+                                              ascending:(BOOL)ascending;
+
 @end

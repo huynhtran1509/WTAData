@@ -405,4 +405,33 @@
     return [self fetchFirstInContext:context predicate:predicate error:error];
 }
 
++ (NSFetchedResultsController*)fetchControllerInContext:(NSManagedObjectContext *)context
+                                              groupedBy:(NSString*)groupKey
+                                          withPredicate:(NSPredicate*)predicate
+                                        sortDescriptors:(NSArray*)sortDescriptors
+{
+    NSFetchRequest *fetchRequest = [self fetchRequestWithPredicate:predicate sortDescriptors:sortDescriptors];
+    
+    return [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                               managedObjectContext:context
+                                                 sectionNameKeyPath:groupKey
+                                                          cacheName:nil];
+}
+
+
++ (NSFetchedResultsController*)fetchControllerInContext:(NSManagedObjectContext *)context
+                                              groupedBy:(NSString*)groupKey
+                                          withPredicate:(NSPredicate*)predicate
+                                               sortedBy:(NSString*)key
+                                              ascending:(BOOL)ascending
+{
+    NSSortDescriptor *sortdescriptor = [NSSortDescriptor sortDescriptorWithKey:key ascending:ascending];
+    
+    return [self fetchControllerInContext:context
+                                groupedBy:groupKey
+                            withPredicate:predicate
+                          sortDescriptors:@[sortdescriptor]];
+}
+
+
 @end
