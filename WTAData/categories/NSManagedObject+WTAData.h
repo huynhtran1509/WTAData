@@ -9,12 +9,6 @@
 
 @interface NSManagedObject (WTAData)
 
-// Creates or updates the core data item represented by each dictionary in the array.
-+ (NSArray *)importEntitiesFromArray:(NSArray *)array context:(NSManagedObjectContext *)context;
-
-// Sets values for keys on the entity from the dictionary
-- (void)importValuesForKeyWithDictionary:(NSDictionary *)dictionary;
-
 // Returns the NSEntityDescription for this entity in the given context
 + (NSEntityDescription *)entityDescriptionInContext:(NSManagedObjectContext *)context;
 
@@ -24,17 +18,11 @@
 // Creates an instance of this entity in the given context
 + (instancetype)createEntityInContext:(NSManagedObjectContext *)context;
 
-// Creates (or updates if checkExisting is YES) an entity from the given object
-+ (instancetype)importEntityFromObject:(NSDictionary *)object context:(NSManagedObjectContext *)context checkExisting:(BOOL)checkExisting;
-
-// Calls importEntityFromObject:context:checkExisting with checkExisting = YES
-+ (instancetype)importEntityFromObject:(NSDictionary *)object context:(NSManagedObjectContext *)context;
-
 //  Delete all entities
-+ (void)truncateAllInContext:(NSManagedObjectContext *)context;
++ (void)deleteAllInContext:(NSManagedObjectContext *)context;
 
 //  Delete all entities with a predicate
-+ (void)truncateAllInContext:(NSManagedObjectContext *)context predicate:(NSPredicate *)predicate;
++ (void)deleteAllInContext:(NSManagedObjectContext *)context predicate:(NSPredicate *)predicate;
 
 // Creates an NSAsynchronousFetchRequests with the given params for this entity
 + (NSAsynchronousFetchRequest *)asyncFetchRequestWithPredicate:(NSPredicate *)predicate sortDescriptors:(NSArray *)sortDescriptors completion:(NSPersistentStoreAsynchronousFetchResultCompletionBlock)completion;
@@ -50,12 +38,26 @@
 + (NSArray *)fetchInContext:(NSManagedObjectContext *)context error:(NSError **)error;
 + (NSArray *)fetchInContext:(NSManagedObjectContext *)context predicate:(NSPredicate *)predicate error:(NSError **)error;
 + (NSArray *)fetchInContext:(NSManagedObjectContext *)context predicate:(NSPredicate *)predicate sortDescriptors:(NSArray *)sortDescriptors error:(NSError **)error;
++ (NSArray *)fetchInContext:(NSManagedObjectContext *)context withAttribute:(NSString *)attribute equalTo:(id)value error:(NSError **)error;
 
 // Fetches first instance of this entity. nil if it does not exist
 + (instancetype)fetchFirstInContext:(NSManagedObjectContext *)context error:(NSError **)error;
 + (instancetype)fetchFirstInContext:(NSManagedObjectContext *)context predicate:(NSPredicate *)predicate error:(NSError **)error;
 + (instancetype)fetchFirstInContext:(NSManagedObjectContext *)context predicate:(NSPredicate *)predicate sortDescriptors:(NSArray *)sortDescriptors error:(NSError **)error;
++ (instancetype)fetchFirstInContext:(NSManagedObjectContext *)context withAttribute:(NSString *)attribute equalTo:(id)value error:(NSError **)error;
 
-+ (instancetype)fetchFirstInContext:(NSManagedObjectContext *)context whereKey:(NSString *)key equalTo:(id)value error:(NSError **)error;
+// Helper functions to return a NSFetchedResultsController.  Note that these functions only
+// instantiate the controller and do not perform the first fetch.
++ (NSFetchedResultsController*)fetchControllerInContext:(NSManagedObjectContext *)context
+                                              groupedBy:(NSString*)groupKey
+                                          withPredicate:(NSPredicate*)predicate
+                                        sortDescriptors:(NSArray*)sortDescriptors;
+
+
++ (NSFetchedResultsController*)fetchControllerInContext:(NSManagedObjectContext *)context
+                                              groupedBy:(NSString*)groupKey
+                                          withPredicate:(NSPredicate*)predicate
+                                               sortedBy:(NSString*)key
+                                              ascending:(BOOL)ascending;
 
 @end

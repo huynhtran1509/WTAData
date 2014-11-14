@@ -47,6 +47,22 @@
 - (instancetype)initWithModelNamed:(NSString *)modelName
              deleteOnModelMismatch:(BOOL)deleteOnModelMismatch;
 
+/**
+ Initialize a data stack using the specified model. The name of the sqlite database will follow
+ the name of the managed object. This function will also delete the core data store if there is a 
+ model mismatch, and will delete the store if it fails integrity checks
+ 
+ :param: modelName name of the managed object model to load
+ :param: deleteOnModelMismatch delete the data store if the core data models do not match.
+ :param: verifyStoreIntegrity set to YES to perform a store integrity check and delete the data
+                              store if the check does not match.
+ 
+ :returns: instance of the WTAData class
+ */
+
+- (instancetype)initWithModelNamed:(NSString *)modelName
+             deleteOnModelMismatch:(BOOL)deleteOnModelMismatch
+              verifyStoreIntegrity:(BOOL)verifyStoreIntegrity;
 
 /**
  Initialize an in-memory data stack using the specified model.
@@ -57,6 +73,10 @@
  */
 - (instancetype)initInMemoryStackWithModelNamed:(NSString*)modelName;
 
+/**
+ Shuts down the core data stack and cleans up all objects.  This should be called on application
+ shutdown.
+ */
 - (void)cleanUp;
 
 /**
@@ -100,6 +120,15 @@
  */
 - (void)deleteAllDataWithCompletion:(void (^)(NSError*))completion;
 
+#pragma mark - Static Filesystem Helpers
+
+/**
+ Deletes all of the files associated with a given model store.
+ 
+ :param: modelName name of the managed object model to remove stores for
+ */
++ (void)deleteStoreFilesForModelNamed:(NSString*)modelName;
+
 /**
  Returns the URL for the database created with the specified store name.
  
@@ -107,13 +136,13 @@
  
  :returns: the url for the database
  */
-- (NSURL*)databaseURLForStoreName:(NSString*)storeName;
++ (NSURL*)databaseURLForStoreName:(NSString*)storeName;
 
 /** 
  Returns the name of the default store pulling from the bundle name.
  
  :returns: the default bundle store
  */
-- (NSString*)defaultStoreName;
++ (NSString*)defaultStoreName;
 
 @end
