@@ -73,8 +73,11 @@
  */
 - (instancetype)initInMemoryStackWithModelNamed:(NSString*)modelName;
 
+/**
+ Shuts down the core data stack and cleans up all objects.  This should be called on application
+ shutdown.
+ */
 - (void)cleanUp;
-
 
 /**
  Perform save in the specified context.
@@ -116,6 +119,8 @@
  :param: completion block called when the save is complete
  */
 - (void)deleteAllDataWithCompletion:(void (^)(NSError*))completion;
+
+#pragma mark - Static Filesystem Helpers
 
 /**
  Deletes all of the files associated with a given model store.

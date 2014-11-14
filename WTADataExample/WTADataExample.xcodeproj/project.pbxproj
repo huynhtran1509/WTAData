@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		03F10ECE1A163AB8007FD9FB /* NSManagedObject+WTADataImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F10ECD1A163AB8007FD9FB /* NSManagedObject+WTADataImport.m */; };
 		03F474331A013506003A7A86 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F474321A013506003A7A86 /* main.m */; };
 		03F474361A013506003A7A86 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F474351A013506003A7A86 /* AppDelegate.m */; };
 		03F474391A013506003A7A86 /* WTADataExample.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 03F474371A013506003A7A86 /* WTADataExample.xcdatamodeld */; };
@@ -36,6 +37,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		03F10ECC1A163AB8007FD9FB /* NSManagedObject+WTADataImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSManagedObject+WTADataImport.h"; path = "../WTAData/categories/NSManagedObject+WTADataImport.h"; sourceTree = "<group>"; };
+		03F10ECD1A163AB8007FD9FB /* NSManagedObject+WTADataImport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObject+WTADataImport.m"; path = "../WTAData/categories/NSManagedObject+WTADataImport.m"; sourceTree = "<group>"; };
 		03F4742D1A013506003A7A86 /* WTADataExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WTADataExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03F474311A013506003A7A86 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		03F474321A013506003A7A86 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -154,6 +157,8 @@
 				03F4745A1A0135B1003A7A86 /* WTAData.m */,
 				03F4745E1A013821003A7A86 /* NSManagedObjectContext+WTAData.h */,
 				03F4745F1A013821003A7A86 /* NSManagedObjectContext+WTAData.m */,
+				03F10ECC1A163AB8007FD9FB /* NSManagedObject+WTADataImport.h */,
+				03F10ECD1A163AB8007FD9FB /* NSManagedObject+WTADataImport.m */,
 			);
 			name = WTAData;
 			sourceTree = "<group>";
@@ -267,6 +272,7 @@
 				03F4743C1A013506003A7A86 /* ViewController.m in Sources */,
 				03F474391A013506003A7A86 /* WTADataExample.xcdatamodeld in Sources */,
 				03F4745B1A0135B1003A7A86 /* WTAData.m in Sources */,
+				03F10ECE1A163AB8007FD9FB /* NSManagedObject+WTADataImport.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

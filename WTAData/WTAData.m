@@ -117,7 +117,7 @@
             deleteOnModelMismatch:(BOOL)deleteOnModelMismatch
                      verifyStoreIntegrity:(BOOL)verifyStoreIntegrity
 {
-    [self createDirectoryAtPath:[[WTAData databaseDirectory] relativePath]];
+    [WTAData createDirectoryAtPath:[[WTAData databaseDirectory] relativePath]];
     
     NSMutableDictionary *options = [NSMutableDictionary dictionaryWithDictionary:@{
                                                                                    NSMigratePersistentStoresAutomaticallyOption: @(YES),
@@ -258,7 +258,7 @@
 }
 
 #pragma mark - File Helpers
-- (void)createDirectoryAtPath:(NSString*)path
++ (void)createDirectoryAtPath:(NSString*)path
 {
     if ([[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:NULL]) {
         return;
