@@ -10,13 +10,11 @@
 @interface NSManagedObjectContext (WTAData)
 
 - (void)saveContext;
-
-- (void)saveContextWithCompletion:(void (^)(BOOL savedChanges, NSError *error))completion;
+- (BOOL)saveContext:(NSError **)error;
 
 - (void)saveBlock:(void (^)(NSManagedObjectContext *context))work
        completion:(void (^)(BOOL savedChanges, NSError *error))completion;
 
-- (void)saveBlockAndWait:(void (^)(NSManagedObjectContext *context))work
-              completion:(void (^)(BOOL savedChanges, NSError *error))completion;
+- (BOOL)saveBlockAndWait:(void (^)(NSManagedObjectContext *context))work error:(NSError **)error;
 
 @end

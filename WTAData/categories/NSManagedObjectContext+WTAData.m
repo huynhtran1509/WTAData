@@ -11,10 +11,10 @@
 
 - (void)saveContext
 {
-    [self saveContextWithCompletion:nil];
+    [self saveContext:nil];
 }
 
-- (void)saveContextWithCompletion:(void (^)(BOOL savedChanges, NSError *error))completion
+- (BOOL)saveContext:(NSError **)error
 {
     __block BOOL hasChanges = NO;
     if ([self concurrencyType] == NSConfinementConcurrencyType)
@@ -28,36 +28,26 @@
         }];
     }
     
-    if (!hasChanges)
-    {
-        if (completion)
-        {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completion(NO, nil);
-            });
-        }
-        return;
-    }
-    
-    BOOL saveResult = NO;
-    NSError *error = nil;
+    __block BOOL saveResult = NO;
     @try
     {
-        saveResult = [self save:&error];
+        if ([self concurrencyType] == NSConfinementConcurrencyType)
+        {
+            saveResult = [self save:nil];
+        }
+        else
+        {
+            [self performBlockAndWait:^{
+                saveResult = [self save:error];
+            }];
+        }
     }
     @catch(NSException *exception)
     {
         NSLog(@"Unable to perform save: %@", (id)[exception userInfo] ?: (id)[exception reason]);
     }
-    @finally
-    {
-        if (completion)
-        {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completion(saveResult, error);
-            });
-        }
-    }
+    
+    return saveResult;
 }
 
 - (void)saveBlock:(void (^)(NSManagedObjectContext *context))work
@@ -66,18 +56,28 @@
     NSParameterAssert(work);
     [self performBlock:^{
         work(self);
-        [self saveContextWithCompletion:completion];
+        
+        NSError *error = nil;
+        BOOL result = [self saveContext:&error];
+        
+        if (completion)
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completion(result, error);
+            });
+        }
     }];
 }
 
-- (void)saveBlockAndWait:(void (^)(NSManagedObjectContext *context))work
-              completion:(void (^)(BOOL savedChanges, NSError *error))completion
+- (BOOL)saveBlockAndWait:(void (^)(NSManagedObjectContext *context))work error:(NSError **)error
 {
     NSParameterAssert(work);
     [self performBlockAndWait:^{
         work(self);
-        [self saveContextWithCompletion:completion];
     }];
+    
+    BOOL result = [self saveContext:error];
+    return result;
 }
 
 @end

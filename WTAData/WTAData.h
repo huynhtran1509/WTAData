@@ -80,19 +80,6 @@
 - (void)cleanUp;
 
 /**
- Perform save in the specified context.
- 
- :param: context the context to save on
- :param: wait YES if the operation is blocking, NO for non-blocking
- :param: work the block that operates on the managed objects to save
- :param: completion block called when the save is complete
- */
-- (void)saveInContext:(NSManagedObjectContext *)context
-                 wait:(BOOL)wait
-                 work:(void (^)(NSManagedObjectContext *context))work
-           completion:(void (^)(BOOL savedChanges, NSError *error))completion;
-
-/**
  Perform save in the background using the backgroundContext. Changes are then propagated to 
  the main context.
  
@@ -107,8 +94,9 @@
  then propagated to the main context.
  
  :param: work the block that operates on the managed objects to save
+ :returns: YES if save was successful
  */
--(void)saveInBackgroundAndWait:(void (^)(NSManagedObjectContext *context))work;
+-(BOOL)saveInBackgroundAndWait:(void (^)(NSManagedObjectContext *context))work error:(NSError **)error;
 
 /**
  Perform save in the specified context.

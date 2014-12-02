@@ -10,6 +10,7 @@
 #import <XCTest/XCTest.h>
 #import "WTAData.h"
 #import "Entity.h"
+#import "NSManagedObjectContext+WTAData.h"
 
 @interface WTADataExampleTests : XCTestCase
 
@@ -29,6 +30,20 @@
     [super tearDown];
 }
 
+- (void)testSaveAndWait {
+    
+    __block BOOL stepOneFinished = NO;
+   
+    [self.wtaData.mainContext saveBlockAndWait:^(NSManagedObjectContext *context) {
+        
+        XCTAssertTrue(stepOneFinished == NO);
+        stepOneFinished = YES;
+        
+    } error:nil];
+    
+    XCTAssertTrue(stepOneFinished);
+}
+
 - (void)testSaveInContext
 {
     XCTestExpectation *expectation = [self expectationWithDescription:@"testSaveInContext"];
@@ -38,12 +53,16 @@
     
     __weak typeof(self) weakSelf = self;
     __block Entity *entity;
-    [self.wtaData saveInContext:self.wtaData.mainContext wait:NO work:^(NSManagedObjectContext *context) {
+    
+    [self.wtaData.mainContext saveBlock:^(NSManagedObjectContext *context) {
+       
         //Given
         entity = [NSEntityDescription insertNewObjectForEntityForName:[[Entity class] description]
                                                inManagedObjectContext:context];
         entity.stringAttribute = initialStringValue;
+        
     } completion:^(BOOL savedChanges, NSError *error) {
+       
         //When
         Entity *backgroundThreadEntity = (Entity *)[self.wtaData.backgroundContext existingObjectWithID:entity.objectID error:nil];
         
@@ -51,7 +70,7 @@
         XCTAssertNotNil(backgroundThreadEntity);
         XCTAssertEqualObjects(backgroundThreadEntity.stringAttribute, initialStringValue);
         
-        [weakSelf.wtaData saveInContext:self.wtaData.mainContext wait:NO work:^(NSManagedObjectContext *context){
+        [self.wtaData.backgroundContext saveBlock:^(NSManagedObjectContext *context) {
             //Given
             Entity *localEntity = (Entity *)[self.wtaData.backgroundContext existingObjectWithID:backgroundThreadEntity.objectID error:nil];
             
@@ -62,7 +81,9 @@
             XCTAssertEqualObjects(backgroundThreadEntity.stringAttribute, updatedStringValue);
             [expectation fulfill];
         }];
+        
     }];
+
     
     [self waitForExpectationsWithTimeout:100000.0 handler:^(NSError *error) {
         XCTAssertNil(error);
@@ -89,7 +110,7 @@
         
         //Then
         XCTAssertNotNil(mainThreadEntity);
-        XCTAssertEqualObjects(mainThreadEntity.stringAttribute, initialStringValue);
+        XCTAssertTrue([[mainThreadEntity stringAttribute] isEqualToString:initialStringValue]);
         
         [weakSelf.wtaData saveInBackground:^(NSManagedObjectContext *context) {
             //Given
@@ -99,7 +120,8 @@
             localEntity.stringAttribute = updatedStringValue;
         } completion:^(BOOL savedChanges, NSError *error) {
             //Then
-            XCTAssertEqualObjects(mainThreadEntity.stringAttribute, updatedStringValue);
+            
+            XCTAssertTrue([[mainThreadEntity stringAttribute] isEqualToString:updatedStringValue]);
             [expectation fulfill];
         }];
     }];
@@ -120,7 +142,7 @@
         entity = [NSEntityDescription insertNewObjectForEntityForName:[[Entity class] description]
                                                inManagedObjectContext:context];
         entity.stringAttribute = initialStringValue;
-    }];
+    } error:nil];
     //When
     Entity *mainThreadEntity = (Entity *)[self.wtaData.mainContext existingObjectWithID:entity.objectID error:nil];
     
@@ -138,7 +160,7 @@
         Entity *entity = [NSEntityDescription insertNewObjectForEntityForName:[[Entity class] description]
                                                inManagedObjectContext:context];
         entity.stringAttribute = @"Insert an object to delete";
-    }];
+    } error:nil];
     
     NSUInteger count = 0;
     NSArray *entities = [self.wtaData.managedObjectModel entities];
