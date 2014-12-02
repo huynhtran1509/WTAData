@@ -63,25 +63,21 @@
 - (void)saveBlock:(void (^)(NSManagedObjectContext *context))work
        completion:(void (^)(BOOL savedChanges, NSError *error))completion
 {
-    if (work)
-    {
-        [self performBlock:^{
-            work(self);
-            [self saveContextWithCompletion:completion];
-        }];
-    }
+    NSParameterAssert(work);
+    [self performBlock:^{
+        work(self);
+        [self saveContextWithCompletion:completion];
+    }];
 }
 
 - (void)saveBlockAndWait:(void (^)(NSManagedObjectContext *context))work
               completion:(void (^)(BOOL savedChanges, NSError *error))completion
 {
-    if (work)
-    {
-        [self performBlockAndWait:^{
-            work(self);
-            [self saveContextWithCompletion:completion];
-        }];
-    }
+    NSParameterAssert(work);
+    [self performBlockAndWait:^{
+        work(self);
+        [self saveContextWithCompletion:completion];
+    }];
 }
 
 @end

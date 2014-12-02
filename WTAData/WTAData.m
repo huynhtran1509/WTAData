@@ -206,6 +206,7 @@
                  work:(void (^)(NSManagedObjectContext *context))work
            completion:(void (^)(BOOL savedChanges, NSError *error))completion
 {
+    NSParameterAssert(work);
     if (work)
     {
         if (wait)
