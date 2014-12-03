@@ -94,6 +94,7 @@
     
     // Create date formatter to be used during import
     NSDateFormatter *dateFormater = [NSDateFormatter new];
+    [dateFormater setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
     
     [[[self entity] relationshipsByName] enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         
