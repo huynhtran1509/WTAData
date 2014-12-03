@@ -71,6 +71,11 @@
 - (void)setupContextsForModelNamed:(NSString *)modelName
 {
     NSURL* modelURL = [[NSBundle mainBundle] URLForResource:modelName withExtension:@"momd"];
+    if (modelURL == nil)
+    {
+        modelURL = [[NSBundle mainBundle] URLForResource:modelName withExtension:@"mom"]; 
+    }
+    
     self.managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
     
     NSAssert(self.managedObjectModel, @"Could not locate model %@", [modelURL path]);
@@ -114,7 +119,7 @@
 }
 
 - (void)setupPersistentStoreForModelNamed:(NSString*)modelName
-            deleteOnModelMismatch:(BOOL)deleteOnModelMismatch
+                    deleteOnModelMismatch:(BOOL)deleteOnModelMismatch
                      verifyStoreIntegrity:(BOOL)verifyStoreIntegrity
 {
     [WTAData createDirectoryAtPath:[[WTAData databaseDirectory] relativePath]];
@@ -126,8 +131,8 @@
     if (verifyStoreIntegrity)
     {
         [options addEntriesFromDictionary:@{
-                                           @"NSSQLitePragmasOption": @{@"integrity_check": @YES}
-                                           }];
+                                            @"NSSQLitePragmasOption": @{@"integrity_check": @YES}
+                                            }];
     }
     
     
@@ -147,7 +152,7 @@
         {
             if ([[error domain] isEqualToString:NSCocoaErrorDomain] &&
                 ([error code] == NSPersistentStoreIncompatibleVersionHashError ||
-                [error code] == NSMigrationMissingSourceModelError))
+                 [error code] == NSMigrationMissingSourceModelError))
             {
                 // Remove old database
                 [WTAData deleteStoreFilesForModelNamed:modelName];
@@ -201,60 +206,35 @@
     }];
 }
 
-- (void)saveInContext:(NSManagedObjectContext *)context
-                 wait:(BOOL)wait
-                 work:(void (^)(NSManagedObjectContext *context))work
-           completion:(void (^)(BOOL savedChanges, NSError *error))completion
-{
-    if (work)
-    {
-        if (wait)
-        {
-            [context performBlockAndWait:^{
-                work(context);
-                [context saveContextWithCompletion:completion];
-            }];
-        }
-        else
-        {
-            [context performBlock:^{
-                work(context);
-                [context saveContextWithCompletion:completion];
-            }];
-        }
-    }
-}
-
 - (void)saveInBackground:(void (^)(NSManagedObjectContext *context))work
               completion:(void (^)(BOOL savedChanges, NSError *error))completion
 {
-    [self saveInContext:self.backgroundContext
-                   wait:NO
-                   work:work
-             completion:completion];
+    [self.backgroundContext saveBlock:work completion:completion];
 }
 
-- (void)saveInBackgroundAndWait:(void (^)(NSManagedObjectContext *context))work
+-(BOOL)saveInBackgroundAndWait:(void (^)(NSManagedObjectContext *context))work error:(NSError **)error;
 {
-    [self saveInContext:self.backgroundContext
-                   wait:YES
-                   work:work
-             completion:nil];
+   return [self.backgroundContext saveBlockAndWait:work error:error];
 }
 
 - (void)deleteAllDataWithCompletion:(void (^)(NSError*))completion
 {
-    [self saveInContext:self.backgroundContext
-                   wait:NO
-                   work:^(NSManagedObjectContext *localContext) {
-                       NSArray *entityNames = [[self.managedObjectModel entities] valueForKey:@"name"];
-                       for (NSString *entityName in entityNames) {
-                           Class class = NSClassFromString(entityName);
-                           [class deleteAllInContext:localContext];
-                       }
-                   } completion:^(BOOL contextDidSave, NSError *error) {
-                       completion(error);
-                   }];
+    [self.backgroundContext saveBlock:^(NSManagedObjectContext *context) {
+        
+        NSArray *entityNames = [[self.managedObjectModel entities] valueForKey:@"name"];
+        for (NSString *entityName in entityNames) {
+            Class class = NSClassFromString(entityName);
+            [class deleteAllInContext:context];
+        }
+        
+    } completion:^(BOOL savedChanges, NSError *error) {
+      
+        if (completion)
+        {
+            completion(error);
+        }
+        
+    }];
 }
 
 #pragma mark - File Helpers
