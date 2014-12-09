@@ -17,74 +17,76 @@
     // Create array to contain results
     NSMutableArray *result = [NSMutableArray new];
     
-    // Get entity description and primary attribute for self
-    NSEntityDescription *description = [self entityDescriptionInContext:context];
-    NSAttributeDescription *primaryAttribute = [description primaryAttribute];
-    
-    // If we have a primaryAttribute, we'll be able to check for existing entities
-    // representing the objects in the array.
-    if (primaryAttribute)
+    if ([array isKindOfClass:[NSArray class]] && [array count])
     {
-        // Get the key that uniquely identifies instances of this entity
-        NSString *primaryAttributeString = [description primaryAttributeString];
-        NSString *importKey = primaryAttributeString;
+        // Get entity description and primary attribute for self
+        NSEntityDescription *description = [self entityDescriptionInContext:context];
+        NSAttributeDescription *primaryAttribute = [description primaryAttribute];
         
-        // If a custom key has been set, use that
-        NSString *customImportKey = [primaryAttribute userInfo][@"ImportName"];
-        if (customImportKey)
+        // If we have a primaryAttribute, we'll be able to check for existing entities
+        // representing the objects in the array.
+        if (primaryAttribute)
         {
-            importKey = customImportKey;
-        }
-        
-        // Create a dictionary representing our import objects like so
-        // {"value of unique key": object}
-        NSMutableDictionary *dictionary = [NSMutableDictionary new];
-        for (NSDictionary *item in array)
-        {
-            NSString *key = item[importKey];
-            dictionary[key] = item;
-        }
-        
-        // Temporary dictionay to mark which objects have been imported
-        NSMutableDictionary *tempDictionary = [dictionary mutableCopy];
-        
-        // Find all existing entities
-        NSString *formatString = [NSString stringWithFormat:@"%@ in %%@", primaryAttributeString];
-        NSPredicate *existingEntitiesPredicate = [NSPredicate predicateWithFormat:formatString, [dictionary allKeys]];
-        NSArray *existingEntities = [self fetchInContext:context predicate:existingEntitiesPredicate error:nil];
-        
-        // Iterate through entites that exist so we can update them
-        for (NSManagedObject *entity in existingEntities)
-        {
-            // Update values for keys in existing entity
-            NSString *key = [entity valueForKey:primaryAttributeString];
-            NSDictionary *importDictionary = tempDictionary[key];
-            [entity importValuesForKeyWithDictionary:importDictionary];
+            // Get the key that uniquely identifies instances of this entity
+            NSString *primaryAttributeString = [description primaryAttributeString];
+            NSString *importKey = primaryAttributeString;
             
-            // Remove entity from tempDictionary to mark it as imported
-            [tempDictionary removeObjectForKey:key];
+            // If a custom key has been set, use that
+            NSString *customImportKey = [primaryAttribute userInfo][@"ImportName"];
+            if (customImportKey)
+            {
+                importKey = customImportKey;
+            }
             
-            // Append entity to results
-            [result addObject:entity];
+            // Create a dictionary representing our import objects like so
+            // {"value of unique key": object}
+            NSMutableDictionary *dictionary = [NSMutableDictionary new];
+            for (NSDictionary *item in array)
+            {
+                NSString *key = item[importKey];
+                dictionary[key] = item;
+            }
+            
+            // Temporary dictionay to mark which objects have been imported
+            NSMutableDictionary *tempDictionary = [dictionary mutableCopy];
+            
+            // Find all existing entities
+            NSString *formatString = [NSString stringWithFormat:@"%@ in %%@", primaryAttributeString];
+            NSPredicate *existingEntitiesPredicate = [NSPredicate predicateWithFormat:formatString, [dictionary allKeys]];
+            NSArray *existingEntities = [self fetchInContext:context predicate:existingEntitiesPredicate error:nil];
+            
+            // Iterate through entites that exist so we can update them
+            for (NSManagedObject *entity in existingEntities)
+            {
+                // Update values for keys in existing entity
+                NSString *key = [entity valueForKey:primaryAttributeString];
+                NSDictionary *importDictionary = tempDictionary[key];
+                [entity importValuesForKeyWithDictionary:importDictionary];
+                
+                // Remove entity from tempDictionary to mark it as imported
+                [tempDictionary removeObjectForKey:key];
+                
+                // Append entity to results
+                [result addObject:entity];
+            }
+            
+            // For all objects that weren't already existing, create new ones
+            for (NSDictionary *item in [tempDictionary allValues])
+            {
+                NSManagedObject *entity = [self importEntityFromObject:item context:context checkExisting:NO];
+                [result addObject:entity];
+            }
         }
-        
-        // For all objects that weren't already existing, create new ones
-        for (NSDictionary *item in [tempDictionary allValues])
+        else
         {
-            NSManagedObject *entity = [self importEntityFromObject:item context:context checkExisting:NO];
-            [result addObject:entity];
+            // Because we had no way to uniquely identify entites, creates new ones for them all
+            for (NSDictionary *item in array)
+            {
+                NSManagedObject *entity = [self importEntityFromObject:item context:context checkExisting:NO];
+                [result addObject:entity];
+            }
         }
     }
-    else
-    {
-        // Because we had no way to uniquely identify entites, creates new ones for them all
-        for (NSDictionary *item in array)
-        {
-            NSManagedObject *entity = [self importEntityFromObject:item context:context checkExisting:NO];
-            [result addObject:entity];
-        }
-    }
-    
     return result;
 }
 
