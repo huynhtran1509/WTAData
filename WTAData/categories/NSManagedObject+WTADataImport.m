@@ -95,8 +95,8 @@
     //TODO: Finish creation of relationship entitys that don't exist
     
     // Create date formatter to be used during import
-    NSDateFormatter *dateFormater = [NSDateFormatter new];
-    [dateFormater setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
+    NSDateFormatter *ISO8601DateFormater = [NSDateFormatter new];
+    [ISO8601DateFormater setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
     
     [[[self entity] relationshipsByName] enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         
@@ -198,7 +198,19 @@
                 NSDate *date;
                 if ([value isKindOfClass:[NSString class]])
                 {
-                    date = [dateFormater dateFromString:value];
+                    NSDateFormatter *dateFormatter = ISO8601DateFormater;
+                    
+                    NSString *customFormat = [description userInfo][@"DateFormat"];
+                    if (customFormat)
+                    {
+                        dateFormatter = [NSDateFormatter new];
+                        [dateFormatter setDateFormat:customFormat];
+                    }
+                    date = [dateFormatter dateFromString:value];
+                }
+                else if ([value isKindOfClass:[NSNumber class]])
+                {
+                    date = [NSDate dateWithTimeIntervalSince1970:[value doubleValue]];
                 }
                 [self importValue:date forKey:key];
             }

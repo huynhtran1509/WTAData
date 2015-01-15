@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6252" systemVersion="14A389" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6254" systemVersion="14C94b" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Entity" representedClassName="Entity" syncable="YES">
+        <attribute name="customDateAttribute" optional="YES" attributeType="Date" syncable="YES">
+            <userInfo>
+                <entry key="DateFormat" value="M/d/yyyy"/>
+            </userInfo>
+        </attribute>
+        <attribute name="dateAttribute" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="epochDateAttribute" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="stringAttribute" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Entity" positionX="-63" positionY="-18" width="128" height="60"/>
+        <element name="Entity" positionX="-63" positionY="-18" width="128" height="105"/>
     </elements>
 </model>

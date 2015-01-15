@@ -20,8 +20,7 @@
 		03F4745C1A0135B1003A7A86 /* WTAData.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F4745A1A0135B1003A7A86 /* WTAData.m */; };
 		03F474601A013821003A7A86 /* NSManagedObjectContext+WTAData.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F4745F1A013821003A7A86 /* NSManagedObjectContext+WTAData.m */; };
 		03F474611A013821003A7A86 /* NSManagedObjectContext+WTAData.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F4745F1A013821003A7A86 /* NSManagedObjectContext+WTAData.m */; };
-		03F474641A01836D003A7A86 /* Entity.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F474631A01836D003A7A86 /* Entity.m */; };
-		03F474651A01836D003A7A86 /* Entity.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F474631A01836D003A7A86 /* Entity.m */; };
+		22AAD4631A6872D100C6FFBF /* Entity.m in Sources */ = {isa = PBXBuildFile; fileRef = 22AAD4621A6872D100C6FFBF /* Entity.m */; };
 		9FB023921A114576009B7C96 /* NSEntityDescription+WTAData.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FB0238F1A114576009B7C96 /* NSEntityDescription+WTAData.m */; };
 		9FB023931A114576009B7C96 /* NSManagedObject+WTAData.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FB023911A114576009B7C96 /* NSManagedObject+WTAData.m */; };
 /* End PBXBuildFile section */
@@ -57,8 +56,8 @@
 		03F4745A1A0135B1003A7A86 /* WTAData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WTAData.m; path = ../WTAData/WTAData.m; sourceTree = "<group>"; };
 		03F4745E1A013821003A7A86 /* NSManagedObjectContext+WTAData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSManagedObjectContext+WTAData.h"; path = "../WTAData/categories/NSManagedObjectContext+WTAData.h"; sourceTree = "<group>"; };
 		03F4745F1A013821003A7A86 /* NSManagedObjectContext+WTAData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObjectContext+WTAData.m"; path = "../WTAData/categories/NSManagedObjectContext+WTAData.m"; sourceTree = "<group>"; };
-		03F474621A01836D003A7A86 /* Entity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Entity.h; path = Models/Entity.h; sourceTree = "<group>"; };
-		03F474631A01836D003A7A86 /* Entity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Entity.m; path = Models/Entity.m; sourceTree = "<group>"; };
+		22AAD4611A6872D100C6FFBF /* Entity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Entity.h; sourceTree = "<group>"; };
+		22AAD4621A6872D100C6FFBF /* Entity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Entity.m; sourceTree = "<group>"; };
 		9FB0238E1A114576009B7C96 /* NSEntityDescription+WTAData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSEntityDescription+WTAData.h"; path = "../WTAData/categories/NSEntityDescription+WTAData.h"; sourceTree = "<group>"; };
 		9FB0238F1A114576009B7C96 /* NSEntityDescription+WTAData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSEntityDescription+WTAData.m"; path = "../WTAData/categories/NSEntityDescription+WTAData.m"; sourceTree = "<group>"; };
 		9FB023901A114576009B7C96 /* NSManagedObject+WTAData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSManagedObject+WTAData.h"; path = "../WTAData/categories/NSManagedObject+WTAData.h"; sourceTree = "<group>"; };
@@ -113,8 +112,8 @@
 				03F474401A013506003A7A86 /* Images.xcassets */,
 				03F474421A013506003A7A86 /* LaunchScreen.xib */,
 				03F474371A013506003A7A86 /* WTADataExample.xcdatamodeld */,
-				03F474621A01836D003A7A86 /* Entity.h */,
-				03F474631A01836D003A7A86 /* Entity.m */,
+				22AAD4611A6872D100C6FFBF /* Entity.h */,
+				22AAD4621A6872D100C6FFBF /* Entity.m */,
 				03F474301A013506003A7A86 /* Supporting Files */,
 			);
 			path = WTADataExample;
@@ -263,8 +262,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22AAD4631A6872D100C6FFBF /* Entity.m in Sources */,
 				9FB023931A114576009B7C96 /* NSManagedObject+WTAData.m in Sources */,
-				03F474641A01836D003A7A86 /* Entity.m in Sources */,
 				03F474601A013821003A7A86 /* NSManagedObjectContext+WTAData.m in Sources */,
 				03F474361A013506003A7A86 /* AppDelegate.m in Sources */,
 				9FB023921A114576009B7C96 /* NSEntityDescription+WTAData.m in Sources */,
@@ -280,7 +279,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				03F474651A01836D003A7A86 /* Entity.m in Sources */,
 				03F474611A013821003A7A86 /* NSManagedObjectContext+WTAData.m in Sources */,
 				03F4745C1A0135B1003A7A86 /* WTAData.m in Sources */,
 				03F474501A013506003A7A86 /* WTADataExampleTests.m in Sources */,
