@@ -142,7 +142,17 @@
                 
                 Class class = NSClassFromString([relationshipEntityDescription managedObjectClassName]);
                 NSArray *objects = [class importEntitiesFromArray:value context:[self managedObjectContext]];
-                [self setValue:[NSSet setWithArray:objects] forKey:key];
+                
+                id set;
+                if ([relationshipDescription isOrdered])
+                {
+                    set = [[NSOrderedSet alloc] initWithArray:objects];
+                }
+                else
+                {
+                    set = [NSSet setWithArray:objects];
+                }
+                [self setValue:set forKey:key];
             }
             else
             {
