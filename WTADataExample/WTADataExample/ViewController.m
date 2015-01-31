@@ -25,14 +25,30 @@
 
 #import "ViewController.h"
 
+#import "Entity.h"
+#import "WTAData.h"
+#import "NSManagedObject+WTAData.h"
+#import "AppDelegate.h"
+
 @interface ViewController ()
 
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) NSFetchedResultsController *fetchController;
 @end
 
 @implementation ViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
+    
+    WTAData *data = [(AppDelegate*)[[UIApplication sharedApplication] delegate] data];
+    self.fetchController = [Entity fetchControllerInContext:data.mainContext
+                                                  groupedBy:nil
+                                              withPredicate:nil
+                                            sortDescriptors:nil];
+    [self.fetchController performFetch:nil];
     // Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -41,4 +57,22 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (NSInteger)tableView:(UITableView *)tableView
+ numberOfRowsInSection:(NSInteger)section
+{
+    id<NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchController sections] objectAtIndex:0];
+    return [[sectionInfo objects] count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+    Entity *entity = [self.fetchController objectAtIndexPath:indexPath];
+    if (entity)
+    {
+        [cell.textLabel setText:entity.stringAttribute];
+    }
+    
+    return cell;
+}
 @end

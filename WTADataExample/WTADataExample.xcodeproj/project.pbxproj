@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		03DD54181A3237B300DD4521 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 03DD54151A3237B300DD4521 /* LICENSE */; };
-		03DD54191A3237B300DD4521 /* WTAData.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 03DD54161A3237B300DD4521 /* WTAData.podspec */; };
-		03DD541A1A3237B300DD4521 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 03DD54171A3237B300DD4521 /* README.md */; };
 		03F10ECE1A163AB8007FD9FB /* NSManagedObject+WTADataImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F10ECD1A163AB8007FD9FB /* NSManagedObject+WTADataImport.m */; };
 		03F474331A013506003A7A86 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F474321A013506003A7A86 /* main.m */; };
 		03F474361A013506003A7A86 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F474351A013506003A7A86 /* AppDelegate.m */; };
@@ -252,7 +250,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				03DD54191A3237B300DD4521 /* WTAData.podspec in Resources */,
 				03F4743F1A013506003A7A86 /* Main.storyboard in Resources */,
 				03F474441A013506003A7A86 /* LaunchScreen.xib in Resources */,
 				03DD54181A3237B300DD4521 /* LICENSE in Resources */,
@@ -283,7 +280,6 @@
 				03F4743C1A013506003A7A86 /* ViewController.m in Sources */,
 				03F474391A013506003A7A86 /* WTADataExample.xcdatamodeld in Sources */,
 				03F4745B1A0135B1003A7A86 /* WTAData.m in Sources */,
-				03DD541A1A3237B300DD4521 /* README.md in Sources */,
 				03F10ECE1A163AB8007FD9FB /* NSManagedObject+WTADataImport.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
