@@ -44,10 +44,13 @@
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
     
     WTAData *data = [(AppDelegate*)[[UIApplication sharedApplication] delegate] data];
+   
+    NSSortDescriptor *sortAttribute = [NSSortDescriptor sortDescriptorWithKey:@"stringAttribute"
+                                                                    ascending:YES];
     self.fetchController = [Entity fetchControllerInContext:data.mainContext
                                                   groupedBy:nil
                                               withPredicate:nil
-                                            sortDescriptors:nil];
+                                            sortDescriptors:@[sortAttribute]];
     [self.fetchController performFetch:nil];
     // Do any additional setup after loading the view, typically from a nib.
 }
