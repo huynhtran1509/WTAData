@@ -135,6 +135,7 @@
     return [self fetchFirstInContext:context predicate:predicate error:error];
 }
 
+#if TARGET_OS_IPHONE
 + (NSFetchedResultsController*)fetchControllerInContext:(NSManagedObjectContext *)context
                                               groupedBy:(NSString*)groupKey
                                           withPredicate:(NSPredicate*)predicate
@@ -163,5 +164,5 @@
                           sortDescriptors:@[sortdescriptor]];
 }
 
-
+#endif
 @end

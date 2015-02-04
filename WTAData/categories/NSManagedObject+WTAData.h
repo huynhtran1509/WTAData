@@ -46,6 +46,7 @@
 + (instancetype)fetchFirstInContext:(NSManagedObjectContext *)context predicate:(NSPredicate *)predicate sortDescriptors:(NSArray *)sortDescriptors error:(NSError **)error;
 + (instancetype)fetchFirstInContext:(NSManagedObjectContext *)context withAttribute:(NSString *)attribute equalTo:(id)value error:(NSError **)error;
 
+#if TARGET_OS_IPHONE
 // Helper functions to return a NSFetchedResultsController.  Note that these functions only
 // instantiate the controller and do not perform the first fetch.
 + (NSFetchedResultsController*)fetchControllerInContext:(NSManagedObjectContext *)context
@@ -59,5 +60,5 @@
                                           withPredicate:(NSPredicate*)predicate
                                                sortedBy:(NSString*)key
                                               ascending:(BOOL)ascending;
-
+#endif
 @end
