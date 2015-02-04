@@ -18,7 +18,7 @@ WTADataConfiguration *configuration = [WTADataConfiguration defaultConfiguration
 // Set flag for deleting the store on a model mis-match
 [configuration setShouldDeleteStoreFileOnModelMismatch:YES];
 
-// Set flag for deleting the store sql integrity errors
+// Set flag for deleting the store on sql integrity errors
 [configuration setShouldDeleteStoreFileOnIntegrityErrors:YES];
 
 // Set flag for using an in-memory store
