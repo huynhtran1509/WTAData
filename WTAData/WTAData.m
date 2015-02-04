@@ -249,7 +249,9 @@
                                                                   attributes:nil
                                                                        error:&error];
     if (!fileCreated) {
+#ifdef DEBUG
         NSLog(@"%@", error.localizedDescription);
+#endif
         abort();
     }
 }
