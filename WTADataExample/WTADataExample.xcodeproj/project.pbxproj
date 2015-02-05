@@ -219,7 +219,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0610;
-				ORGANIZATIONNAME = WillowTreeApps;
+				ORGANIZATIONNAME = "WillowTree, Inc.";
 				TargetAttributes = {
 					03F4742C1A013506003A7A86 = {
 						CreatedOnToolsVersion = 6.1;
