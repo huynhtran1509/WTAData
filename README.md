@@ -26,3 +26,28 @@ WTADataConfiguration *configuration = [WTADataConfiguration defaultConfiguration
 
 [[WTAData alloc] initWithConfiguration:configuration];
 `````
+
+## Fetching Entities
+
+Fetching entities from the store is easy using the categories provided by WTAData on NSManagedObjects
+
+```
+NSError *error = nil;
+WTAData *data = <initialized stack>
+[ManagedObject fetchInContext:data.mainContext error:&error];
+```
+
+See additional helpers in NSManagedObject+WTAData.h for more information.
+
+## Saving data
+
+WTAData provides simple mechanisms for saving and creating data in the background.  For example, saving new items in the background is as simple as the following lines of code.
+
+```
+[self.data saveInBackground:^(NSManagedObjectContext *context) {
+    Entity *entity = [Entity createEntityInContext:context];
+    entity.stringAttribute = [NSString stringWithFormat:@"Entity Created"];
+  } completion:^(BOOL savedChanges, NSError *error) {
+    NSLog(@"Changes saved %d with error %@", savedChanges, error);
+  }];
+  
