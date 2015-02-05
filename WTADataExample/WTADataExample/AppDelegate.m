@@ -49,8 +49,7 @@
         [self.data saveInBackground:^(NSManagedObjectContext *context) {
             for (int i = 0; i < 9; i++)
             {
-                Entity *entity = [NSEntityDescription insertNewObjectForEntityForName:[[Entity class] description]
-                                                               inManagedObjectContext:context];
+                Entity *entity = [Entity createEntityInContext:context];
                 entity.stringAttribute = [NSString stringWithFormat:@"Entity %d", i + 1];
             }
         } completion:^(BOOL savedChanges, NSError *error) {
