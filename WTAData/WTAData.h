@@ -7,6 +7,7 @@
 
 #import <CoreData/CoreData.h>
 #import <Foundation/Foundation.h>
+#import "WTADataConfiguration.h"
 
 @interface WTAData : NSObject
 
@@ -25,6 +26,18 @@
 /// Coordinator used by the stack
 @property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
+/// The stack configuration
+@property (nonatomic, strong, readonly) WTADataConfiguration *configuration;
+
+/**
+ Initialize a data stack using the specified configuration.
+ 
+ :param: configuration the configuration defining resource disk location and options
+ 
+ :returns: instance of the WTAData class
+ */
+- (instancetype)initWithConfiguration:(WTADataConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
+
 /**
  Initialize a data stack using the specified model. The name of the sqlite database will follow
  the name of the managed object.
@@ -33,36 +46,7 @@
  
  :returns: instance of the WTAData class
  */
-- (instancetype)initWithModelNamed:(NSString*)modelName;
-
-/**
- Initialize a data stack using the specified model. The name of the sqlite database will follow
- the name of the managed object. This function will also delete the core data store
- 
- :param: modelName name of the managed object model to load
- :param: deleteOnModelMismatch delete the data store if the core data models do not match.
- 
- :returns: instance of the WTAData class
- */
-- (instancetype)initWithModelNamed:(NSString *)modelName
-             deleteOnModelMismatch:(BOOL)deleteOnModelMismatch;
-
-/**
- Initialize a data stack using the specified model. The name of the sqlite database will follow
- the name of the managed object. This function will also delete the core data store if there is a 
- model mismatch, and will delete the store if it fails integrity checks
- 
- :param: modelName name of the managed object model to load
- :param: deleteOnModelMismatch delete the data store if the core data models do not match.
- :param: verifyStoreIntegrity set to YES to perform a store integrity check and delete the data
-                              store if the check does not match.
- 
- :returns: instance of the WTAData class
- */
-
-- (instancetype)initWithModelNamed:(NSString *)modelName
-             deleteOnModelMismatch:(BOOL)deleteOnModelMismatch
-              verifyStoreIntegrity:(BOOL)verifyStoreIntegrity;
+- (instancetype)initWithModelNamed:(NSString *)modelName;
 
 /**
  Initialize an in-memory data stack using the specified model.
@@ -71,13 +55,13 @@
  
  :returns: instance of the WTAData class
  */
-- (instancetype)initInMemoryStackWithModelNamed:(NSString*)modelName;
+- (instancetype)initInMemoryStackWithModelNamed:(NSString *)modelName;
 
 /**
  Shuts down the core data stack and cleans up all objects.  This should be called on application
  shutdown.
  */
-- (void)cleanUp;
+- (void)invalidateStack;
 
 /**
  Perform save in the background using the backgroundContext. Changes are then propagated to 
@@ -106,31 +90,6 @@
  :param: work the block that operates on the managed objects to save
  :param: completion block called when the save is complete
  */
-- (void)deleteAllDataWithCompletion:(void (^)(NSError*))completion;
-
-#pragma mark - Static Filesystem Helpers
-
-/**
- Deletes all of the files associated with a given model store.
- 
- :param: modelName name of the managed object model to remove stores for
- */
-+ (void)deleteStoreFilesForModelNamed:(NSString*)modelName;
-
-/**
- Returns the URL for the database created with the specified store name.
- 
- :param: storeName the name of the persistent store that matches this database
- 
- :returns: the url for the database
- */
-+ (NSURL*)databaseURLForStoreName:(NSString*)storeName;
-
-/** 
- Returns the name of the default store pulling from the bundle name.
- 
- :returns: the default bundle store
- */
-+ (NSString*)defaultStoreName;
+- (void)deleteAllDataWithCompletion:(void (^)(NSError *))completion;
 
 @end

@@ -10,76 +10,55 @@
 #import "NSManagedObjectContext+WTAData.h"
 #import "NSManagedObject+WTAData.h"
 
+@interface WTAData ()
+
+@property (nonatomic, strong, readwrite) WTADataConfiguration *configuration;
+@property (nonatomic, readwrite, setter=setInvalidated:) BOOL isInvalidated;
+
+@end
+
 @implementation WTAData
 
 - (instancetype)initWithModelNamed:(NSString *)modelName
 {
-    return [self initWithModelNamed:modelName deleteOnModelMismatch:NO];
+    WTADataConfiguration *configuration = [WTADataConfiguration defaultConfigurationWithModelNamed:modelName];
+    return [self initWithConfiguration:configuration];
 }
 
-- (instancetype)initWithModelNamed:(NSString *)modelName
-             deleteOnModelMismatch:(BOOL)deleteOnModelMismatch
-{
-    return [self initWithModelNamed:modelName deleteOnModelMismatch:deleteOnModelMismatch verifyStoreIntegrity:NO inMemory:NO];
-}
-
-- (instancetype)initWithModelNamed:(NSString *)modelName
-             deleteOnModelMismatch:(BOOL)deleteOnModelMismatch
-              verifyStoreIntegrity:(BOOL)verifyStoreIntegrity
-{
-    return [self initWithModelNamed:modelName
-              deleteOnModelMismatch:deleteOnModelMismatch
-               verifyStoreIntegrity:verifyStoreIntegrity
-                           inMemory:NO];
-}
-
-
-- (instancetype)initInMemoryStackWithModelNamed:(NSString*)modelName
-{
-    return [self initWithModelNamed:modelName deleteOnModelMismatch:NO verifyStoreIntegrity:NO inMemory:YES];
-}
-
-- (instancetype)initWithModelNamed:(NSString *)modelName
-             deleteOnModelMismatch:(BOOL)deleteOnModelMismatch
-              verifyStoreIntegrity:(BOOL)verifyStoreIntegrity
-                          inMemory:(BOOL)inMemory
+- (instancetype)initWithConfiguration:(WTADataConfiguration *)configuration
 {
     self = [super init];
     if (self)
     {
-        if (!modelName)
-        {
-            modelName = [WTAData defaultStoreName];
-        }
+        self.configuration = configuration;
+        [self setupContexts];
         
-        [self setupContextsForModelNamed:modelName];
-        
-        if (inMemory) {
+        if (configuration.shouldUseInMemoryStore) {
             [self setupPersistentStoreInMemory];
         }
         else {
-            [self setupPersistentStoreForModelNamed:modelName
-                              deleteOnModelMismatch:deleteOnModelMismatch
-                               verifyStoreIntegrity:verifyStoreIntegrity];
+            [self setupPersistentStore];
         }
     }
     
     return self;
 }
 
-
-- (void)setupContextsForModelNamed:(NSString *)modelName
+- (instancetype)initInMemoryStackWithModelNamed:(NSString*)modelName
 {
-    NSURL* modelURL = [[NSBundle mainBundle] URLForResource:modelName withExtension:@"momd"];
-    if (modelURL == nil)
-    {
-        modelURL = [[NSBundle mainBundle] URLForResource:modelName withExtension:@"mom"]; 
-    }
+    WTADataConfiguration *configuration = [WTADataConfiguration defaultConfigurationWithModelNamed:modelName];
+    [configuration setShouldUseInMemoryStore:YES];
+    return [self initWithConfiguration:configuration];
+}
+
+- (void)setupContexts
+{
+    NSParameterAssert(self.configuration.managedObjectModelFileURL);
     
-    self.managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+    self.managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:self.configuration.managedObjectModelFileURL];
     
-    NSAssert(self.managedObjectModel, @"Could not locate model %@", [modelURL path]);
-    
+    NSAssert(self.managedObjectModel, @"Could not locate model %@", self.configuration.managedObjectModelFileURL.path);
+
     self.persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:self.managedObjectModel];
     
     self.mainContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
@@ -100,10 +79,14 @@
 
 - (void)setupPersistentStoreInMemory
 {
-    NSDictionary *options = @{
-                              NSMigratePersistentStoresAutomaticallyOption: @(NO),
-                              NSInferMappingModelAutomaticallyOption: @(YES)
-                              };
+    NSMutableDictionary *options = [NSMutableDictionary new];
+    if (self.configuration.persistentStoreCoordinatorOptions)
+    {
+        [options setValuesForKeysWithDictionary:self.configuration.persistentStoreCoordinatorOptions];
+    }
+    
+    // Disable auto-migration for in memory stores
+    [options setObject:@(NO) forKey:NSMigratePersistentStoresAutomaticallyOption];
     
     NSError *error;
     NSPersistentStore *persistentStore = [[self persistentStoreCoordinator] addPersistentStoreWithType:NSInMemoryStoreType
@@ -118,59 +101,70 @@
     }
 }
 
-- (void)setupPersistentStoreForModelNamed:(NSString*)modelName
-                    deleteOnModelMismatch:(BOOL)deleteOnModelMismatch
-                     verifyStoreIntegrity:(BOOL)verifyStoreIntegrity
+- (void)setupPersistentStore
 {
-    [WTAData createDirectoryAtPath:[[WTAData databaseDirectory] relativePath]];
+    NSParameterAssert(self.configuration.persistentStoreFileURL);
     
-    NSMutableDictionary *options = [NSMutableDictionary dictionaryWithDictionary:@{
-                                                                                   NSMigratePersistentStoresAutomaticallyOption: @(YES),
-                                                                                   NSInferMappingModelAutomaticallyOption: @(YES)
-                                                                                   }];
-    if (verifyStoreIntegrity)
+    // Create the target directory if it does not exist
+    NSURL *targetDirectory = [[[self configuration] persistentStoreFileURL] URLByDeletingLastPathComponent];
+    [WTAData createDirectoryAtPathIfNeeded:targetDirectory.relativePath];
+    
+    NSMutableDictionary *options = [NSMutableDictionary new];
+    if (self.configuration.persistentStoreCoordinatorOptions)
+    {
+        [options setValuesForKeysWithDictionary:self.configuration.persistentStoreCoordinatorOptions];
+    }
+    
+    if (self.configuration.shouldDeleteStoreFileOnIntegrityErrors)
     {
         [options addEntriesFromDictionary:@{
                                             @"NSSQLitePragmasOption": @{@"integrity_check": @YES}
                                             }];
     }
     
-    
-    
-    NSURL *databaseURL = [WTAData databaseURLForStoreName:modelName];
-    
     // Add sqlite store to coordinator
     NSError *error;
     NSPersistentStore *persistentStore = [[self persistentStoreCoordinator] addPersistentStoreWithType:NSSQLiteStoreType
                                                                                          configuration:nil
-                                                                                                   URL:databaseURL
+                                                                                                   URL:self.configuration.persistentStoreFileURL
                                                                                                options:options
                                                                                                  error:&error];
     if (!persistentStore)
     {
-        if (deleteOnModelMismatch || verifyStoreIntegrity) // TOdO add option for core data mismatch
+        BOOL shouldDeleteStoreAndRetry = NO;
+        
+        // Check for SQL integrity error recovery
+        if (self.configuration.shouldDeleteStoreFileOnIntegrityErrors)
         {
-            if ([[error domain] isEqualToString:NSCocoaErrorDomain] &&
-                ([error code] == NSPersistentStoreIncompatibleVersionHashError ||
-                 [error code] == NSMigrationMissingSourceModelError))
-            {
-                // Remove old database
-                [WTAData deleteStoreFilesForModelNamed:modelName];
+            shouldDeleteStoreAndRetry = ([error userInfo][NSSQLiteErrorDomain] != nil);
+        }
+        
+        // Check for model version mismatch recovery
+        else if (self.configuration.shouldDeleteStoreFileOnModelMismatch)
+        {
+            shouldDeleteStoreAndRetry = ([[error domain] isEqualToString:NSCocoaErrorDomain] &&
+                                         ([error code] == NSPersistentStoreIncompatibleVersionHashError ||
+                                          [error code] == NSMigrationMissingSourceModelError));
+        }
+        
+        if (shouldDeleteStoreAndRetry)
+        {
+            // Remove old database
+            [[self configuration] deleteExistingStoreFile:&error];
 #ifdef DEBUG
-                NSLog(@"Removed incompatible model version: %@", databaseURL);
+            NSLog(@"Removed incompatible persistent store: %@", self.configuration.persistentStoreFileURL);
 #endif
-                
-                // Try one more time to create the store
-                NSPersistentStore *store = [[self persistentStoreCoordinator] addPersistentStoreWithType:NSSQLiteStoreType
-                                                                                           configuration:nil
-                                                                                                     URL:databaseURL
-                                                                                                 options:options
-                                                                                                   error:&error];
-                if (store)
-                {
-                    // If we successfully added a store, remove the error that was initially created
-                    error = nil;
-                }
+            
+            // Try one more time to create the store
+            NSPersistentStore *store = [[self persistentStoreCoordinator] addPersistentStoreWithType:NSSQLiteStoreType
+                                                                                       configuration:nil
+                                                                                                 URL:self.configuration.persistentStoreFileURL
+                                                                                             options:options
+                                                                                               error:&error];
+            if (store)
+            {
+                // If we successfully added a store, remove the error that was initially created
+                error = nil;
             }
         }
         
@@ -189,7 +183,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)cleanUp
+- (void)invalidateStack
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
@@ -197,6 +191,7 @@
     self.backgroundContext = nil;
     self.managedObjectModel = nil;
     self.persistentStoreCoordinator = nil;
+    self.isInvalidated = YES;
 }
 
 - (void)backgroundContextDidSave:(NSNotification*)notification
@@ -209,16 +204,19 @@
 - (void)saveInBackground:(void (^)(NSManagedObjectContext *context))work
               completion:(void (^)(BOOL savedChanges, NSError *error))completion
 {
+    NSAssert1(!self.isInvalidated, @"Attempted to invoke %s on an invalidated core data stack.", __PRETTY_FUNCTION__);
     [self.backgroundContext saveBlock:work completion:completion];
 }
 
 -(BOOL)saveInBackgroundAndWait:(void (^)(NSManagedObjectContext *context))work error:(NSError **)error;
 {
+    NSAssert1(!self.isInvalidated, @"Attempted to invoke %s on an invalidated core data stack.", __PRETTY_FUNCTION__);
    return [self.backgroundContext saveBlockAndWait:work error:error];
 }
 
 - (void)deleteAllDataWithCompletion:(void (^)(NSError*))completion
 {
+    NSAssert1(!self.isInvalidated, @"Attempted to invoke %s on an invalidated core data stack.", __PRETTY_FUNCTION__);
     [self.backgroundContext saveBlock:^(NSManagedObjectContext *context) {
         
         NSArray *entityNames = [[self.managedObjectModel entities] valueForKey:@"name"];
@@ -238,7 +236,8 @@
 }
 
 #pragma mark - File Helpers
-+ (void)createDirectoryAtPath:(NSString*)path
+
++ (void)createDirectoryAtPathIfNeeded:(NSString *)path
 {
     if ([[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:NULL]) {
         return;
@@ -250,48 +249,26 @@
                                                                   attributes:nil
                                                                        error:&error];
     if (!fileCreated) {
+#ifdef DEBUG
         NSLog(@"%@", error.localizedDescription);
+#endif
         abort();
     }
 }
 
-+ (void)deleteStoreFilesForModelNamed:(NSString *)modelName
-{
-    NSURL *fileStoreURL = [self databaseURLForStoreName:modelName];
-    NSURL *fileStoreShmURL = [NSURL URLWithString:[[fileStoreURL absoluteString] stringByAppendingString:@"-shm"]];
-    NSURL *fileStoreWalURL = [NSURL URLWithString:[[fileStoreURL absoluteString] stringByAppendingString:@"-wal"]];
-    
-    NSError *error;
-    [[NSFileManager defaultManager] removeItemAtURL:fileStoreURL error:&error];
-    [[NSFileManager defaultManager] removeItemAtURL:fileStoreShmURL error:nil];
-    [[NSFileManager defaultManager] removeItemAtURL:fileStoreWalURL error:nil];
-    
-}
+#pragma mark - Description
 
-+ (NSURL*)documentsDirectory
+- (NSString *)description
 {
-    return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentationDirectory
-                                                   inDomains:NSUserDomainMask] lastObject];
-}
-
-+ (NSURL*)databaseDirectory
-{
-    NSString* storeName = [self defaultStoreName];
-    NSURL* applicationSupportDirectory = [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject];
-    return [applicationSupportDirectory URLByAppendingPathComponent:storeName];
-}
-
-+ (NSURL*)databaseURLForStoreName:(NSString*)storeName
-{
-    NSURL* databaseDirectory = [self databaseDirectory];
-    return [databaseDirectory URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.sqlite", storeName]
-                                              isDirectory:NO];
-}
-
-+ (NSString*)defaultStoreName
-{
-    NSString *storeName = (NSString*)[[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString*)kCFBundleNameKey];
-    return storeName;
+    NSString *description = [super description];
+    NSArray *propertyKeys = @[NSStringFromSelector(@selector(configuration)),
+                              NSStringFromSelector(@selector(isInvalidated)),
+                              NSStringFromSelector(@selector(managedObjectModel)),
+                              NSStringFromSelector(@selector(persistentStoreCoordinator)),
+                              NSStringFromSelector(@selector(backgroundContext)),
+                              NSStringFromSelector(@selector(mainContext))];
+    NSDictionary *dictionaryValue = [self dictionaryWithValuesForKeys:propertyKeys];
+    return [description stringByAppendingFormat:@"\n%@", dictionaryValue];
 }
 
 @end

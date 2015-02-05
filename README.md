@@ -12,12 +12,17 @@ Setting up a default stack supporting CoreData automigration by providing WTADat
 Once the stack is created, the stack is ready to go.  In additon to the default initialization, WTAData provides some additional initializers for speciifc use-cases as shown below.
 
 ````
-// Initialize and delete the store on a model mis-match
-[[WTAData alloc] initWithModelNamed:@"WTADataExample" deleteOnModelMismatch:YES];
+// Initialize a new configuration
+WTADataConfiguration *configuration = [WTADataConfiguration defaultConfigurationWithModelNamed:@"WTADataExample"];
 
-// Initialize and verify the store and delete the store on a model mis-match
-[[WTAData alloc] initWithModelNamed:@"WTADataExample" deleteOnModelMismatch:YES verifyStoreIntegrity:YES];
+// Set flag for deleting the store on a model mis-match
+[configuration setShouldDeleteStoreFileOnModelMismatch:YES];
 
-// Create an in-memory store
-[[WTAData alloc] initInMemoryStackWithModelNamed];
+// Set flag for deleting the store on sql integrity errors
+[configuration setShouldDeleteStoreFileOnIntegrityErrors:YES];
+
+// Set flag for using an in-memory store
+[configuration setShouldUseInMemoryStore:YES];
+
+[[WTAData alloc] initWithConfiguration:configuration];
 `````
