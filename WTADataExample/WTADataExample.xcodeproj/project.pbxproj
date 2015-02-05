@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		03DD54181A3237B300DD4521 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 03DD54151A3237B300DD4521 /* LICENSE */; };
 		03F10ECE1A163AB8007FD9FB /* NSManagedObject+WTADataImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F10ECD1A163AB8007FD9FB /* NSManagedObject+WTADataImport.m */; };
 		03F474331A013506003A7A86 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F474321A013506003A7A86 /* main.m */; };
 		03F474361A013506003A7A86 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F474351A013506003A7A86 /* AppDelegate.m */; };
@@ -37,6 +38,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		03DD54151A3237B300DD4521 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		03DD54161A3237B300DD4521 /* WTAData.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = WTAData.podspec; path = ../WTAData.podspec; sourceTree = "<group>"; };
+		03DD54171A3237B300DD4521 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		03F10ECC1A163AB8007FD9FB /* NSManagedObject+WTADataImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSManagedObject+WTADataImport.h"; path = "../WTAData/categories/NSManagedObject+WTADataImport.h"; sourceTree = "<group>"; };
 		03F10ECD1A163AB8007FD9FB /* NSManagedObject+WTADataImport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObject+WTADataImport.m"; path = "../WTAData/categories/NSManagedObject+WTADataImport.m"; sourceTree = "<group>"; };
 		03F4742D1A013506003A7A86 /* WTADataExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WTADataExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -88,6 +92,9 @@
 		03F474241A013506003A7A86 = {
 			isa = PBXGroup;
 			children = (
+				03DD54151A3237B300DD4521 /* LICENSE */,
+				03DD54161A3237B300DD4521 /* WTAData.podspec */,
+				03DD54171A3237B300DD4521 /* README.md */,
 				03F4745D1A0135B7003A7A86 /* WTAData */,
 				03F4742F1A013506003A7A86 /* WTADataExample */,
 				03F4744C1A013506003A7A86 /* WTADataExampleTests */,
@@ -249,6 +256,7 @@
 			files = (
 				03F4743F1A013506003A7A86 /* Main.storyboard in Resources */,
 				03F474441A013506003A7A86 /* LaunchScreen.xib in Resources */,
+				03DD54181A3237B300DD4521 /* LICENSE in Resources */,
 				03F474411A013506003A7A86 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
