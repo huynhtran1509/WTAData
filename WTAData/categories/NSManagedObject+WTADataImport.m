@@ -242,7 +242,7 @@
                 }
                 else if ([value isKindOfClass:[NSDate class]])
                 {
-                    date = (NSDate*)date;
+                    date = (NSDate*)value;
                 }
                 [self importValue:date forKey:key];
             }
