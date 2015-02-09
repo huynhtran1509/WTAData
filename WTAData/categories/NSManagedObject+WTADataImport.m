@@ -240,6 +240,10 @@
                 {
                     date = [NSDate dateWithTimeIntervalSince1970:[value doubleValue]];
                 }
+                else if ([value isKindOfClass:[NSDate class]])
+                {
+                    date = (NSDate*)date;
+                }
                 [self importValue:date forKey:key];
             }
             else
