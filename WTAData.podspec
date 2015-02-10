@@ -17,5 +17,6 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/willowtreeapps/WTAData.git", :tag => s.version }
   s.source_files  = "WTAData", "WTAData/**/*.{h,m}"
   s.exclude_files = "Classes/Exclude"
+  s.requires_arc = true
 
 end
