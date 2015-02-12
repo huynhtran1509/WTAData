@@ -62,8 +62,8 @@
             NSMutableDictionary *dictionary = [NSMutableDictionary new];
             for (NSDictionary *item in array)
             {
-                NSString *key = item[importKey];
-                if (key && key.length > 0)
+                id key = item[importKey];
+                if (key && [key conformsToProtocol:@protocol(NSCopying)])
                 {
                     dictionary[key] = item;
                 }
