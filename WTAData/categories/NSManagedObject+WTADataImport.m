@@ -56,43 +56,57 @@
                 importKey = customImportKey;
             }
             
+            
             // Create a dictionary representing our import objects like so
             // {"value of unique key": object}
             NSMutableDictionary *dictionary = [NSMutableDictionary new];
             for (NSDictionary *item in array)
             {
                 NSString *key = item[importKey];
-                dictionary[key] = item;
+                if (key && key.length > 0)
+                {
+                    dictionary[key] = item;
+                }
+                else
+                {
+                    // If any item in the array is missing the primary key, then bail early and
+                    // remove any object so invalid objects are not imported.
+                    [dictionary removeAllObjects];
+                    break;
+                }
             }
             
-            // Temporary dictionay to mark which objects have been imported
-            NSMutableDictionary *tempDictionary = [dictionary mutableCopy];
-            
-            // Find all existing entities
-            NSString *formatString = [NSString stringWithFormat:@"%@ in %%@", primaryAttributeString];
-            NSPredicate *existingEntitiesPredicate = [NSPredicate predicateWithFormat:formatString, [dictionary allKeys]];
-            NSArray *existingEntities = [self fetchInContext:context predicate:existingEntitiesPredicate error:nil];
-            
-            // Iterate through entites that exist so we can update them
-            for (NSManagedObject *entity in existingEntities)
+            if (dictionary.count > 0)
             {
-                // Update values for keys in existing entity
-                NSString *key = [entity valueForKey:primaryAttributeString];
-                NSDictionary *importDictionary = tempDictionary[key];
-                [entity importValuesForKeyWithDictionary:importDictionary];
-                
-                // Remove entity from tempDictionary to mark it as imported
-                [tempDictionary removeObjectForKey:key];
-                
-                // Append entity to results
-                [result addObject:entity];
-            }
+                // Temporary dictionay to mark which objects have been imported
+                NSMutableDictionary *tempDictionary = [dictionary mutableCopy];
             
-            // For all objects that weren't already existing, create new ones
-            for (NSDictionary *item in [tempDictionary allValues])
-            {
-                NSManagedObject *entity = [self importEntityFromObject:item context:context checkExisting:NO];
-                [result addObject:entity];
+                // Find all existing entities
+                NSString *formatString = [NSString stringWithFormat:@"%@ in %%@", primaryAttributeString];
+                NSPredicate *existingEntitiesPredicate = [NSPredicate predicateWithFormat:formatString, [dictionary allKeys]];
+                NSArray *existingEntities = [self fetchInContext:context predicate:existingEntitiesPredicate error:nil];
+                
+                // Iterate through entites that exist so we can update them
+                for (NSManagedObject *entity in existingEntities)
+                {
+                    // Update values for keys in existing entity
+                    NSString *key = [entity valueForKey:primaryAttributeString];
+                    NSDictionary *importDictionary = tempDictionary[key];
+                    [entity importValuesForKeyWithDictionary:importDictionary];
+                    
+                    // Remove entity from tempDictionary to mark it as imported
+                    [tempDictionary removeObjectForKey:key];
+                    
+                    // Append entity to results
+                    [result addObject:entity];
+                }
+            
+                // For all objects that weren't already existing, create new ones
+                for (NSDictionary *item in [tempDictionary allValues])
+                {
+                    NSManagedObject *entity = [self importEntityFromObject:item context:context checkExisting:NO];
+                    [result addObject:entity];
+                }
             }
         }
         else
@@ -105,6 +119,7 @@
             }
         }
     }
+    
     return result;
 }
 

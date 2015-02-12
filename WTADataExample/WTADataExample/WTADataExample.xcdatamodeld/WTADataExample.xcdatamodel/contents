@@ -10,7 +10,15 @@
         <attribute name="epochDateAttribute" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="stringAttribute" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="PrimaryKeyEntity" representedClassName="PrimaryKeyEntity" syncable="YES">
+        <attribute name="customPrimaryKey" attributeType="String" syncable="YES"/>
+        <attribute name="data" optional="YES" attributeType="String" syncable="YES"/>
+        <userInfo>
+            <entry key="PrimaryAttribute" value="customPrimaryKey"/>
+        </userInfo>
+    </entity>
     <elements>
         <element name="Entity" positionX="-63" positionY="-18" width="128" height="105"/>
+        <element name="PrimaryKeyEntity" positionX="-63" positionY="9" width="128" height="75"/>
     </elements>
 </model>
