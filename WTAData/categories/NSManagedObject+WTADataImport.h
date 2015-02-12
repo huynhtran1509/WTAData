@@ -32,7 +32,9 @@
 @interface NSManagedObject (WTADataImport)
 
 /**
- Creates or updates the core data item represented by each dictionary in the array.
+ Creates or updates the core data item represented by each dictionary in the array.  If the object
+ model defines a primary key attribute and any item in the array may be missing that attribute, then
+ no items will be imported.
  
  @param array an array of dictionaries representing the model objects to import.
  @param context the managed object context to import the objects into.

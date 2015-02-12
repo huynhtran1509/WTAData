@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		039E13191A8CDD8800AD4927 /* WTADataImportTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 039E13181A8CDD8800AD4927 /* WTADataImportTests.m */; };
+		039E131C1A8CE2D200AD4927 /* PrimaryKeyEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 039E131B1A8CE2D200AD4927 /* PrimaryKeyEntity.m */; };
 		03DD54181A3237B300DD4521 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 03DD54151A3237B300DD4521 /* LICENSE */; };
 		03F10ECE1A163AB8007FD9FB /* NSManagedObject+WTADataImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F10ECD1A163AB8007FD9FB /* NSManagedObject+WTADataImport.m */; };
 		03F474331A013506003A7A86 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F474321A013506003A7A86 /* main.m */; };
@@ -38,6 +40,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		039E13181A8CDD8800AD4927 /* WTADataImportTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WTADataImportTests.m; sourceTree = "<group>"; };
+		039E131A1A8CE2D200AD4927 /* PrimaryKeyEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrimaryKeyEntity.h; sourceTree = "<group>"; };
+		039E131B1A8CE2D200AD4927 /* PrimaryKeyEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrimaryKeyEntity.m; sourceTree = "<group>"; };
 		03DD54151A3237B300DD4521 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		03DD54161A3237B300DD4521 /* WTAData.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = WTAData.podspec; path = ../WTAData.podspec; sourceTree = "<group>"; };
 		03DD54171A3237B300DD4521 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
@@ -122,6 +127,8 @@
 				03F474401A013506003A7A86 /* Images.xcassets */,
 				03F474421A013506003A7A86 /* LaunchScreen.xib */,
 				03F474371A013506003A7A86 /* WTADataExample.xcdatamodeld */,
+				039E131A1A8CE2D200AD4927 /* PrimaryKeyEntity.h */,
+				039E131B1A8CE2D200AD4927 /* PrimaryKeyEntity.m */,
 				22AAD4611A6872D100C6FFBF /* Entity.h */,
 				22AAD4621A6872D100C6FFBF /* Entity.m */,
 				03F474301A013506003A7A86 /* Supporting Files */,
@@ -142,6 +149,7 @@
 			isa = PBXGroup;
 			children = (
 				03F4744F1A013506003A7A86 /* WTADataExampleTests.m */,
+				039E13181A8CDD8800AD4927 /* WTADataImportTests.m */,
 				03F4744D1A013506003A7A86 /* Supporting Files */,
 			);
 			path = WTADataExampleTests;
@@ -286,6 +294,7 @@
 				BD13A6E81A8275AE0014DB57 /* WTADataConfiguration.m in Sources */,
 				03F4745B1A0135B1003A7A86 /* WTAData.m in Sources */,
 				03F10ECE1A163AB8007FD9FB /* NSManagedObject+WTADataImport.m in Sources */,
+				039E131C1A8CE2D200AD4927 /* PrimaryKeyEntity.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -296,6 +305,7 @@
 				03F474611A013821003A7A86 /* NSManagedObjectContext+WTAData.m in Sources */,
 				03F4745C1A0135B1003A7A86 /* WTAData.m in Sources */,
 				03F474501A013506003A7A86 /* WTADataExampleTests.m in Sources */,
+				039E13191A8CDD8800AD4927 /* WTADataImportTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

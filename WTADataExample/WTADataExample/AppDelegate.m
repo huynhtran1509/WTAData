@@ -38,7 +38,11 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    self.data = [[WTAData alloc] initWithModelNamed:@"WTADataExample"];
+    
+    WTADataConfiguration *configuration = [WTADataConfiguration defaultConfigurationWithModelNamed:@"WTADataExample"];
+    configuration.shouldDeleteStoreFileOnModelMismatch = YES;
+
+    self.data = [[WTAData alloc] initWithConfiguration:configuration];
     
     NSError *error = nil;
     NSArray *existingEntities = [Entity fetchInContext:self.data.mainContext error:&error];
