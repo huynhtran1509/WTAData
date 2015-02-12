@@ -158,7 +158,7 @@
         }
         
         // Check for model version mismatch recovery
-        else if (self.configuration.shouldDeleteStoreFileOnModelMismatch)
+        if (shouldDeleteStoreAndRetry == NO && self.configuration.shouldDeleteStoreFileOnModelMismatch)
         {
             shouldDeleteStoreAndRetry = ([[error domain] isEqualToString:NSCocoaErrorDomain] &&
                                          ([error code] == NSPersistentStoreIncompatibleVersionHashError ||
