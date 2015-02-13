@@ -1,0 +1,6 @@
+language: objective-c
+xcode_project: WTADataExample/WTADataExample.xcodeproj
+xcode_scheme: WTADataExample
+xcode_project: iphonesimulator8.1
+notifications:
+  email: false
