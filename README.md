@@ -1,5 +1,6 @@
-WTAData ![](https://travis-ci.org/willowtreeapps/WTAData.svg?branch=develop)
+WTAData
 =======
+[![Build Status](https://travis-ci.org/willowtreeapps/WTAData.svg?branch=develop)](https://travis-ci.org/willowtreeapps/WTAData?branch=develop)
 
 WTAData provides a light-weight interface for setting up an asynchronous CoreData stack. WTAData utilizes two NSManagedObjectContexts: main and background, for achieving fast and performant core data access.  The main context is generally used for read access to the core data stack.  The main context updates automatically when changes are saved by the background managed object context.  The background context is primarily used for performing saves in background threads, such as when a network call completes.
 
