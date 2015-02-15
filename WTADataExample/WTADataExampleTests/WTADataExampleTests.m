@@ -222,7 +222,7 @@
         count += [items count];
     }
     
-    NSLog(@"Starting number of objects: %lu", count);
+    NSLog(@"Starting number of objects: %lu", (unsigned long)count);
  
     XCTestExpectation *expectation = [self expectationWithDescription:@"testDeleteAllDataWithCompletion"];
     
