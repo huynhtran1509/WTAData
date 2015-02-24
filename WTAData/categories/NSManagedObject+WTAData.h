@@ -76,7 +76,7 @@
  block.
  
  @param predicate predicate used in the fetch request
- @param sortDescriptors and array of sort descriptors used to sort the results
+ @param sortDescriptors an array of sort descriptors used to sort the results
  @param completion completion block called when the fetch request is completed
  
  @return the NSAsynchronousFetchRequest for the entity
@@ -109,11 +109,12 @@
  Creates a NSFetchRequest with the specified predicate and sort descriptors
  
  @param predicate predicate used in the fetch request
- @param sortDescriptors and array of sort descriptors used to sort the results
+ @param sortDescriptors an array of sort descriptors used to sort the results
  
  @return the NSFetchRequest for the entity
  */
-+ (NSFetchRequest *)fetchRequestWithPredicate:(NSPredicate *)predicate sortDescriptors:(NSArray *)sortDescriptors;
++ (NSFetchRequest *)fetchRequestWithPredicate:(NSPredicate *)predicate
+                              sortDescriptors:(NSArray *)sortDescriptors;
 
 /**
  Creates a NSFetchRequest with the specified predicate.
@@ -188,7 +189,7 @@
                       error:(NSError **)error;
 
 /**
- Fetches the first entity in of the current type in the specified context.
+ Fetches the first entity of the current type in the specified context.
  
  @param context the context to use with the fetch
  @param error an NSError if the fetch failed, nil otherwise
@@ -198,7 +199,7 @@
 + (instancetype)fetchFirstInContext:(NSManagedObjectContext *)context error:(NSError **)error;
 
 /**
- Fetches the first entity in of the current type in the specified context.
+ Fetches the first entity of the current type in the specified context.
  
  @param context the context to use with the fetch
  @param predicate the predicate to match
@@ -211,12 +212,12 @@
                               error:(NSError **)error;
 
 /**
- Fetches the first entity in of the current type in the specified context from the items that match
+ Fetches the first entity of the current type in the specified context from the items that match
  the specified predicate and sorted by the sort descriptors.
  
  @param context the context to use with the fetch
  @param predicate the predicate to match
- @param sortDescriptors the sort descriptor to sort the items with
+ @param sortDescriptors an array of sort descriptors to sort the items with
  @param error an NSError if the fetch failed, nil otherwise
  
  @return the first managed object or nil if no object is found
@@ -227,7 +228,7 @@
                               error:(NSError **)error;
 
 /**
- Fetches the first entity in of the current type in the specified context.
+ Fetches the first entity of the current type in the specified context.
  
  @param context the context to use with the fetch
  @param error an NSError if the fetch failed, nil otherwise
@@ -235,7 +236,9 @@
  @return the first managed object or nil if no object is found
  */
 + (instancetype)fetchFirstInContext:(NSManagedObjectContext *)context
-                      withAttribute:(NSString *)attribute equalTo:(id)value error:(NSError **)error;
+                      withAttribute:(NSString *)attribute
+                            equalTo:(id)value
+                              error:(NSError **)error;
 
 /**
  Creates a NSFetchedResultsController in the specified context.
@@ -248,9 +251,9 @@
  @return an initialized NSFetchedResultsController
  */
 + (NSFetchedResultsController*)fetchControllerInContext:(NSManagedObjectContext *)context
-                                              groupedBy:(NSString*)groupKey
-                                          withPredicate:(NSPredicate*)predicate
-                                        sortDescriptors:(NSArray*)sortDescriptors;
+                                              groupedBy:(NSString *)groupKey
+                                          withPredicate:(NSPredicate *)predicate
+                                        sortDescriptors:(NSArray *)sortDescriptors;
 
 /**
  Creates a NSFetchedResultsController in the specified context.
@@ -264,9 +267,9 @@
  @return an initialized NSFetchedResultsController
  */
 + (NSFetchedResultsController*)fetchControllerInContext:(NSManagedObjectContext *)context
-                                              groupedBy:(NSString*)groupKey
-                                          withPredicate:(NSPredicate*)predicate
-                                               sortedBy:(NSString*)key
+                                              groupedBy:(NSString *)groupKey
+                                          withPredicate:(NSPredicate *)predicate
+                                               sortedBy:(NSString *)key
                                               ascending:(BOOL)ascending;
 
 @end
