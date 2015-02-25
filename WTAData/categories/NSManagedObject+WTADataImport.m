@@ -2,7 +2,25 @@
 //  NSManagedObject+WTADataImport.m
 //  WTAData
 //
-//  Copyright (c) 2014 WillowTreeApps. All rights reserved.
+//  Copyright (c) 2014 WillowTree, Inc.
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
 //
 
 #import "NSManagedObject+WTADataImport.h"
@@ -38,43 +56,57 @@
                 importKey = customImportKey;
             }
             
+            
             // Create a dictionary representing our import objects like so
             // {"value of unique key": object}
             NSMutableDictionary *dictionary = [NSMutableDictionary new];
             for (NSDictionary *item in array)
             {
-                NSString *key = item[importKey];
-                dictionary[key] = item;
+                id key = item[importKey];
+                if (key && [key conformsToProtocol:@protocol(NSCopying)])
+                {
+                    dictionary[key] = item;
+                }
+                else
+                {
+                    // If any item in the array is missing the primary key, then bail early and
+                    // remove any object so invalid objects are not imported.
+                    [dictionary removeAllObjects];
+                    break;
+                }
             }
             
-            // Temporary dictionay to mark which objects have been imported
-            NSMutableDictionary *tempDictionary = [dictionary mutableCopy];
-            
-            // Find all existing entities
-            NSString *formatString = [NSString stringWithFormat:@"%@ in %%@", primaryAttributeString];
-            NSPredicate *existingEntitiesPredicate = [NSPredicate predicateWithFormat:formatString, [dictionary allKeys]];
-            NSArray *existingEntities = [self fetchInContext:context predicate:existingEntitiesPredicate error:nil];
-            
-            // Iterate through entites that exist so we can update them
-            for (NSManagedObject *entity in existingEntities)
+            if (dictionary.count > 0)
             {
-                // Update values for keys in existing entity
-                NSString *key = [entity valueForKey:primaryAttributeString];
-                NSDictionary *importDictionary = tempDictionary[key];
-                [entity importValuesForKeyWithDictionary:importDictionary];
-                
-                // Remove entity from tempDictionary to mark it as imported
-                [tempDictionary removeObjectForKey:key];
-                
-                // Append entity to results
-                [result addObject:entity];
-            }
+                // Temporary dictionay to mark which objects have been imported
+                NSMutableDictionary *tempDictionary = [dictionary mutableCopy];
             
-            // For all objects that weren't already existing, create new ones
-            for (NSDictionary *item in [tempDictionary allValues])
-            {
-                NSManagedObject *entity = [self importEntityFromObject:item context:context checkExisting:NO];
-                [result addObject:entity];
+                // Find all existing entities
+                NSString *formatString = [NSString stringWithFormat:@"%@ in %%@", primaryAttributeString];
+                NSPredicate *existingEntitiesPredicate = [NSPredicate predicateWithFormat:formatString, [dictionary allKeys]];
+                NSArray *existingEntities = [self fetchInContext:context predicate:existingEntitiesPredicate error:nil];
+                
+                // Iterate through entites that exist so we can update them
+                for (NSManagedObject *entity in existingEntities)
+                {
+                    // Update values for keys in existing entity
+                    NSString *key = [entity valueForKey:primaryAttributeString];
+                    NSDictionary *importDictionary = tempDictionary[key];
+                    [entity importValuesForKeyWithDictionary:importDictionary];
+                    
+                    // Remove entity from tempDictionary to mark it as imported
+                    [tempDictionary removeObjectForKey:key];
+                    
+                    // Append entity to results
+                    [result addObject:entity];
+                }
+            
+                // For all objects that weren't already existing, create new ones
+                for (NSDictionary *item in [tempDictionary allValues])
+                {
+                    NSManagedObject *entity = [self importEntityFromObject:item context:context checkExisting:NO];
+                    [result addObject:entity];
+                }
             }
         }
         else
@@ -87,6 +119,7 @@
             }
         }
     }
+    
     return result;
 }
 
@@ -211,6 +244,10 @@
                 else if ([value isKindOfClass:[NSNumber class]])
                 {
                     date = [NSDate dateWithTimeIntervalSince1970:[value doubleValue]];
+                }
+                else if ([value isKindOfClass:[NSDate class]])
+                {
+                    date = (NSDate*)value;
                 }
                 [self importValue:date forKey:key];
             }

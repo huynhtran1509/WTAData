@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		039E13191A8CDD8800AD4927 /* WTADataImportTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 039E13181A8CDD8800AD4927 /* WTADataImportTests.m */; };
+		039E131C1A8CE2D200AD4927 /* PrimaryKeyEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 039E131B1A8CE2D200AD4927 /* PrimaryKeyEntity.m */; };
+		03DD54181A3237B300DD4521 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 03DD54151A3237B300DD4521 /* LICENSE */; };
 		03F10ECE1A163AB8007FD9FB /* NSManagedObject+WTADataImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F10ECD1A163AB8007FD9FB /* NSManagedObject+WTADataImport.m */; };
 		03F474331A013506003A7A86 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F474321A013506003A7A86 /* main.m */; };
 		03F474361A013506003A7A86 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F474351A013506003A7A86 /* AppDelegate.m */; };
@@ -23,6 +26,7 @@
 		22AAD4631A6872D100C6FFBF /* Entity.m in Sources */ = {isa = PBXBuildFile; fileRef = 22AAD4621A6872D100C6FFBF /* Entity.m */; };
 		9FB023921A114576009B7C96 /* NSEntityDescription+WTAData.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FB0238F1A114576009B7C96 /* NSEntityDescription+WTAData.m */; };
 		9FB023931A114576009B7C96 /* NSManagedObject+WTAData.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FB023911A114576009B7C96 /* NSManagedObject+WTAData.m */; };
+		BD13A6E81A8275AE0014DB57 /* WTADataConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = BD13A6E71A8275AE0014DB57 /* WTADataConfiguration.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +40,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		039E13181A8CDD8800AD4927 /* WTADataImportTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WTADataImportTests.m; sourceTree = "<group>"; };
+		039E131A1A8CE2D200AD4927 /* PrimaryKeyEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrimaryKeyEntity.h; sourceTree = "<group>"; };
+		039E131B1A8CE2D200AD4927 /* PrimaryKeyEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrimaryKeyEntity.m; sourceTree = "<group>"; };
+		03DD54151A3237B300DD4521 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		03DD54161A3237B300DD4521 /* WTAData.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = WTAData.podspec; path = ../WTAData.podspec; sourceTree = "<group>"; };
+		03DD54171A3237B300DD4521 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		03F10ECC1A163AB8007FD9FB /* NSManagedObject+WTADataImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSManagedObject+WTADataImport.h"; path = "../WTAData/categories/NSManagedObject+WTADataImport.h"; sourceTree = "<group>"; };
 		03F10ECD1A163AB8007FD9FB /* NSManagedObject+WTADataImport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObject+WTADataImport.m"; path = "../WTAData/categories/NSManagedObject+WTADataImport.m"; sourceTree = "<group>"; };
 		03F4742D1A013506003A7A86 /* WTADataExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WTADataExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -62,6 +72,8 @@
 		9FB0238F1A114576009B7C96 /* NSEntityDescription+WTAData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSEntityDescription+WTAData.m"; path = "../WTAData/categories/NSEntityDescription+WTAData.m"; sourceTree = "<group>"; };
 		9FB023901A114576009B7C96 /* NSManagedObject+WTAData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSManagedObject+WTAData.h"; path = "../WTAData/categories/NSManagedObject+WTAData.h"; sourceTree = "<group>"; };
 		9FB023911A114576009B7C96 /* NSManagedObject+WTAData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObject+WTAData.m"; path = "../WTAData/categories/NSManagedObject+WTAData.m"; sourceTree = "<group>"; };
+		BD13A6E61A8275AE0014DB57 /* WTADataConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WTADataConfiguration.h; path = ../WTAData/WTADataConfiguration.h; sourceTree = "<group>"; };
+		BD13A6E71A8275AE0014DB57 /* WTADataConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WTADataConfiguration.m; path = ../WTAData/WTADataConfiguration.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +97,9 @@
 		03F474241A013506003A7A86 = {
 			isa = PBXGroup;
 			children = (
+				03DD54151A3237B300DD4521 /* LICENSE */,
+				03DD54161A3237B300DD4521 /* WTAData.podspec */,
+				03DD54171A3237B300DD4521 /* README.md */,
 				03F4745D1A0135B7003A7A86 /* WTAData */,
 				03F4742F1A013506003A7A86 /* WTADataExample */,
 				03F4744C1A013506003A7A86 /* WTADataExampleTests */,
@@ -112,6 +127,8 @@
 				03F474401A013506003A7A86 /* Images.xcassets */,
 				03F474421A013506003A7A86 /* LaunchScreen.xib */,
 				03F474371A013506003A7A86 /* WTADataExample.xcdatamodeld */,
+				039E131A1A8CE2D200AD4927 /* PrimaryKeyEntity.h */,
+				039E131B1A8CE2D200AD4927 /* PrimaryKeyEntity.m */,
 				22AAD4611A6872D100C6FFBF /* Entity.h */,
 				22AAD4621A6872D100C6FFBF /* Entity.m */,
 				03F474301A013506003A7A86 /* Supporting Files */,
@@ -132,6 +149,7 @@
 			isa = PBXGroup;
 			children = (
 				03F4744F1A013506003A7A86 /* WTADataExampleTests.m */,
+				039E13181A8CDD8800AD4927 /* WTADataImportTests.m */,
 				03F4744D1A013506003A7A86 /* Supporting Files */,
 			);
 			path = WTADataExampleTests;
@@ -154,6 +172,8 @@
 				9FB023911A114576009B7C96 /* NSManagedObject+WTAData.m */,
 				03F474591A0135B1003A7A86 /* WTAData.h */,
 				03F4745A1A0135B1003A7A86 /* WTAData.m */,
+				BD13A6E61A8275AE0014DB57 /* WTADataConfiguration.h */,
+				BD13A6E71A8275AE0014DB57 /* WTADataConfiguration.m */,
 				03F4745E1A013821003A7A86 /* NSManagedObjectContext+WTAData.h */,
 				03F4745F1A013821003A7A86 /* NSManagedObjectContext+WTAData.m */,
 				03F10ECC1A163AB8007FD9FB /* NSManagedObject+WTADataImport.h */,
@@ -207,7 +227,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0610;
-				ORGANIZATIONNAME = WillowTreeApps;
+				ORGANIZATIONNAME = "WillowTree, Inc.";
 				TargetAttributes = {
 					03F4742C1A013506003A7A86 = {
 						CreatedOnToolsVersion = 6.1;
@@ -244,6 +264,7 @@
 			files = (
 				03F4743F1A013506003A7A86 /* Main.storyboard in Resources */,
 				03F474441A013506003A7A86 /* LaunchScreen.xib in Resources */,
+				03DD54181A3237B300DD4521 /* LICENSE in Resources */,
 				03F474411A013506003A7A86 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -270,8 +291,10 @@
 				03F474331A013506003A7A86 /* main.m in Sources */,
 				03F4743C1A013506003A7A86 /* ViewController.m in Sources */,
 				03F474391A013506003A7A86 /* WTADataExample.xcdatamodeld in Sources */,
+				BD13A6E81A8275AE0014DB57 /* WTADataConfiguration.m in Sources */,
 				03F4745B1A0135B1003A7A86 /* WTAData.m in Sources */,
 				03F10ECE1A163AB8007FD9FB /* NSManagedObject+WTADataImport.m in Sources */,
+				039E131C1A8CE2D200AD4927 /* PrimaryKeyEntity.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,6 +305,7 @@
 				03F474611A013821003A7A86 /* NSManagedObjectContext+WTAData.m in Sources */,
 				03F4745C1A0135B1003A7A86 /* WTAData.m in Sources */,
 				03F474501A013506003A7A86 /* WTADataExampleTests.m in Sources */,
+				039E13191A8CDD8800AD4927 /* WTADataImportTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

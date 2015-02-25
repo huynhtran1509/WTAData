@@ -1,5 +1,5 @@
 //
-//  Entity.m
+//  PrimaryKeyEntity.m
 //  WTADataExample
 //
 //  Copyright (c) 2014 WillowTree, Inc.
@@ -23,15 +23,12 @@
 //  THE SOFTWARE.
 //
 
+#import "PrimaryKeyEntity.h"
 
-#import "Entity.h"
 
+@implementation PrimaryKeyEntity
 
-@implementation Entity
-
-@dynamic stringAttribute;
-@dynamic customDateAttribute;
-@dynamic epochDateAttribute;
-@dynamic dateAttribute;
+@dynamic customPrimaryKey;
+@dynamic data;
 
 @end

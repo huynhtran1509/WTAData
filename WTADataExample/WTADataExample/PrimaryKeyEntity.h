@@ -1,5 +1,5 @@
 //
-//  Entity.m
+//  PrimaryKeyEntity.h
 //  WTADataExample
 //
 //  Copyright (c) 2014 WillowTree, Inc.
@@ -24,14 +24,13 @@
 //
 
 
-#import "Entity.h"
+#import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
 
 
-@implementation Entity
+@interface PrimaryKeyEntity : NSManagedObject
 
-@dynamic stringAttribute;
-@dynamic customDateAttribute;
-@dynamic epochDateAttribute;
-@dynamic dateAttribute;
+@property (nonatomic, retain) NSString * customPrimaryKey;
+@property (nonatomic, retain) NSString * data;
 
 @end
