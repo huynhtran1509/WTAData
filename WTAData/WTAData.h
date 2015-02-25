@@ -104,17 +104,16 @@
  then propagated to the main context.
  
  @param work the block that operates on the managed objects to save
+ @param error an NSError if the save failed, nil otherwise
 
  @return YES if the save was successful
  */
 -(BOOL)saveInBackgroundAndWait:(void (^)(NSManagedObjectContext *context))work error:(NSError **)error;
 
 /**
- Perform save in the specified context.
+ Deletes all objects in the data store using the backgroundContext. Changes are then propagated to
+ the main context.
  
- @param context the context to save on
- @param wait YES if the operation is blocking, NO for non-blocking
- @param work the block that operates on the managed objects to save
  @param completion block called when the save is complete
  */
 - (void)deleteAllDataWithCompletion:(void (^)(NSError *))completion;
