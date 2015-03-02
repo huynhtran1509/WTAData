@@ -30,6 +30,7 @@
 #import "WTAData.h"
 #import "PrimaryKeyEntity.h"
 #import "NSManagedObject+WTADataImport.h"
+#import "Entity.h"
 
 @interface WTADataImportTests : XCTestCase
 
@@ -61,6 +62,92 @@
     
     XCTAssert((importedObjects.count == 0), @"Missing primary key should not return import objects");
 
+}
+
+- (void)testDateFormatImport
+{
+    NSDate *now = [NSDate date];
+    
+    NSDateFormatter *ISO8601DateFormater = [NSDateFormatter new];
+    [ISO8601DateFormater setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
+    
+    NSDateFormatter *customFormatter = [NSDateFormatter new];
+    [customFormatter setDateFormat:@"M/d/yyyy"];
+    
+    NSDictionary *dictionary = @{
+                                 @"epochDateAttribute" : @([now timeIntervalSince1970]),
+                                 @"dateAttribute" : [ISO8601DateFormater stringFromDate:now],
+                                 @"customDateAttribute" : [customFormatter stringFromDate:now]
+                                 };
+    
+    NSManagedObjectContext *context = [[self wtaData] mainContext];
+    Entity *entity = [Entity importEntityFromObject:dictionary context:context];
+    
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    
+    XCTAssert([calendar compareDate:[entity dateAttribute]
+                             toDate:now
+                  toUnitGranularity:NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitYear] == NSOrderedSame);
+    
+    XCTAssert([calendar compareDate:[entity customDateAttribute]
+                             toDate:now
+                  toUnitGranularity:NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitYear] == NSOrderedSame);
+    
+    XCTAssert([calendar compareDate:[entity epochDateAttribute]
+                             toDate:now
+                  toUnitGranularity:NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitYear] == NSOrderedSame);
+}
+
+- (void)testDefaultDateFormat
+{
+    NSDate *now = [NSDate date];
+    
+    NSDateFormatter *dateFormatter = [NSDateFormatter new];
+    [dateFormatter setDateFormat:[NSDateFormatter defaultImportDateFormat]];
+    
+    
+    NSDictionary *dictionary = @{
+                                 @"dateAttribute" : [dateFormatter stringFromDate:now],
+                                 };
+    
+    NSManagedObjectContext *context = [[self wtaData] mainContext];
+    Entity *entity = [Entity importEntityFromObject:dictionary context:context];
+    
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    
+    XCTAssert([calendar compareDate:[entity dateAttribute]
+                             toDate:now
+                  toUnitGranularity:NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitYear] == NSOrderedSame);
+}
+
+- (void)testCustomDefaultDateFormat
+{
+    NSDate *now = [NSDate date];
+    
+    NSString *currentDateFormat = [NSDateFormatter defaultImportDateFormat];
+    
+    NSString *customDateFormat = @"M/d/yyyy";
+    
+    [NSDateFormatter setDefaultImportDateFormat:customDateFormat];
+    
+    NSDateFormatter *dateFormatter = [NSDateFormatter new];
+    [dateFormatter setDateFormat:customDateFormat];
+    
+    
+    NSDictionary *dictionary = @{
+                                 @"dateAttribute" : [dateFormatter stringFromDate:now],
+                                 };
+    
+    NSManagedObjectContext *context = [[self wtaData] mainContext];
+    Entity *entity = [Entity importEntityFromObject:dictionary context:context];
+    
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    
+    XCTAssert([calendar compareDate:[entity dateAttribute]
+                             toDate:now
+                  toUnitGranularity:NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitYear] == NSOrderedSame);
+    
+    [NSDateFormatter setDefaultImportDateFormat:currentDateFormat];
 }
 
 - (void)testImportArrayPrimaryKey

@@ -149,40 +149,6 @@
     }];
 }
 
-- (void)testDateFormatImport
-{
-    NSDate *now = [NSDate date];
-    
-    NSDateFormatter *ISO8601DateFormater = [NSDateFormatter new];
-    [ISO8601DateFormater setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
-    
-    NSDateFormatter *customFormatter = [NSDateFormatter new];
-    [customFormatter setDateFormat:@"M/d/yyyy"];
-    
-    NSDictionary *dictionary = @{
-                                 @"epochDateAttribute" : @([now timeIntervalSince1970]),
-                                 @"dateAttribute" : [ISO8601DateFormater stringFromDate:now],
-                                 @"customDateAttribute" : [customFormatter stringFromDate:now]
-                                 };
-    
-    NSManagedObjectContext *context = [[self wtaData] mainContext];
-    Entity *entity = [Entity importEntityFromObject:dictionary context:context];
-    
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    
-    XCTAssert([calendar compareDate:[entity dateAttribute]
-                             toDate:now
-                  toUnitGranularity:NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitYear] == NSOrderedSame);
-    
-    XCTAssert([calendar compareDate:[entity customDateAttribute]
-                             toDate:now
-                  toUnitGranularity:NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitYear] == NSOrderedSame);
-    
-    XCTAssert([calendar compareDate:[entity epochDateAttribute]
-                             toDate:now
-                  toUnitGranularity:NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitYear] == NSOrderedSame);
-}
-
 - (void)testSaveInBackgroundAndWait
 {
     NSString *const initialStringValue = @"TestSaveInBackgroundAndWait";
