@@ -77,3 +77,20 @@
                                context:(NSManagedObjectContext *)context;
 
 @end
+
+@interface NSDateFormatter (WTADataImport)
+
+/**
+ Default date format to use when import date objects.
+ 
+ If no date format is defined in the user info of the entity then this format will be use.
+ Defaults to @"yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+ */
++ (NSString *)defaultImportDateFormat;
+
+/**
+ Sets defaultImportDateFormat - defaults to @"yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+ */
++ (void)setDefaultImportDateFormat:(NSString *)defaultImportDateFormat;
+
+@end
