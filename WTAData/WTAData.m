@@ -190,11 +190,11 @@
             }
         }
         
-#ifdef DEBUG
-        NSLog(@"%@", [error localizedDescription]);
-#endif
         if (error)
         {
+#ifdef DEBUG
+            NSLog(@"%@", [error localizedDescription]);
+#endif
             abort();
         }
     }
