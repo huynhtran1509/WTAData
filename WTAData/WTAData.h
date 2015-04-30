@@ -38,19 +38,19 @@
 @interface WTAData : NSObject
 
 /// The current managed object model
-@property (nonatomic, strong) NSManagedObjectModel *managedObjectModel;
+@property (nonatomic, strong, readonly) NSManagedObjectModel *managedObjectModel;
 
 /// Context used with concurency type NSMainQueueConcurrencyType. This context is typically used
 /// for pulling data from the store and fetch requests.
-@property (nonatomic, strong) NSManagedObjectContext *mainContext;
+@property (nonatomic, strong, readonly) NSManagedObjectContext *mainContext;
 
 /// Context used with the concurrency type NSPrivateQueueConcurrencyType. This context is used for
 /// background saving of items in the store. This is the context used by the background saving
 /// functions.
-@property (nonatomic, strong) NSManagedObjectContext *backgroundContext;
+@property (nonatomic, strong, readonly) NSManagedObjectContext *backgroundContext;
 
 /// Coordinator used by the stack
-@property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@property (nonatomic, strong, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
 /// The stack configuration
 @property (nonatomic, strong, readonly) WTADataConfiguration *configuration;

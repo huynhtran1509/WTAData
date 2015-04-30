@@ -30,6 +30,10 @@
 
 @interface WTAData ()
 
+@property (nonatomic, strong, readwrite) NSManagedObjectModel *managedObjectModel;
+@property (nonatomic, strong, readwrite) NSManagedObjectContext *mainContext;
+@property (nonatomic, strong, readwrite) NSManagedObjectContext *backgroundContext;
+@property (nonatomic, strong, readwrite) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, strong, readwrite) WTADataConfiguration *configuration;
 @property (nonatomic, readwrite, setter=setInvalidated:) BOOL isInvalidated;
 
