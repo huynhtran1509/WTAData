@@ -36,13 +36,13 @@
  
  @return the primary attribute description
  */
-- (NSAttributeDescription *)primaryAttribute;
+- (nullable NSAttributeDescription *)primaryAttribute;
 
 /**
  Returns the string representation of the primary attribute.
  
  @return the string representation of the primary attribute
  */
-- (NSString *)primaryAttributeString;
+- (nonnull NSString *)primaryAttributeString;
 
 @end

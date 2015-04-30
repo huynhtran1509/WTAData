@@ -27,6 +27,8 @@
 #import <Foundation/Foundation.h>
 #import "WTADataConfiguration.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  WTAData provides a simplified interface to setting up an asynchronous CoreData stack.  WTAData 
  utilizes two NSManagedObjectContexts: a main context generally used by UI binding and a background
@@ -97,7 +99,7 @@
  @param completion block called when the save is complete
  */
 -(void)saveInBackground:(void (^)(NSManagedObjectContext *context))work
-             completion:(void (^)(BOOL savedChanges, NSError *error))completion;
+             completion:(nullable void (^)(BOOL savedChanges, NSError * __nullable error))completion;
 
 /**
  Perform save in the background using the backgroundContext and wait for completion. Changes are 
@@ -116,6 +118,8 @@
  
  @param completion block called when the save is complete
  */
-- (void)deleteAllDataWithCompletion:(void (^)(NSError *))completion;
+- (void)deleteAllDataWithCompletion:(nullable void (^)(NSError * __nullable))completion;
 
 @end
+
+NS_ASSUME_NONNULL_END

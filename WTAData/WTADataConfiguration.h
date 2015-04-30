@@ -25,6 +25,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  The WTADataConfiguration object is used initialize the WTAData object with a customized 
  configuration.
@@ -32,13 +34,13 @@
 @interface WTADataConfiguration : NSObject
 
 /// The fully qualified path to the managed object model file
-@property (nonatomic, copy) NSURL *managedObjectModelFileURL;
+@property (nullable, nonatomic, copy) NSURL *managedObjectModelFileURL;
 
 /// The fully qualified path to the persistent store file
-@property (nonatomic, copy) NSURL *persistentStoreFileURL;
+@property (nullable, nonatomic, copy) NSURL *persistentStoreFileURL;
 
 /// The persistent store coordinator options. @See NSPersistentStoreCoordinator
-@property (nonatomic, copy) NSDictionary *persistentStoreCoordinatorOptions;
+@property (nullable, nonatomic, copy) NSDictionary *persistentStoreCoordinatorOptions;
 
 /// Set to YES to delete the existing data store if the managed object model versions do not match.
 @property (nonatomic, readwrite) BOOL shouldDeleteStoreFileOnModelMismatch;
@@ -83,3 +85,5 @@
 - (BOOL)deleteExistingStoreFile:(NSError **)error;
 
 @end
+
+NS_ASSUME_NONNULL_END

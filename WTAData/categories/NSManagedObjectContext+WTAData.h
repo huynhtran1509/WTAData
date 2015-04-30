@@ -25,6 +25,8 @@
 
 #import <CoreData/CoreData.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /** 
  The NSManagedObjectContext category provides additional functionality for saving the managed 
  contexts and for performing saves in the background.
@@ -54,7 +56,7 @@
  saved and returns any errors encountered during the save.
  */
 - (void)saveBlock:(void (^)(NSManagedObjectContext *context))work
-       completion:(void (^)(BOOL savedChanges, NSError *error))completion;
+       completion:(nullable void (^)(BOOL savedChanges, NSError * __nullable error))completion;
 
 /**
  Synchronously saves the current context in the background, first performing the specified work
@@ -68,3 +70,5 @@
 - (BOOL)saveBlockAndWait:(void (^)(NSManagedObjectContext *context))work error:(NSError **)error;
 
 @end
+
+NS_ASSUME_NONNULL_END
