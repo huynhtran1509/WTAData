@@ -49,6 +49,9 @@
 /// Set to YES to use an in memory store instead of the sqlite default
 @property (nonatomic, readwrite) BOOL shouldUseInMemoryStore;
 
+/// Set to YES if the background context should merge in changes from the main context
+@property (nonatomic, readwrite) BOOL shouldMergeMainContextSavesIntoBackgroundContext;
+
 /**
  Initialize a data configuration using the specified model. The name of the sqlite database will follow
  the name of the managed object model.

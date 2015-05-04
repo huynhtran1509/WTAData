@@ -93,6 +93,14 @@
                                                  name:NSManagedObjectContextDidSaveNotification
                                                object:self.backgroundContext];
     
+    if (self.configuration.shouldMergeMainContextSavesIntoBackgroundContext)
+    {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(mainContextDidSave:)
+                                                     name:NSManagedObjectContextDidSaveNotification
+                                                   object:self.mainContext];
+    }
+    
 }
 
 - (void)setupPersistentStoreInMemory
@@ -212,10 +220,17 @@
     self.isInvalidated = YES;
 }
 
-- (void)backgroundContextDidSave:(NSNotification*)notification
+- (void)backgroundContextDidSave:(NSNotification *)notification
 {
     [self.mainContext performBlock:^{
         [self.mainContext mergeChangesFromContextDidSaveNotification:notification];
+    }];
+}
+
+- (void)mainContextDidSave:(NSNotification *)notification
+{
+    [self.backgroundContext performBlock:^{
+        [self.backgroundContext mergeChangesFromContextDidSaveNotification:notification];
     }];
 }
 
