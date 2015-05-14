@@ -27,6 +27,9 @@
 #import <Foundation/Foundation.h>
 #import "WTADataConfiguration.h"
 
+
+// Nullability Annotations were added in Xcode 6.3. The following #defines are required for
+// backwards compatability.
 #ifndef NS_ASSUME_NONNULL_BEGIN
 #define NS_ASSUME_NONNULL_BEGIN
 #define NS_ASSUME_NONNULL_END
@@ -34,6 +37,7 @@
 #define __nullable
 #define nonnull
 #endif
+
 
 NS_ASSUME_NONNULL_BEGIN
 
