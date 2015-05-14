@@ -25,7 +25,7 @@
 
 #import <Foundation/Foundation.h>
 
-#if ! __has_feature(nullability)
+#ifndef NS_ASSUME_NONNULL_BEGIN
 #define NS_ASSUME_NONNULL_BEGIN
 #define NS_ASSUME_NONNULL_END
 #define nullable
