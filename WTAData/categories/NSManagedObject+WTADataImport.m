@@ -83,8 +83,8 @@
                 NSMutableDictionary *tempDictionary = [dictionary mutableCopy];
             
                 // Find all existing entities
-                NSString *formatString = [NSString stringWithFormat:@"%@ in %%@", primaryAttributeString];
-                NSPredicate *existingEntitiesPredicate = [NSPredicate predicateWithFormat:formatString, [dictionary allKeys]];
+                NSPredicate *existingEntitiesPredicate = [NSPredicate predicateWithFormat:@"%K in %@",
+                                                          primaryAttributeString, [dictionary allKeys]];
                 NSArray *existingEntities = [self fetchInContext:context predicate:existingEntitiesPredicate error:nil];
                 
                 // Iterate through entites that exist so we can update them
@@ -325,8 +325,7 @@
                 // See if the entity already exists
                 NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[description name]];
                 [request setFetchLimit:1];
-                NSString *predicateFormat = [NSString stringWithFormat:@"%@ = %%@", [primaryAttribute name]];
-                [request setPredicate:[NSPredicate predicateWithFormat:predicateFormat, value]];
+                [request setPredicate:[NSPredicate predicateWithFormat:@"%K = %@", [primaryAttribute name], value]];
                 NSArray *results = [context executeFetchRequest:request error:nil];
                 entity = [results firstObject];
             }
