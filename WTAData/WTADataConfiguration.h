@@ -25,6 +25,14 @@
 
 #import <Foundation/Foundation.h>
 
+#if ! __has_feature(nullability)
+#define NS_ASSUME_NONNULL_BEGIN
+#define NS_ASSUME_NONNULL_END
+#define nullable
+#define __nullable
+#define nonnull
+#endif
+
 NS_ASSUME_NONNULL_BEGIN
 
 /**
@@ -34,13 +42,13 @@ NS_ASSUME_NONNULL_BEGIN
 @interface WTADataConfiguration : NSObject
 
 /// The fully qualified path to the managed object model file
-@property (nullable, nonatomic, copy) NSURL *managedObjectModelFileURL;
+@property (nonatomic, copy, nullable) NSURL *managedObjectModelFileURL;
 
 /// The fully qualified path to the persistent store file
-@property (nullable, nonatomic, copy) NSURL *persistentStoreFileURL;
+@property (nonatomic, copy, nullable) NSURL *persistentStoreFileURL;
 
 /// The persistent store coordinator options. @See NSPersistentStoreCoordinator
-@property (nullable, nonatomic, copy) NSDictionary *persistentStoreCoordinatorOptions;
+@property (nonatomic, copy, nullable) NSDictionary *persistentStoreCoordinatorOptions;
 
 /// Set to YES to delete the existing data store if the managed object model versions do not match.
 @property (nonatomic, readwrite) BOOL shouldDeleteStoreFileOnModelMismatch;

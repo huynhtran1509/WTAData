@@ -25,6 +25,14 @@
 
 #import <CoreData/CoreData.h>
 
+#if ! __has_feature(nullability)
+#define NS_ASSUME_NONNULL_BEGIN
+#define NS_ASSUME_NONNULL_END
+#define nullable
+#define __nullable
+#define nonnull
+#endif
+
 /**
  This category provides additional functions to simplify accessing attributes of a 
  NSEntityDecription
