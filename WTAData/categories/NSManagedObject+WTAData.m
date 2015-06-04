@@ -122,12 +122,11 @@
 }
 
 + (NSArray *)fetchInContext:(NSManagedObjectContext *)context
-                 withAttribute:(NSString *)attribute
-                       equalTo:(id)value
-                         error:(NSError *__autoreleasing *)error
+              withAttribute:(NSString *)attribute
+                    equalTo:(id)value
+                      error:(NSError *__autoreleasing *)error
 {
-    NSString *predicateFormat = [NSString stringWithFormat:@"%@ = %%@", attribute];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:predicateFormat, value];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K = %@", attribute, value];
     return [self fetchInContext:context predicate:predicate error:error];
 }
 
@@ -148,15 +147,14 @@
 
 + (instancetype)fetchFirstInContext:(NSManagedObjectContext *)context withAttribute:(NSString *)attribute equalTo:(id)value error:(NSError *__autoreleasing *)error
 {
-    NSString *predicateFormat = [NSString stringWithFormat:@"%@ = %%@", attribute];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:predicateFormat, value];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K = %@", attribute, value];
     return [self fetchFirstInContext:context predicate:predicate error:error];
 }
 
-+ (NSFetchedResultsController*)fetchControllerInContext:(NSManagedObjectContext *)context
-                                              groupedBy:(NSString*)groupKey
-                                          withPredicate:(NSPredicate*)predicate
-                                        sortDescriptors:(NSArray*)sortDescriptors
++ (NSFetchedResultsController *)fetchControllerInContext:(NSManagedObjectContext *)context
+                                               groupedBy:(NSString *)groupKey
+                                           withPredicate:(NSPredicate *)predicate
+                                         sortDescriptors:(NSArray *)sortDescriptors
 {
     NSFetchRequest *fetchRequest = [self fetchRequestWithPredicate:predicate sortDescriptors:sortDescriptors];
     
@@ -167,11 +165,11 @@
 }
 
 
-+ (NSFetchedResultsController*)fetchControllerInContext:(NSManagedObjectContext *)context
-                                              groupedBy:(NSString*)groupKey
-                                          withPredicate:(NSPredicate*)predicate
-                                               sortedBy:(NSString*)key
-                                              ascending:(BOOL)ascending
++ (NSFetchedResultsController *)fetchControllerInContext:(NSManagedObjectContext *)context
+                                               groupedBy:(NSString *)groupKey
+                                           withPredicate:(NSPredicate *)predicate
+                                                sortedBy:(NSString *)key
+                                               ascending:(BOOL)ascending
 {
     NSSortDescriptor *sortdescriptor = [NSSortDescriptor sortDescriptorWithKey:key ascending:ascending];
     

@@ -27,6 +27,20 @@
 #import <Foundation/Foundation.h>
 #import "WTADataConfiguration.h"
 
+
+// Nullability Annotations were added in Xcode 6.3. The following #defines are required for
+// backwards compatability.
+#ifndef NS_ASSUME_NONNULL_BEGIN
+#define NS_ASSUME_NONNULL_BEGIN
+#define NS_ASSUME_NONNULL_END
+#define nullable
+#define __nullable
+#define nonnull
+#endif
+
+
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  WTAData provides a simplified interface to setting up an asynchronous CoreData stack.  WTAData 
  utilizes two NSManagedObjectContexts: a main context generally used by UI binding and a background
@@ -38,19 +52,19 @@
 @interface WTAData : NSObject
 
 /// The current managed object model
-@property (nonatomic, strong) NSManagedObjectModel *managedObjectModel;
+@property (nonatomic, strong, readonly, nullable) NSManagedObjectModel *managedObjectModel;
 
 /// Context used with concurency type NSMainQueueConcurrencyType. This context is typically used
 /// for pulling data from the store and fetch requests.
-@property (nonatomic, strong) NSManagedObjectContext *mainContext;
+@property (nonatomic, strong, readonly, nullable) NSManagedObjectContext *mainContext;
 
 /// Context used with the concurrency type NSPrivateQueueConcurrencyType. This context is used for
 /// background saving of items in the store. This is the context used by the background saving
 /// functions.
-@property (nonatomic, strong) NSManagedObjectContext *backgroundContext;
+@property (nonatomic, strong, readonly, nullable) NSManagedObjectContext *backgroundContext;
 
 /// Coordinator used by the stack
-@property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@property (nonatomic, strong, readonly, nullable) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
 /// The stack configuration
 @property (nonatomic, strong, readonly) WTADataConfiguration *configuration;
@@ -97,7 +111,7 @@
  @param completion block called when the save is complete
  */
 -(void)saveInBackground:(void (^)(NSManagedObjectContext *context))work
-             completion:(void (^)(BOOL savedChanges, NSError *error))completion;
+             completion:(nullable void (^)(BOOL savedChanges, NSError * __nullable error))completion;
 
 /**
  Perform save in the background using the backgroundContext and wait for completion. Changes are 
@@ -116,6 +130,8 @@
  
  @param completion block called when the save is complete
  */
-- (void)deleteAllDataWithCompletion:(void (^)(NSError *))completion;
+- (void)deleteAllDataWithCompletion:(nullable void (^)(NSError * __nullable))completion;
 
 @end
+
+NS_ASSUME_NONNULL_END
