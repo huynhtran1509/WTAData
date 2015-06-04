@@ -25,6 +25,18 @@
 
 #import <CoreData/CoreData.h>
 
+
+// Nullability Annotations were added in Xcode 6.3. The following #defines are required for
+// backwards compatability.
+#ifndef NS_ASSUME_NONNULL_BEGIN
+#define NS_ASSUME_NONNULL_BEGIN
+#define NS_ASSUME_NONNULL_END
+#define nullable
+#define __nullable
+#define nonnull
+#endif
+
+
 /**
  This category provides additional functions to simplify accessing attributes of a 
  NSEntityDecription
@@ -36,13 +48,13 @@
  
  @return the primary attribute description
  */
-- (NSAttributeDescription *)primaryAttribute;
+- (nullable NSAttributeDescription *)primaryAttribute;
 
 /**
  Returns the string representation of the primary attribute.
  
  @return the string representation of the primary attribute
  */
-- (NSString *)primaryAttributeString;
+- (nonnull NSString *)primaryAttributeString;
 
 @end

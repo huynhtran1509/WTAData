@@ -25,6 +25,20 @@
 
 #import <CoreData/CoreData.h>
 
+
+// Nullability Annotations were added in Xcode 6.3. The following #defines are required for
+// backwards compatability.
+#ifndef NS_ASSUME_NONNULL_BEGIN
+#define NS_ASSUME_NONNULL_BEGIN
+#define NS_ASSUME_NONNULL_END
+#define nullable
+#define __nullable
+#define nonnull
+#endif
+
+
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  The WTADataImport category provides functions for importing dictionary model objects and arrays
  into the CoreData model.
@@ -60,9 +74,9 @@
  
  @return the created or updated NSManagedObject
  */
-+ (instancetype)importEntityFromObject:(NSDictionary *)object
-                               context:(NSManagedObjectContext *)context
-                         checkExisting:(BOOL)checkExisting;
++ (nullable instancetype)importEntityFromObject:(NSDictionary *)object
+                                        context:(NSManagedObjectContext *)context
+                                  checkExisting:(BOOL)checkExisting;
 
 /**
  Creates or updates an entity from the given object.  If the object already exists, it will be
@@ -73,7 +87,26 @@
  
  @return the created or updated NSManagedObject
  */
-+ (instancetype)importEntityFromObject:(NSDictionary *)object
-                               context:(NSManagedObjectContext *)context;
++ (nullable instancetype)importEntityFromObject:(NSDictionary *)object
+                                        context:(NSManagedObjectContext *)context;
 
 @end
+
+@interface NSDateFormatter (WTADataImport)
+
+/**
+ Default date format to use when import date objects.
+ 
+ If no date format is defined in the user info of the entity then this format will be use.
+ Defaults to @"yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+ */
++ (NSString *)defaultImportDateFormat;
+
+/**
+ Sets defaultImportDateFormat - defaults to @"yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+ */
++ (void)setDefaultImportDateFormat:(NSString *)defaultImportDateFormat;
+
+@end
+
+NS_ASSUME_NONNULL_END
