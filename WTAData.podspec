@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "WTAData"
-  s.version      = "1.2.2"
+  s.version      = "1.3.0"
   s.summary      = "WTAData is a wrapper for CoreData to handle commmon operations associated with managing a CoreData stack"
 
   s.description  = <<-DESC
