@@ -72,6 +72,13 @@
 + (void)deleteAllInContext:(NSManagedObjectContext *)context predicate:(NSPredicate *)predicate;
 
 /**
+ Returns another NSManagedObject instance that is within a different NSManagedObjectContext.
+ 
+ @param otherContext the context the returned NSManagedObject instance will be contained in, or nil if it doesn't exit or there was an error.
+  */
+- (instancetype)inContext:(NSManagedObjectContext *)otherContext;
+
+/**
  Creates a NSAsynchronousFetchRequests with the specified predicate, sort descriptor, and completion
  block.
  

@@ -43,8 +43,6 @@
     }
 }
 
-
-
 + (NSEntityDescription *)entityDescriptionInContext:(NSManagedObjectContext *)context
 {
     return [NSEntityDescription entityForName:[self entityName] inManagedObjectContext:context];
@@ -60,6 +58,21 @@
     return [NSEntityDescription insertNewObjectForEntityForName:[self entityName] inManagedObjectContext:context];
 }
 
+- (instancetype)inContext:(NSManagedObjectContext *)otherContext
+{
+    NSError *error = nil;
+    if ([self.objectID isTemporaryID])
+    {
+        if ([self.managedObjectContext obtainPermanentIDsForObjects:@[self] error:&error])
+        {
+            return nil;
+        }
+    }
+    
+    error = nil;
+    NSManagedObject *selfInOtherContext = [otherContext existingObjectWithID:self.objectID error:&error];
+    return selfInOtherContext;
+}
 
 + (NSAsynchronousFetchRequest *)asyncFetchRequestWithPredicate:(NSPredicate *)predicate sortDescriptors:(NSArray *)sortDescriptors completion:(NSPersistentStoreAsynchronousFetchResultCompletionBlock)completion
 {
