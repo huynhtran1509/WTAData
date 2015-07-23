@@ -30,6 +30,10 @@
 
 @interface WTAData ()
 
+@property (nonatomic, strong, readwrite) NSManagedObjectModel *managedObjectModel;
+@property (nonatomic, strong, readwrite) NSManagedObjectContext *mainContext;
+@property (nonatomic, strong, readwrite) NSManagedObjectContext *backgroundContext;
+@property (nonatomic, strong, readwrite) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, strong, readwrite) WTADataConfiguration *configuration;
 @property (nonatomic, readwrite, setter=setInvalidated:) BOOL isInvalidated;
 
@@ -92,6 +96,14 @@
                                              selector:@selector(backgroundContextDidSave:)
                                                  name:NSManagedObjectContextDidSaveNotification
                                                object:self.backgroundContext];
+    
+    if (self.configuration.shouldMergeMainContextSavesIntoBackgroundContext)
+    {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(mainContextDidSave:)
+                                                     name:NSManagedObjectContextDidSaveNotification
+                                                   object:self.mainContext];
+    }
     
 }
 
@@ -186,11 +198,11 @@
             }
         }
         
-#ifdef DEBUG
-        NSLog(@"%@", [error localizedDescription]);
-#endif
         if (error)
         {
+#ifdef DEBUG
+            NSLog(@"%@", [error localizedDescription]);
+#endif
             abort();
         }
     }
@@ -212,10 +224,17 @@
     self.isInvalidated = YES;
 }
 
-- (void)backgroundContextDidSave:(NSNotification*)notification
+- (void)backgroundContextDidSave:(NSNotification *)notification
 {
     [self.mainContext performBlock:^{
         [self.mainContext mergeChangesFromContextDidSaveNotification:notification];
+    }];
+}
+
+- (void)mainContextDidSave:(NSNotification *)notification
+{
+    [self.backgroundContext performBlock:^{
+        [self.backgroundContext mergeChangesFromContextDidSaveNotification:notification];
     }];
 }
 

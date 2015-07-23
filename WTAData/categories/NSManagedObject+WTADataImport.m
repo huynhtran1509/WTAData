@@ -27,6 +27,7 @@
 
 #import "NSEntityDescription+WTAData.h"
 #import "NSManagedObject+WTAData.h"
+#import <objc/runtime.h>
 
 @implementation NSManagedObject (WTADataImport)
 
@@ -62,8 +63,8 @@
             NSMutableDictionary *dictionary = [NSMutableDictionary new];
             for (NSDictionary *item in array)
             {
-                NSString *key = item[importKey];
-                if (key && key.length > 0)
+                id key = item[importKey];
+                if (key && [key conformsToProtocol:@protocol(NSCopying)])
                 {
                     dictionary[key] = item;
                 }
@@ -82,8 +83,8 @@
                 NSMutableDictionary *tempDictionary = [dictionary mutableCopy];
             
                 // Find all existing entities
-                NSString *formatString = [NSString stringWithFormat:@"%@ in %%@", primaryAttributeString];
-                NSPredicate *existingEntitiesPredicate = [NSPredicate predicateWithFormat:formatString, [dictionary allKeys]];
+                NSPredicate *existingEntitiesPredicate = [NSPredicate predicateWithFormat:@"%K in %@",
+                                                          primaryAttributeString, [dictionary allKeys]];
                 NSArray *existingEntities = [self fetchInContext:context predicate:existingEntitiesPredicate error:nil];
                 
                 // Iterate through entites that exist so we can update them
@@ -128,8 +129,8 @@
     //TODO: Finish creation of relationship entitys that don't exist
     
     // Create date formatter to be used during import
-    NSDateFormatter *ISO8601DateFormater = [NSDateFormatter new];
-    [ISO8601DateFormater setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
+    NSDateFormatter *defaultDateFormatter = [NSDateFormatter new];
+    [defaultDateFormatter setDateFormat:[NSDateFormatter defaultImportDateFormat]];
     
     [[[self entity] relationshipsByName] enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         
@@ -241,7 +242,7 @@
                 NSDate *date;
                 if ([value isKindOfClass:[NSString class]])
                 {
-                    NSDateFormatter *dateFormatter = ISO8601DateFormater;
+                    NSDateFormatter *dateFormatter = defaultDateFormatter;
                     
                     NSString *customFormat = [description userInfo][@"DateFormat"];
                     if (customFormat)
@@ -324,8 +325,7 @@
                 // See if the entity already exists
                 NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[description name]];
                 [request setFetchLimit:1];
-                NSString *predicateFormat = [NSString stringWithFormat:@"%@ = %%@", [primaryAttribute name]];
-                [request setPredicate:[NSPredicate predicateWithFormat:predicateFormat, value]];
+                [request setPredicate:[NSPredicate predicateWithFormat:@"%K = %@", [primaryAttribute name], value]];
                 NSArray *results = [context executeFetchRequest:request error:nil];
                 entity = [results firstObject];
             }
@@ -346,6 +346,26 @@
 + (instancetype)importEntityFromObject:(NSDictionary *)object context:(NSManagedObjectContext *)context
 {
     return [self importEntityFromObject:object context:context checkExisting:YES];
+}
+
+@end
+
+@implementation NSDateFormatter (WTADataImport)
+
++ (NSString *)defaultImportDateFormat
+{
+    NSString *format = objc_getAssociatedObject(self, @selector(defaultImportDateFormat));
+    if (!format)
+    {
+        format = @"yyyy-MM-dd'T'HH:mm:ssZZZZZ";
+        [self setDefaultImportDateFormat:format];
+    }
+    return format;
+}
+
++ (void)setDefaultImportDateFormat:(NSString *)defaultImportDateFormat
+{
+    objc_setAssociatedObject(self, @selector(defaultImportDateFormat), defaultImportDateFormat, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 @end

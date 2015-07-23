@@ -1,6 +1,6 @@
 //
 //  WTADataConfiguration.m
-//  WTADataExample
+//  WTAData
 //
 //  Copyright (c) 2014 WillowTree, Inc.
 //

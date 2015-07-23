@@ -24,6 +24,7 @@
 //
 
 #import <UIKit/UIKit.h>
+
 #import <XCTest/XCTest.h>
 #import "WTAData.h"
 #import "Entity.h"
@@ -47,6 +48,99 @@
 
 - (void)tearDown {
     [super tearDown];
+}
+
+- (void)testBackgroundContextDontMergeMainContextSaves
+{
+    NSString *backgroundStringValue = @"background";
+    NSString *mainStringValue = @"main";
+    
+    __block NSManagedObjectID *objectID;
+    
+    [self.wtaData.backgroundContext performBlockAndWait:^{
+        
+        Entity *entity = [Entity createEntityInContext:self.wtaData.backgroundContext];
+        [entity setStringAttribute:backgroundStringValue];
+        [self.wtaData.backgroundContext obtainPermanentIDsForObjects:@[entity] error:nil];
+        objectID = [entity objectID];
+        [self.wtaData.backgroundContext saveContext];
+        
+    }];
+    
+    [self.wtaData.mainContext performBlockAndWait:^{
+        
+        Entity *entity = (Entity *)[self.wtaData.mainContext existingObjectWithID:objectID error:nil];
+        [entity setStringAttribute:mainStringValue];
+        [self.wtaData.mainContext saveContext];
+        
+    }];
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"testBackgroundContextMergeMainContextSaves"];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
+        [self.wtaData.backgroundContext performBlockAndWait:^{
+            
+            Entity *entity = (Entity *)[self.wtaData.backgroundContext existingObjectWithID:objectID error:nil];
+            XCTAssert([[entity stringAttribute] isEqualToString:backgroundStringValue]);
+            
+        }];
+        
+        [expectation fulfill];
+        
+    });
+    
+    [self waitForExpectationsWithTimeout:7.0 handler:^(NSError *error) {
+        
+    }];
+}
+
+- (void)testBackgroundContextMergeMainContextSaves
+{
+    NSString *stringValuve = @"test";
+    
+    WTADataConfiguration *configuration = [WTADataConfiguration defaultConfigurationWithModelNamed:@"WTADataExample"];
+    [configuration setShouldMergeMainContextSavesIntoBackgroundContext:YES];
+    
+    self.wtaData = [[WTAData alloc] initWithConfiguration:configuration];
+    
+    __block NSManagedObjectID *objectID;
+    
+    [self.wtaData.backgroundContext performBlockAndWait:^{
+       
+        Entity *entity = [Entity createEntityInContext:self.wtaData.backgroundContext];
+        [self.wtaData.backgroundContext obtainPermanentIDsForObjects:@[entity] error:nil];
+        objectID = [entity objectID];
+        [self.wtaData.backgroundContext saveContext];
+        
+    }];
+    
+    [self.wtaData.mainContext performBlockAndWait:^{
+       
+        Entity *entity = (Entity *)[self.wtaData.mainContext existingObjectWithID:objectID error:nil];
+        [entity setStringAttribute:stringValuve];
+        [self.wtaData.mainContext saveContext];
+        
+    }];
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"testBackgroundContextMergeMainContextSaves"];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
+        [self.wtaData.backgroundContext performBlockAndWait:^{
+        
+            Entity *entity = (Entity *)[self.wtaData.backgroundContext existingObjectWithID:objectID error:nil];
+            XCTAssert([[entity stringAttribute] isEqualToString:stringValuve]);
+        
+        }];
+      
+        [expectation fulfill];
+        
+    });
+    
+    [self waitForExpectationsWithTimeout:7.0 handler:^(NSError *error) {
+        
+    }];
 }
 
 - (void)testSaveAndWait {
@@ -149,40 +243,6 @@
     }];
 }
 
-- (void)testDateFormatImport
-{
-    NSDate *now = [NSDate date];
-    
-    NSDateFormatter *ISO8601DateFormater = [NSDateFormatter new];
-    [ISO8601DateFormater setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
-    
-    NSDateFormatter *customFormatter = [NSDateFormatter new];
-    [customFormatter setDateFormat:@"M/d/yyyy"];
-    
-    NSDictionary *dictionary = @{
-                                 @"epochDateAttribute" : @([now timeIntervalSince1970]),
-                                 @"dateAttribute" : [ISO8601DateFormater stringFromDate:now],
-                                 @"customDateAttribute" : [customFormatter stringFromDate:now]
-                                 };
-    
-    NSManagedObjectContext *context = [[self wtaData] mainContext];
-    Entity *entity = [Entity importEntityFromObject:dictionary context:context];
-    
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    
-    XCTAssert([calendar compareDate:[entity dateAttribute]
-                             toDate:now
-                  toUnitGranularity:NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitYear] == NSOrderedSame);
-    
-    XCTAssert([calendar compareDate:[entity customDateAttribute]
-                             toDate:now
-                  toUnitGranularity:NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitYear] == NSOrderedSame);
-    
-    XCTAssert([calendar compareDate:[entity epochDateAttribute]
-                             toDate:now
-                  toUnitGranularity:NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitYear] == NSOrderedSame);
-}
-
 - (void)testSaveInBackgroundAndWait
 {
     NSString *const initialStringValue = @"TestSaveInBackgroundAndWait";
@@ -222,7 +282,7 @@
         count += [items count];
     }
     
-    NSLog(@"Starting number of objects: %lu", count);
+    NSLog(@"Starting number of objects: %lu", (unsigned long)count);
  
     XCTestExpectation *expectation = [self expectationWithDescription:@"testDeleteAllDataWithCompletion"];
     
