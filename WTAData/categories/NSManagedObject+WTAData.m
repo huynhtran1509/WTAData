@@ -75,6 +75,20 @@
     return selfInOtherContext;
 }
 
++ (NSUInteger)countWithContext:(NSManagedObjectContext *)context error:(NSError**)error
+{
+    return [self countOfEntitiesWithPredicate:nil inContext:context error:error];
+}
+
++ (NSUInteger)countOfEntitiesWithPredicate:(NSPredicate *)searchFilter
+                                 inContext:(NSManagedObjectContext *)context
+                                     error:(NSError**)error
+{
+    NSFetchRequest* request = [self fetchRequestWithPredicate:searchFilter];
+    NSUInteger count = [context countForFetchRequest:request error:error];
+    return count;
+}
+
 + (NSAsynchronousFetchRequest *)asyncFetchRequestWithPredicate:(NSPredicate *)predicate sortDescriptors:(NSArray *)sortDescriptors completion:(NSPersistentStoreAsynchronousFetchResultCompletionBlock)completion
 {
     NSFetchRequest *request = [self fetchRequestWithPredicate:predicate sortDescriptors:sortDescriptors];

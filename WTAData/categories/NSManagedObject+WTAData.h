@@ -93,6 +93,16 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)inContext:(NSManagedObjectContext *)otherContext error:(NSError**)error;
 
 /**
+ Returns count of entities of a given type in a NSManagedObjectContext.
+  */
++ (NSUInteger)countWithContext:(NSManagedObjectContext *)context error:(NSError**)error;
+
+/**
+ Returns count of entities of a given, in a NSManagedObjectContext, that pass a speified searchFilter.
+ */
++ (NSUInteger)countOfEntitiesWithPredicate:(NSPredicate *)searchFilter inContext:(NSManagedObjectContext *)context  error:(NSError**)error;
+
+/**
  Creates a NSAsynchronousFetchRequests with the specified predicate, sort descriptor, and completion
  block.
  
