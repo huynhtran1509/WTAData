@@ -58,19 +58,20 @@
     return [NSEntityDescription insertNewObjectForEntityForName:[self entityName] inManagedObjectContext:context];
 }
 
-- (instancetype)inContext:(NSManagedObjectContext *)otherContext
+- (instancetype)inContext:(NSManagedObjectContext *)otherContext error:(NSError**)error
 {
-    NSError *error = nil;
     if ([self.objectID isTemporaryID])
     {
-        if ([self.managedObjectContext obtainPermanentIDsForObjects:@[self] error:&error])
-        {
+        BOOL success = [[self managedObjectContext] obtainPermanentIDsForObjects:@[self] error:error];
+        if (!success) {
+            return nil;
+        }
+        if (error) {
             return nil;
         }
     }
     
-    error = nil;
-    NSManagedObject *selfInOtherContext = [otherContext existingObjectWithID:self.objectID error:&error];
+    NSManagedObject *selfInOtherContext = [otherContext existingObjectWithID:self.objectID error:error];
     return selfInOtherContext;
 }
 

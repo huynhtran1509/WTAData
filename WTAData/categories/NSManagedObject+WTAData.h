@@ -76,7 +76,7 @@
  
  @param otherContext the context the returned NSManagedObject instance will be contained in, or nil if it doesn't exit or there was an error.
   */
-- (instancetype)inContext:(NSManagedObjectContext *)otherContext;
+- (instancetype)inContext:(NSManagedObjectContext *)otherContext error:(NSError**)error;
 
 /**
  Creates a NSAsynchronousFetchRequests with the specified predicate, sort descriptor, and completion

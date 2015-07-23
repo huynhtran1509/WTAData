@@ -248,4 +248,30 @@
 }
 
 
+- (void)testInContext
+{
+    NSString *const initialStringValue = @"TestSaveInBackgroundAndUseInContext";
+    
+    __weak typeof(self) weakSelf = self;
+    __block Entity *entity;
+    [weakSelf.wtaData saveInBackgroundAndWait:^(NSManagedObjectContext *context) {
+        //Given
+        entity = [NSEntityDescription insertNewObjectForEntityForName:[[Entity class] description]
+                                               inManagedObjectContext:context];
+        entity.stringAttribute = initialStringValue;
+    } error:nil];
+    
+    //When
+    
+    // replacing this code (and adding extra error checking) with the following code
+    //Entity *mainThreadEntity = (Entity *)[self.wtaData.mainContext existingObjectWithID:entity.objectID error:nil];
+    NSError* error;
+    Entity* mainThreadEntity = [entity inContext:self.wtaData.mainContext error:&error];
+    
+    //Then
+    XCTAssertNil(error);
+    XCTAssertNotNil(mainThreadEntity);
+    XCTAssertEqualObjects(mainThreadEntity.stringAttribute, initialStringValue);
+}
+
 @end
