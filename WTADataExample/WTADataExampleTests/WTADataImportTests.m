@@ -30,6 +30,7 @@
 #import "WTAData.h"
 #import "PrimaryKeyEntity.h"
 #import "NSManagedObject+WTADataImport.h"
+#import "NSManagedObject+WTAData.h"
 #import "Entity.h"
 
 @interface WTADataImportTests : XCTestCase
@@ -162,5 +163,54 @@
     
 }
 
+- (void)testImportArrayWithNSNull
+{
+    NSString* testData = @"Test data";
+    
+    NSDictionary *entityWithDataContent = @{@"customPrimaryKey": @"KEY001",
+                                            @"data": testData};
+    
+    NSArray *importedObjects = [PrimaryKeyEntity importEntitiesFromArray:@[entityWithDataContent]
+                                                                 context:self.wtaData.mainContext];
+    XCTAssert((importedObjects.count == 1), @"Basic import with primary key and test data failed");
+    
+    
+    // Fetch and check data isEqualTo testData
+    NSArray* entities = [PrimaryKeyEntity fetchInContext:self.wtaData.mainContext error:nil];
+    XCTAssert((entities.count == 1), @"Basic import with primary key and test data failed");
+    
+    PrimaryKeyEntity* entity = entities[0];
+    XCTAssert(([testData isEqualToString:entity.data]),@"Basic import with primary key and good test data failed to fetch");
+    
+    
+    // Import testData as NSNull (i.e. when server api sends "data" : null josn)
+    NSDictionary *entityWithDataNSNull = @{@"customPrimaryKey": @"KEY001",
+                                           @"data": [NSNull null]};
+    importedObjects = [PrimaryKeyEntity importEntitiesFromArray:@[entityWithDataNSNull]
+                                                                 context:self.wtaData.mainContext];
+    XCTAssert((importedObjects.count == 1), @"Import with primary key and test data as NSNull failed");
+    
+    // Fetch and check data isEqualTo nil isEqual:[NSNull null]
+    entities = [PrimaryKeyEntity fetchInContext:self.wtaData.mainContext error:nil];
+    XCTAssert((entities.count == 1), @"Import with primary key and test data as NSNull failed");
+    
+    entity = entities[0];
+    XCTAssertNotNil(entity,@"Import with primary key and test data as NSNull failed");
+    XCTAssertNil(entity.data, @"Import with primary key and test data as NSNull failed to set data to nil");
+    
+}
+
 
 @end
+
+
+
+
+
+
+
+
+
+
+
+

@@ -295,6 +295,11 @@
     {
         [self setValue:value forKey:key];
     }
+    else if ([value isEqual:[NSNull null]])
+    {
+        [self setValue:nil forKey:key];
+    }
+
 }
 
 + (instancetype)importEntityFromObject:(NSDictionary *)object context:(NSManagedObjectContext *)context checkExisting:(BOOL)checkExisting
