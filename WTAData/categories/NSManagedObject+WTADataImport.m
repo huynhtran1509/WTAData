@@ -29,6 +29,9 @@
 #import "NSManagedObject+WTAData.h"
 #import <objc/runtime.h>
 
+NSString * const kRelationshipMergePolicyKey = @"MergePolicy";
+NSString * const kMergePolicyMerge = @"Merge";
+
 @implementation NSManagedObject (WTADataImport)
 
 + (NSArray *)importEntitiesFromArray:(NSArray *)array context:(NSManagedObjectContext *)context
@@ -169,9 +172,12 @@
             if ([relationshipDescription isToMany])
             {
                 // TODO Add userinfo key for merge policy
-                for (NSManagedObject *existingEntity in [self valueForKey:key])
+                if (![relationshipDescription.userInfo[kRelationshipMergePolicyKey] isEqualToString:kMergePolicyMerge])
                 {
-                    [[self managedObjectContext] deleteObject:existingEntity];
+                    for (NSManagedObject *existingEntity in [self valueForKey:key])
+                    {
+                        [[self managedObjectContext] deleteObject:existingEntity];
+                    }
                 }
                 
                 Class class = NSClassFromString([relationshipEntityDescription managedObjectClassName]);

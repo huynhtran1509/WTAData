@@ -43,6 +43,10 @@ NS_ASSUME_NONNULL_BEGIN
  The WTADataImport category provides functions for importing dictionary model objects and arrays
  into the CoreData model.
  */
+
+FOUNDATION_EXPORT NSString * const kRelationshipMergePolicyKey;
+FOUNDATION_EXPORT NSString * const kMergePolicyMerge;
+
 @interface NSManagedObject (WTADataImport)
 
 /**
