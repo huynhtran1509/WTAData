@@ -186,14 +186,48 @@ NSString * const kMergePolicyMerge = @"Merge";
                 id set;
                 if ([relationshipDescription isOrdered])
                 {
-                    set = [[NSOrderedSet alloc] initWithArray:objects];
+                    if ([relationshipDescription.userInfo[kRelationshipMergePolicyKey] isEqualToString:kMergePolicyMerge])
+                    {
+                        NSMutableOrderedSet *existingSet = [[self valueForKey:key] mutableCopy];
+                        
+                        for (NSManagedObject *importedObject in objects)
+                        {
+                            if (![existingSet containsObject:importedObject])
+                            {
+                                [existingSet addObject:importedObject];
+                            }
+                        }
+                        
+                        set = existingSet;
+                    }
+                    else
+                    {
+                        set = [[NSOrderedSet alloc] initWithArray:objects];
+                    }
                 }
                 else
                 {
-                    set = [NSSet setWithArray:objects];
+                    if ([relationshipDescription.userInfo[kRelationshipMergePolicyKey] isEqualToString:kMergePolicyMerge])
+                    {
+                        NSMutableSet *existingSet = [[self valueForKey:key] mutableCopy];
+                        
+                        for (NSManagedObject *importedObject in objects)
+                        {
+                            if (![existingSet containsObject:importedObject])
+                            {
+                                [existingSet addObject:importedObject];
+                            }
+                        }
+                        
+                        set = existingSet;
+                    }
+                    else
+                    {
+                        set = [NSSet setWithArray:objects];
+                    }
                 }
-                [self setValue:set forKey:key];
-            }
+                
+                [self setValue:set forKey:key];            }
             else
             {
                 // TODO Add userinfo key for merge policy
