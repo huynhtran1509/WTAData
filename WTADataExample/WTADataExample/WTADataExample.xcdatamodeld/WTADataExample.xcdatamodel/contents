@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6254" systemVersion="14C109" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14F27" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Entity" representedClassName="Entity" syncable="YES">
         <attribute name="customDateAttribute" optional="YES" attributeType="Date" syncable="YES">
             <userInfo>
@@ -11,14 +11,59 @@
         <attribute name="stringAttribute" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="PrimaryKeyEntity" representedClassName="PrimaryKeyEntity" syncable="YES">
+        <attribute name="customImportString" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="customPrimaryKey" attributeType="String" syncable="YES"/>
         <attribute name="data" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="mergeAndPruneEntities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RelationshipEntity" inverseName="mergeAndPruneParent" inverseEntity="RelationshipEntity" syncable="YES">
+            <userInfo>
+                <entry key="MergePolicy" value="MergeAndPrune"/>
+            </userInfo>
+        </relationship>
+        <relationship name="mergeAndPruneSingleEntity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RelationshipEntity" inverseName="singleMergeAndPruneParent" inverseEntity="RelationshipEntity" syncable="YES">
+            <userInfo>
+                <entry key="MergePolicy" value="MergeAndPrune"/>
+            </userInfo>
+        </relationship>
+        <relationship name="mergeEntities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RelationshipEntity" inverseName="mergeParent" inverseEntity="RelationshipEntity" syncable="YES">
+            <userInfo>
+                <entry key="MergePolicy" value="Merge"/>
+            </userInfo>
+        </relationship>
+        <relationship name="mergeSingleEntity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RelationshipEntity" inverseName="singleMergeParent" inverseEntity="RelationshipEntity" syncable="YES">
+            <userInfo>
+                <entry key="MergePolicy" value="Merge"/>
+            </userInfo>
+        </relationship>
+        <relationship name="replaceEntities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RelationshipEntity" inverseName="replaceParent" inverseEntity="RelationshipEntity" syncable="YES">
+            <userInfo>
+                <entry key="MergePolicy" value="Replace"/>
+            </userInfo>
+        </relationship>
+        <relationship name="replaceSingleEntity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RelationshipEntity" inverseName="singleReplaceParent" inverseEntity="RelationshipEntity" syncable="YES">
+            <userInfo>
+                <entry key="MergePolicy" value="Replace"/>
+            </userInfo>
+        </relationship>
         <userInfo>
             <entry key="PrimaryAttribute" value="customPrimaryKey"/>
         </userInfo>
     </entity>
+    <entity name="RelationshipEntity" representedClassName="RelationshipEntity" syncable="YES">
+        <attribute name="primaryKey" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="testString" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="mergeAndPruneParent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PrimaryKeyEntity" inverseName="mergeAndPruneEntities" inverseEntity="PrimaryKeyEntity" syncable="YES"/>
+        <relationship name="mergeParent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PrimaryKeyEntity" inverseName="mergeEntities" inverseEntity="PrimaryKeyEntity" syncable="YES"/>
+        <relationship name="replaceParent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PrimaryKeyEntity" inverseName="replaceEntities" inverseEntity="PrimaryKeyEntity" syncable="YES"/>
+        <relationship name="singleMergeAndPruneParent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PrimaryKeyEntity" inverseName="mergeAndPruneSingleEntity" inverseEntity="PrimaryKeyEntity" syncable="YES"/>
+        <relationship name="singleMergeParent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PrimaryKeyEntity" inverseName="mergeSingleEntity" inverseEntity="PrimaryKeyEntity" syncable="YES"/>
+        <relationship name="singleReplaceParent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PrimaryKeyEntity" inverseName="replaceSingleEntity" inverseEntity="PrimaryKeyEntity" syncable="YES"/>
+        <userInfo>
+            <entry key="PrimaryAttribute" value="primaryKey"/>
+        </userInfo>
+    </entity>
     <elements>
         <element name="Entity" positionX="-63" positionY="-18" width="128" height="105"/>
-        <element name="PrimaryKeyEntity" positionX="-63" positionY="9" width="128" height="75"/>
+        <element name="PrimaryKeyEntity" positionX="-63" positionY="9" width="128" height="180"/>
+        <element name="RelationshipEntity" positionX="-54" positionY="18" width="128" height="165"/>
     </elements>
 </model>

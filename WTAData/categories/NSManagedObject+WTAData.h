@@ -100,7 +100,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Returns count of entities of a given, in a NSManagedObjectContext, that pass a speified searchFilter.
  */
-+ (NSUInteger)countOfEntitiesWithPredicate:(NSPredicate *)searchFilter inContext:(NSManagedObjectContext *)context  error:(NSError**)error;
++ (NSUInteger)countOfEntitiesWithPredicate:(nullable NSPredicate *)searchFilter inContext:(NSManagedObjectContext *)context  error:(NSError**)error;
 
 /**
  Creates a NSAsynchronousFetchRequests with the specified predicate, sort descriptor, and completion
