@@ -60,11 +60,11 @@ static NSString * const kRelationshipMergePolicyKey = @"MergePolicy";
 /// removed and replaced with the JSON items
 static NSString * const kMergePolicyReplace = @"Replace";
 
-/// Merge Relationship Policy - Updates any exisiting objects found in the relationships based on
+/// Merge Relationship Policy - Updates any existing objects found in the relationships based on
 /// the primary key. This policy does not delete any objects.
 static NSString * const kMergePolicyMerge = @"Merge";
 
-/// Merge and Prune Relationship Policy - Updates any exisiting objects found in the relationships
+/// Merge and Prune Relationship Policy - Updates any existing objects found in the relationships
 /// based on the primary key. Any items not in the import set will be pruned from the relationship
 /// set.
 static NSString * const kMergePolicyMergeAndPrune = @"MergeAndPrune";
