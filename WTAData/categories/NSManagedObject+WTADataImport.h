@@ -47,27 +47,27 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - UserInfo Keys
 
 /// Key to specify the name of the JSON key to use when importing an attribute or relationship
-static NSString * const kImportNameKey = @"ImportName";
+static NSString * const WTAImportNameKey = @"ImportName";
 
 /// Key to specify the date format to use when importing a JSON string as an NSDate
-static NSString * const kDateFormatKey = @"DateFormat";
+static NSString * const WTAImportDateFormatKey = @"DateFormat";
 
 /// Key used to specify the merge policy for relationships
-static NSString * const kRelationshipMergePolicyKey = @"MergePolicy";
+static NSString * const WTAImportRelationshipMergePolicyKey = @"MergePolicy";
 
 /// Replace Relationship Policy (DEFAULT) - The default policy for relationship imports.  If a
 /// custom merge policy is not specified, this is the one that is used. All existing items are
 /// removed and replaced with the JSON items
-static NSString * const kMergePolicyReplace = @"Replace";
+static NSString * const WTAImportMergePolicyReplace = @"Replace";
 
 /// Merge Relationship Policy - Updates any existing objects found in the relationships based on
 /// the primary key. This policy does not delete any objects.
-static NSString * const kMergePolicyMerge = @"Merge";
+static NSString * const WTAImportMergePolicyMerge = @"Merge";
 
 /// Merge and Prune Relationship Policy - Updates any existing objects found in the relationships
 /// based on the primary key. Any items not in the import set will be pruned from the relationship
 /// set.
-static NSString * const kMergePolicyMergeAndPrune = @"MergeAndPrune";
+static NSString * const WTAImportMergePolicyMergeAndPrune = @"MergeAndPrune";
 
 typedef NS_ENUM(NSUInteger, WTARelationshipMergePolicy)
 {

@@ -52,7 +52,7 @@
             NSString *importKey = primaryAttributeString;
             
             // If a custom key has been set, use that
-            NSString *customImportKey = [primaryAttribute userInfo][kImportNameKey];
+            NSString *customImportKey = [primaryAttribute userInfo][WTAImportNameKey];
             if (customImportKey)
             {
                 importKey = customImportKey;
@@ -143,7 +143,7 @@
         NSString *importKey = key;
         
         // If there's a custom one, we'll use that instaed
-        NSString *customImportKey = [description userInfo][kImportNameKey];
+        NSString *customImportKey = [description userInfo][WTAImportNameKey];
         id value;
         if ([customImportKey containsString:@","])
         {
@@ -176,7 +176,7 @@
                 {
                     NSDateFormatter *dateFormatter = defaultDateFormatter;
                     
-                    NSString *customFormat = [description userInfo][kDateFormatKey];
+                    NSString *customFormat = [description userInfo][WTAImportDateFormatKey];
                     if (customFormat)
                     {
                         dateFormatter = [NSDateFormatter new];
@@ -216,11 +216,11 @@
 {
     WTARelationshipMergePolicy mergePolicy = WTAMergePolicyReplace;
     
-    if ([string isEqualToString:kMergePolicyMerge])
+    if ([string isEqualToString:WTAImportMergePolicyMerge])
     {
         mergePolicy = WTAMergePolicyMerge;
     }
-    else if ([string isEqualToString:kMergePolicyMergeAndPrune])
+    else if ([string isEqualToString:WTAImportMergePolicyMergeAndPrune])
     {
         mergePolicy = WTAMergePolicyMergeAndPrune;
     }
@@ -235,7 +235,7 @@
     NSString *importKey = key;
     
     // If there's a custom one, we'll use that instaed
-    NSString *customImportKey = [relationshipDescription userInfo][kImportNameKey];
+    NSString *customImportKey = [relationshipDescription userInfo][WTAImportNameKey];
     id value;
     if ([customImportKey containsString:@","])
     {
@@ -261,7 +261,7 @@
     // If there's a value to be imported for that key
     if (value)
     {
-        WTARelationshipMergePolicy mergePolicy = [self mergePolicyFromString:relationshipDescription.userInfo[kRelationshipMergePolicyKey]];
+        WTARelationshipMergePolicy mergePolicy = [self mergePolicyFromString:relationshipDescription.userInfo[WTAImportRelationshipMergePolicyKey]];
         [self importRelationship:relationshipDescription
                        withValue:value
                           forKey:key
@@ -358,7 +358,6 @@
     }
     else
     {
-        // TODO Add userinfo key for merge policy
         if ([self valueForKey:key] && mergePolicy == WTAMergePolicyReplace)
         {
             [[self managedObjectContext] deleteObject:[self valueForKey:key]];
@@ -406,7 +405,7 @@
             NSAttributeDescription *primaryAttribute = [description primaryAttribute];
             
             NSString *importKey = [primaryAttribute name];
-            NSString *customImportKey = [primaryAttribute userInfo][kImportNameKey];
+            NSString *customImportKey = [primaryAttribute userInfo][WTAImportNameKey];
             if (customImportKey)
             {
                 importKey = customImportKey;
