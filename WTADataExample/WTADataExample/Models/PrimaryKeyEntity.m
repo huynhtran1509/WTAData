@@ -9,5 +9,9 @@
 @implementation PrimaryKeyEntity
 
 // Custom logic goes here.
+- (void)importCustomImportString:(NSString*)importString
+{
+    self.customImportString = [NSString stringWithFormat:@"CUSTOM IMPORTED: %@", importString];
+}
 
 @end

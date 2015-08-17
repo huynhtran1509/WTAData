@@ -152,6 +152,8 @@
     [NSDateFormatter setDefaultImportDateFormat:currentDateFormat];
 }
 
+#pragma mark - Array Imports
+
 - (void)testImportArrayPrimaryKey
 {
     NSDictionary *entityWithMissingPrimaryAttribute = @{@"customPrimaryKey": @"KEY001",
@@ -199,6 +201,21 @@
     XCTAssertNotNil(entity,@"Import with primary key and test data as NSNull failed");
     XCTAssertNil(entity.data, @"Import with primary key and test data as NSNull failed to set data to nil");
     
+}
+
+#pragma mark - Custom Import Overrides
+
+- (void)testCustomImportString
+{
+    NSDictionary *entityWithDataContent = @{@"customPrimaryKey": @"KEY001",
+                                            @"customImportString": @"import string"};
+    
+    PrimaryKeyEntity *entity = [PrimaryKeyEntity importEntityFromObject:entityWithDataContent
+                                                                context:self.wtaData.mainContext];
+    
+    XCTAssertNotNil(entity);
+    XCTAssert([entity.customImportString isEqualToString:@"CUSTOM IMPORTED: import string"],
+             "Custom import returned invalid string");
 }
 
 #pragma mark - Relationship Merge Tests
