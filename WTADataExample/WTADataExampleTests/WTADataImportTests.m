@@ -29,6 +29,7 @@
 
 #import "WTAData.h"
 #import "PrimaryKeyEntity.h"
+#import "RelationshipEntity.h"
 #import "NSManagedObject+WTADataImport.h"
 #import "NSManagedObject+WTAData.h"
 #import "Entity.h"
@@ -200,6 +201,246 @@
     
 }
 
+#pragma mark - Relationship Merge Tests
+
+- (void)testImportRelationshipWithReplaceMergePolicy
+{
+    NSDictionary *entityWithInitialRelationships = @{@"customPrimaryKey": @"KEY001",
+                                                     @"replaceEntities": @[
+                                                             @{@"primaryKey": @1, @"testString": @"primaryKey1"},
+                                                             @{@"primaryKey": @2, @"testString": @"primaryKey2"},
+                                                             @{@"primaryKey": @3, @"testString": @"primaryKey3"},
+                                                             @{@"primaryKey": @4, @"testString": @"primaryKey4"},
+                                                             ]};
+    PrimaryKeyEntity *importedObject = [PrimaryKeyEntity importEntityFromObject:entityWithInitialRelationships
+                                                               context:self.wtaData.mainContext];
+    
+    XCTAssertNotNil(importedObject, "Imported object should not be nil");
+    XCTAssertTrue(importedObject.replaceEntities.count == 4);
+    
+    NSArray *relationshipEntities = [self sortedRelationshipEnityArray:importedObject.replaceEntities];
+    RelationshipEntity *lastEntity = [relationshipEntities lastObject];
+    
+    NSDictionary *entityWithUpdateAndNew = @{@"customPrimaryKey": @"KEY001",
+                                             @"replaceEntities": @[
+                                                     @{@"primaryKey": @4, @"testString": @"primaryKey4"},
+                                                     @{@"primaryKey": @5, @"testString": @"primaryKey5"},
+                                                     ]};
+    
+    importedObject = [PrimaryKeyEntity importEntityFromObject:entityWithUpdateAndNew
+                                                      context:self.wtaData.mainContext];
+    
+    XCTAssertNotNil(importedObject, "Imported object should not be nil");
+    XCTAssertTrue(importedObject.replaceEntities.count == 2);
+
+    relationshipEntities = [self sortedRelationshipEnityArray:importedObject.replaceEntities];
+    
+    // Make sure objects are actually deleted and replaced
+    XCTAssert(lastEntity != relationshipEntities.firstObject, "Managed Relationship object was not replaced");
+
+    NSUInteger keyCount = 4;
+    
+    for (RelationshipEntity *relationshipEntity in relationshipEntities)
+    {
+        XCTAssert([[NSNumber numberWithUnsignedInteger:keyCount] isEqualToNumber:relationshipEntity.primaryKey],
+                  "Imported keys should match");
+        keyCount++;
+    }
+}
+
+
+- (void)testImportRelationshipWithMergingMergePolicy
+{
+    NSDictionary *entityWithInitialRelationships = @{@"customPrimaryKey": @"KEY001",
+                                                     @"mergeEntities": @[
+                                                             @{@"primaryKey": @1, @"testString": @"primaryKey1"},
+                                                             @{@"primaryKey": @2, @"testString": @"primaryKey2"},
+                                                             @{@"primaryKey": @3, @"testString": @"primaryKey3"},
+                                                             ]};
+    PrimaryKeyEntity *importedObject = [PrimaryKeyEntity importEntityFromObject:entityWithInitialRelationships
+                                                                        context:self.wtaData.mainContext];
+    
+    XCTAssertNotNil(importedObject, "Imported object should not be nil");
+    XCTAssertTrue(importedObject.mergeEntities.count == 3);
+    
+    NSArray *relationshipEntities = [self sortedRelationshipEnityArray:importedObject.mergeEntities];
+    RelationshipEntity *firstEntity = [relationshipEntities firstObject];
+    
+    NSDictionary *entityWithUpdateAndNew = @{@"customPrimaryKey": @"KEY001",
+                                             @"mergeEntities": @[
+                                                     @{@"primaryKey": @1, @"testString": @"updated primaryKey1"},
+                                                     @{@"primaryKey": @4, @"testString": @"primaryKey4"},
+                                                     @{@"primaryKey": @5, @"testString": @"primaryKey5"},
+                                                     ]};
+    
+    importedObject = [PrimaryKeyEntity importEntityFromObject:entityWithUpdateAndNew
+                                                      context:self.wtaData.mainContext];
+    
+    XCTAssertNotNil(importedObject, "Imported object should not be nil");
+    XCTAssertTrue(importedObject.mergeEntities.count == 5);
+    
+    relationshipEntities = [self sortedRelationshipEnityArray:importedObject.mergeEntities];
+    
+    XCTAssert(firstEntity == relationshipEntities.firstObject,
+              "Entity was not merged retaining object ID");
+    XCTAssert([firstEntity.testString isEqualToString:@"updated primaryKey1"],
+              "Attribute on existing entity was not updated.");
+    
+    NSUInteger keyCount = 1;
+    
+    for (RelationshipEntity *relationshipEntity in relationshipEntities)
+    {
+        XCTAssert([[NSNumber numberWithUnsignedInteger:keyCount] isEqualToNumber:relationshipEntity.primaryKey],
+                  "Imported keys should match");
+        keyCount++;
+    }
+    
+    XCTAssert(keyCount == 6, "The proper number of items were not imported");
+}
+
+- (void)testImportRelationshipWithMergeAndPruneMergePolicy
+{
+    NSDictionary *entityWithInitialRelationships = @{@"customPrimaryKey": @"KEY001",
+                                                     @"mergeAndPruneEntities": @[
+                                                             @{@"primaryKey": @1, @"testString": @"primaryKey1"},
+                                                             @{@"primaryKey": @2, @"testString": @"primaryKey2"},
+                                                             @{@"primaryKey": @3, @"testString": @"primaryKey3"},
+                                                             ]};
+    PrimaryKeyEntity *importedObject = [PrimaryKeyEntity importEntityFromObject:entityWithInitialRelationships
+                                                                        context:self.wtaData.mainContext];
+    
+    XCTAssertNotNil(importedObject, "Imported object should not be nil");
+    XCTAssertTrue(importedObject.mergeAndPruneEntities.count == 3);
+    
+    NSArray *relationshipEntities = [self sortedRelationshipEnityArray:importedObject.mergeAndPruneEntities];
+    RelationshipEntity *firstEntity = relationshipEntities[0];
+    
+    NSDictionary *entityWithUpdateAndNew = @{@"customPrimaryKey": @"KEY001",
+                                             @"mergeAndPruneEntities": @[
+                                                     @{@"primaryKey": @1, @"testString": @"Updated Primary Key 1"},
+                                                     @{@"primaryKey": @5, @"testString": @"primaryKey5"},
+                                                     ]};
+    
+    importedObject = [PrimaryKeyEntity importEntityFromObject:entityWithUpdateAndNew
+                      
+                                                      context:self.wtaData.mainContext];
+    
+    XCTAssertNotNil(importedObject, "Imported object should not be nil");
+    XCTAssertTrue(importedObject.mergeAndPruneEntities.count == 2);
+    
+    relationshipEntities = [self sortedRelationshipEnityArray:importedObject.mergeAndPruneEntities];
+    
+    RelationshipEntity *updatedFirstEntity = relationshipEntities[0];
+    XCTAssert(updatedFirstEntity == firstEntity, "First object was not properly updated");
+    XCTAssert(firstEntity.primaryKey.unsignedIntegerValue == 1, "First entity should have key of 1");
+    XCTAssert([firstEntity.testString isEqualToString:@"Updated Primary Key 1"], "First entity should have been updated with new test string");
+    
+    RelationshipEntity *secondEntity = relationshipEntities[1];
+    XCTAssert(secondEntity.primaryKey.unsignedIntegerValue == 5, "Second entity should have key of 5");
+}
+
+
+#pragma mark - Relationship Single Item Merge Tests
+- (void)testImportSingleRelationshipWithReplaceMergePolicy
+{
+    NSDictionary *entityWithInitialRelationships = @{@"customPrimaryKey": @"KEY001",
+                                                     @"replaceSingleEntity":
+                                                             @{@"primaryKey": @1, @"testString": @"primaryKey1"}
+                                                             };
+    PrimaryKeyEntity *importedObject = [PrimaryKeyEntity importEntityFromObject:entityWithInitialRelationships
+                                                                        context:self.wtaData.mainContext];
+    
+    XCTAssertNotNil(importedObject, "Imported object should not be nil");
+    
+    RelationshipEntity *lastEntity = (RelationshipEntity*)importedObject.replaceSingleEntity;
+    
+    NSDictionary *entityWithUpdateAndNew = @{@"customPrimaryKey": @"KEY001",
+                                             @"replaceSingleEntity":
+                                                     @{@"primaryKey": @1, @"testString": @"updatedPrimaryKey"},
+                                                     };
+    
+    importedObject = [PrimaryKeyEntity importEntityFromObject:entityWithUpdateAndNew
+                                                      context:self.wtaData.mainContext];
+    
+    XCTAssertNotNil(importedObject.replaceSingleEntity, "Imported object should not be nil");
+    
+    // Make sure objects are actually deleted and replaced
+    XCTAssert(lastEntity != importedObject.replaceSingleEntity, "Managed Relationship object was not replaced");
+    XCTAssert([((RelationshipEntity*)importedObject.replaceSingleEntity).testString isEqualToString:@"updatedPrimaryKey"],
+              "Object testString was not properly updated.");
+}
+
+
+- (void)testImportSingleRelationshipWithMergingMergePolicy
+{
+    NSDictionary *entityWithInitialRelationships = @{@"customPrimaryKey": @"KEY001",
+                                                     @"mergeSingleEntity":
+                                                         @{@"primaryKey": @1, @"testString": @"primaryKey1"}
+                                                     };
+    PrimaryKeyEntity *importedObject = [PrimaryKeyEntity importEntityFromObject:entityWithInitialRelationships
+                                                                        context:self.wtaData.mainContext];
+    
+    XCTAssertNotNil(importedObject, "Imported object should not be nil");
+    
+    RelationshipEntity *lastEntity = (RelationshipEntity*)importedObject.mergeSingleEntity;
+    
+    NSDictionary *entityWithUpdateAndNew = @{@"customPrimaryKey": @"KEY001",
+                                             @"mergeSingleEntity":
+                                                 @{@"primaryKey": @1, @"testString": @"updatedPrimaryKey"},
+                                             };
+    
+    importedObject = [PrimaryKeyEntity importEntityFromObject:entityWithUpdateAndNew
+                                                      context:self.wtaData.mainContext];
+    
+    XCTAssertNotNil(importedObject.mergeSingleEntity, "Imported object should not be nil");
+    
+    // Make sure objects are actually deleted and replaced
+    XCTAssert(lastEntity == importedObject.mergeSingleEntity, "Managed Relationship object was replaced");
+    XCTAssert([((RelationshipEntity*)importedObject.mergeSingleEntity).testString isEqualToString:@"updatedPrimaryKey"],
+              "Object testString was not properly updated.");
+}
+
+- (void)testImportSingleRelationshipWithMergeAndPruneMergePolicy
+{
+    NSDictionary *entityWithInitialRelationships = @{@"customPrimaryKey": @"KEY001",
+                                                     @"mergeAndPruneSingleEntity":
+                                                         @{@"primaryKey": @1, @"testString": @"primaryKey1"}
+                                                     };
+    PrimaryKeyEntity *importedObject = [PrimaryKeyEntity importEntityFromObject:entityWithInitialRelationships
+                                                                        context:self.wtaData.mainContext];
+    
+    XCTAssertNotNil(importedObject, "Imported object should not be nil");
+    
+    RelationshipEntity *lastEntity = (RelationshipEntity*)importedObject.mergeAndPruneSingleEntity;
+    
+    NSDictionary *entityWithUpdateAndNew = @{@"customPrimaryKey": @"KEY001",
+                                             @"mergeAndPruneSingleEntity":
+                                                 @{@"primaryKey": @1, @"testString": @"updatedPrimaryKey"},
+                                             };
+    
+    importedObject = [PrimaryKeyEntity importEntityFromObject:entityWithUpdateAndNew
+                                                      context:self.wtaData.mainContext];
+    
+    XCTAssertNotNil(importedObject.mergeAndPruneSingleEntity, "Imported object should not be nil");
+    
+    // Make sure objects are actually deleted and replaced
+    XCTAssert(lastEntity == importedObject.mergeAndPruneSingleEntity, "Managed Relationship object was replaced");
+    XCTAssert([((RelationshipEntity*)importedObject.mergeAndPruneSingleEntity).testString isEqualToString:@"updatedPrimaryKey"],
+              "Object testString was not properly updated.");
+
+}
+
+#pragma mark - Test Helpers
+
+- (NSArray*)sortedRelationshipEnityArray:(NSSet*)relationships
+{
+    NSArray *relationshipEntities = [relationships allObjects];
+    relationshipEntities = [relationshipEntities sortedArrayUsingComparator:^NSComparisonResult(RelationshipEntity *obj1, RelationshipEntity* obj2) {
+        return [obj1.primaryKey compare:obj2.primaryKey];
+    }];
+    
+    return relationshipEntities;
+}
 
 @end
 

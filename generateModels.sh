@@ -1,0 +1,1 @@
+./tools/mogenerator -M ./WTADataExample/WTADataExample/Models/Generated -H ./WTADataExample/WTADataExample/Models/ -m ./WTADataExample/WTADataExample/WTADataExample.xcdatamodeld/WTADataExample.xcdatamodel -template-var arc=true

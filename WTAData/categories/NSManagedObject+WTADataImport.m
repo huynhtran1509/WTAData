@@ -29,8 +29,6 @@
 #import "NSManagedObject+WTAData.h"
 #import <objc/runtime.h>
 
-NSString * const kRelationshipMergePolicyKey = @"MergePolicy";
-NSString * const kMergePolicyMerge = @"Merge";
 
 @implementation NSManagedObject (WTADataImport)
 
@@ -54,7 +52,7 @@ NSString * const kMergePolicyMerge = @"Merge";
             NSString *importKey = primaryAttributeString;
             
             // If a custom key has been set, use that
-            NSString *customImportKey = [primaryAttribute userInfo][@"ImportName"];
+            NSString *customImportKey = [primaryAttribute userInfo][kImportNameKey];
             if (customImportKey)
             {
                 importKey = customImportKey;
@@ -129,118 +127,12 @@ NSString * const kMergePolicyMerge = @"Merge";
 
 - (void)importValuesForKeyWithDictionary:(NSDictionary *)dictionary
 {
-    //TODO: Finish creation of relationship entitys that don't exist
-    
     // Create date formatter to be used during import
     NSDateFormatter *defaultDateFormatter = [NSDateFormatter new];
     [defaultDateFormatter setDateFormat:[NSDateFormatter defaultImportDateFormat]];
     
     [[[self entity] relationshipsByName] enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        
-        NSRelationshipDescription *relationshipDescription = obj;
-        NSString *importKey = key;
-        
-        // If there's a custom one, we'll use that instaed
-        NSString *customImportKey = [relationshipDescription userInfo][@"ImportName"];
-        id value;
-        if ([customImportKey containsString:@","])
-        {
-            for (NSString *importKeyTest in [customImportKey componentsSeparatedByString:@","])
-            {
-                value = [dictionary valueForKeyPath:importKeyTest];
-                if (value)
-                {
-                    break;
-                }
-            }
-        }
-        else if (customImportKey)
-        {
-            importKey = customImportKey;
-            value = [dictionary valueForKeyPath:importKey];
-        }
-        else
-        {
-            value = [dictionary valueForKey:importKey];
-        }
-        
-        // If there's a value to be imported for that key
-        if (value)
-        {
-            NSEntityDescription *relationshipEntityDescription = [relationshipDescription destinationEntity];
-            
-            if ([relationshipDescription isToMany])
-            {
-                // TODO Add userinfo key for merge policy
-                if (![relationshipDescription.userInfo[kRelationshipMergePolicyKey] isEqualToString:kMergePolicyMerge])
-                {
-                    for (NSManagedObject *existingEntity in [self valueForKey:key])
-                    {
-                        [[self managedObjectContext] deleteObject:existingEntity];
-                    }
-                }
-                
-                Class class = NSClassFromString([relationshipEntityDescription managedObjectClassName]);
-                NSArray *objects = [class importEntitiesFromArray:value context:[self managedObjectContext]];
-                
-                id set;
-                if ([relationshipDescription isOrdered])
-                {
-                    if ([relationshipDescription.userInfo[kRelationshipMergePolicyKey] isEqualToString:kMergePolicyMerge])
-                    {
-                        NSMutableOrderedSet *existingSet = [[self valueForKey:key] mutableCopy];
-                        
-                        for (NSManagedObject *importedObject in objects)
-                        {
-                            if (![existingSet containsObject:importedObject])
-                            {
-                                [existingSet addObject:importedObject];
-                            }
-                        }
-                        
-                        set = existingSet;
-                    }
-                    else
-                    {
-                        set = [[NSOrderedSet alloc] initWithArray:objects];
-                    }
-                }
-                else
-                {
-                    if ([relationshipDescription.userInfo[kRelationshipMergePolicyKey] isEqualToString:kMergePolicyMerge])
-                    {
-                        NSMutableSet *existingSet = [[self valueForKey:key] mutableCopy];
-                        
-                        for (NSManagedObject *importedObject in objects)
-                        {
-                            if (![existingSet containsObject:importedObject])
-                            {
-                                [existingSet addObject:importedObject];
-                            }
-                        }
-                        
-                        set = existingSet;
-                    }
-                    else
-                    {
-                        set = [NSSet setWithArray:objects];
-                    }
-                }
-                
-                [self setValue:set forKey:key];            }
-            else
-            {
-                // TODO Add userinfo key for merge policy
-                if ([self valueForKey:key])
-                {
-                    [[self managedObjectContext] deleteObject:[self valueForKey:key]];
-                }
-                Class class = NSClassFromString([relationshipEntityDescription managedObjectClassName]);
-                NSManagedObject *object = [class importEntityFromObject:value context:[self managedObjectContext]];
-                [self setValue:object forKey:key];
-            }
-        }
-        
+        [self importRelationship:obj forKey:key fromDictionary:dictionary];
     }];
     
     // For every attribute in the entity
@@ -251,7 +143,7 @@ NSString * const kMergePolicyMerge = @"Merge";
         NSString *importKey = key;
         
         // If there's a custom one, we'll use that instaed
-        NSString *customImportKey = [description userInfo][@"ImportName"];
+        NSString *customImportKey = [description userInfo][kImportNameKey];
         id value;
         if ([customImportKey containsString:@","])
         {
@@ -284,7 +176,7 @@ NSString * const kMergePolicyMerge = @"Merge";
                 {
                     NSDateFormatter *dateFormatter = defaultDateFormatter;
                     
-                    NSString *customFormat = [description userInfo][@"DateFormat"];
+                    NSString *customFormat = [description userInfo][kDateFormatKey];
                     if (customFormat)
                     {
                         dateFormatter = [NSDateFormatter new];
@@ -319,6 +211,164 @@ NSString * const kMergePolicyMerge = @"Merge";
     }
 #pragma clang diagnostic pop
 }
+
+- (WTARelationshipMergePolicy)mergePolicyFromString:(NSString*)string
+{
+    WTARelationshipMergePolicy mergePolicy = WTAMergePolicyReplace;
+    
+    if ([string isEqualToString:kMergePolicyMerge])
+    {
+        mergePolicy = WTAMergePolicyMerge;
+    }
+    else if ([string isEqualToString:kMergePolicyMergeAndPrune])
+    {
+        mergePolicy = WTAMergePolicyMergeAndPrune;
+    }
+    
+    return mergePolicy;
+}
+
+- (void)importRelationship:(NSRelationshipDescription*)relationshipDescription
+                    forKey:(NSString*)key
+            fromDictionary:(NSDictionary*)dictionary
+{
+    NSString *importKey = key;
+    
+    // If there's a custom one, we'll use that instaed
+    NSString *customImportKey = [relationshipDescription userInfo][kImportNameKey];
+    id value;
+    if ([customImportKey containsString:@","])
+    {
+        for (NSString *importKeyTest in [customImportKey componentsSeparatedByString:@","])
+        {
+            value = [dictionary valueForKeyPath:importKeyTest];
+            if (value)
+            {
+                break;
+            }
+        }
+    }
+    else if (customImportKey)
+    {
+        importKey = customImportKey;
+        value = [dictionary valueForKeyPath:importKey];
+    }
+    else
+    {
+        value = [dictionary valueForKey:importKey];
+    }
+    
+    // If there's a value to be imported for that key
+    if (value)
+    {
+        WTARelationshipMergePolicy mergePolicy = [self mergePolicyFromString:relationshipDescription.userInfo[kRelationshipMergePolicyKey]];
+        [self importRelationship:relationshipDescription
+                       withValue:value
+                          forKey:key
+                  fromDictionary:dictionary
+                 withMergePolicy:mergePolicy];
+    }
+}
+
+- (void)importRelationship:(NSRelationshipDescription*)relationshipDescription
+                 withValue:(id)value
+                    forKey:(NSString*)key
+            fromDictionary:(NSDictionary*)dictionary
+           withMergePolicy:(WTARelationshipMergePolicy)mergePolicy
+{
+    NSEntityDescription *relationshipEntityDescription = [relationshipDescription destinationEntity];
+    
+    if ([relationshipDescription isToMany])
+    {
+        // If we are going to replace the items, remove the existing objects.
+        if (mergePolicy == WTAMergePolicyReplace)
+        {
+            for (NSManagedObject *existingEntity in [self valueForKey:key])
+            {
+                [[self managedObjectContext] deleteObject:existingEntity];
+            }
+        }
+        
+        Class class = NSClassFromString([relationshipEntityDescription managedObjectClassName]);
+        NSArray *importedObjects = [class importEntitiesFromArray:value context:[self managedObjectContext]];
+        
+        id set;
+        
+        if ([relationshipDescription isOrdered])
+        {
+            // Merge
+            if (mergePolicy == WTAMergePolicyMerge || mergePolicy == WTAMergePolicyMergeAndPrune)
+            {
+                NSMutableOrderedSet *existingSet = [[self valueForKey:key] mutableCopy];
+                
+                if (mergePolicy == WTAMergePolicyMergeAndPrune)
+                {
+                    for (NSManagedObject *existingObject in existingSet)
+                    {
+                        if (![importedObjects containsObject:existingObject])
+                        {
+                            [existingSet removeObject:existingObject];
+                        }
+                    }
+                }
+                
+                for (NSManagedObject *importedObject in importedObjects)
+                {
+                    if (![existingSet containsObject:importedObject])
+                    {
+                        [existingSet addObject:importedObject];
+                    }
+                }
+                
+                set = existingSet;
+            }
+            else
+            {
+                set = [[NSOrderedSet alloc] initWithArray:importedObjects];
+            }
+        }
+        else
+        {
+            if (mergePolicy == WTAMergePolicyMerge || mergePolicy == WTAMergePolicyMergeAndPrune)
+            {
+                NSMutableSet *existingSet = [[self valueForKey:key] mutableCopy];
+                
+                if (mergePolicy == WTAMergePolicyMergeAndPrune)
+                {
+                    [existingSet intersectSet:[NSSet setWithArray:importedObjects]];
+                }
+
+                for (NSManagedObject *importedObject in importedObjects)
+                {
+                    if (![existingSet containsObject:importedObject])
+                    {
+                        [existingSet addObject:importedObject];
+                    }
+                }
+                
+                set = existingSet;
+            }
+            else
+            {
+                set = [NSSet setWithArray:importedObjects];
+            }
+        }
+        
+        [self setValue:set forKey:key];
+    }
+    else
+    {
+        // TODO Add userinfo key for merge policy
+        if ([self valueForKey:key] && mergePolicy == WTAMergePolicyReplace)
+        {
+            [[self managedObjectContext] deleteObject:[self valueForKey:key]];
+        }
+        Class class = NSClassFromString([relationshipEntityDescription managedObjectClassName]);
+        NSManagedObject *object = [class importEntityFromObject:value context:[self managedObjectContext]];
+        [self setValue:object forKey:key];
+    }
+}
+
 
 - (void)importValue:(id)value forKey:(NSString *)key
 {
@@ -356,7 +406,7 @@ NSString * const kMergePolicyMerge = @"Merge";
             NSAttributeDescription *primaryAttribute = [description primaryAttribute];
             
             NSString *importKey = [primaryAttribute name];
-            NSString *customImportKey = [primaryAttribute userInfo][@"ImportName"];
+            NSString *customImportKey = [primaryAttribute userInfo][kImportNameKey];
             if (customImportKey)
             {
                 importKey = customImportKey;

@@ -44,8 +44,39 @@ NS_ASSUME_NONNULL_BEGIN
  into the CoreData model.
  */
 
-FOUNDATION_EXPORT NSString * const kRelationshipMergePolicyKey;
-FOUNDATION_EXPORT NSString * const kMergePolicyMerge;
+#pragma mark - UserInfo Keys
+
+/// Key to specify the name of the JSON key to use when importing an attribute or relationship
+static NSString * const kImportNameKey = @"ImportName";
+
+/// Key to specify the date format to use when importing a JSON string as an NSDate
+static NSString * const kDateFormatKey = @"DateFormat";
+
+/// Key used to specify the merge policy for relationships
+static NSString * const kRelationshipMergePolicyKey = @"MergePolicy";
+
+/// Replace Relationship Policy (DEFAULT) - The default policy for relationship imports.  If a
+/// custom merge policy is not specified, this is the one that is used. All existing items are
+/// removed and replaced with the JSON items
+static NSString * const kMergePolicyReplace = @"Replace";
+
+/// Merge Relationship Policy - Updates any exisiting objects found in the relationships based on
+/// the primary key. This policy does not delete any objects.
+static NSString * const kMergePolicyMerge = @"Merge";
+
+/// Merge and Prune Relationship Policy - Updates any exisiting objects found in the relationships
+/// based on the primary key. Any items not in the import set will be pruned from the relationship
+/// set.
+static NSString * const kMergePolicyMergeAndPrune = @"MergeAndPrune";
+
+typedef NS_ENUM(NSUInteger, WTARelationshipMergePolicy)
+{
+    WTAMergePolicyReplace,
+    WTAMergePolicyMerge,
+    WTAMergePolicyMergeAndPrune
+};
+
+#pragma mark - Interface
 
 @interface NSManagedObject (WTADataImport)
 
