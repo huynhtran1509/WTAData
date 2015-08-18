@@ -43,8 +43,6 @@
     }
 }
 
-
-
 + (NSEntityDescription *)entityDescriptionInContext:(NSManagedObjectContext *)context
 {
     return [NSEntityDescription entityForName:[self entityName] inManagedObjectContext:context];
@@ -60,6 +58,36 @@
     return [NSEntityDescription insertNewObjectForEntityForName:[self entityName] inManagedObjectContext:context];
 }
 
+- (instancetype)inContext:(NSManagedObjectContext *)otherContext error:(NSError**)error
+{
+    if ([self.objectID isTemporaryID])
+    {
+        BOOL success = [[self managedObjectContext] obtainPermanentIDsForObjects:@[self] error:error];
+        if (!success) {
+            return nil;
+        }
+        if (error) {
+            return nil;
+        }
+    }
+    
+    NSManagedObject *selfInOtherContext = [otherContext existingObjectWithID:self.objectID error:error];
+    return selfInOtherContext;
+}
+
++ (NSUInteger)countWithContext:(NSManagedObjectContext *)context error:(NSError**)error
+{
+    return [self countOfEntitiesWithPredicate:nil inContext:context error:error];
+}
+
++ (NSUInteger)countOfEntitiesWithPredicate:(NSPredicate *)searchFilter
+                                 inContext:(NSManagedObjectContext *)context
+                                     error:(NSError**)error
+{
+    NSFetchRequest* request = [self fetchRequestWithPredicate:searchFilter];
+    NSUInteger count = [context countForFetchRequest:request error:error];
+    return count;
+}
 
 + (NSAsynchronousFetchRequest *)asyncFetchRequestWithPredicate:(NSPredicate *)predicate sortDescriptors:(NSArray *)sortDescriptors completion:(NSPersistentStoreAsynchronousFetchResultCompletionBlock)completion
 {
