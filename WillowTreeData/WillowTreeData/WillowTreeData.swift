@@ -9,6 +9,9 @@
 import Foundation
 import CoreData
 
+/**
+*  This struct is used to initialize a DataController object.
+*/
 public struct PersistentStore : CustomStringConvertible
 {
     public let storeType: String
@@ -17,7 +20,24 @@ public struct PersistentStore : CustomStringConvertible
     public let options: [NSObject : AnyObject]?
     public let autoMigrating: Bool
 
-    public init(storeType: String = NSSQLiteStoreType, URL: NSURL = getDocumentURLForFilename("Data.sqlite"), configuration: String? = nil, options: [NSObject : AnyObject]? = nil, autoMigrating: Bool = false)
+    /**
+    Initializer for PersistentStore struct
+    
+    - parameter storeType:     This is the type of NSPersistentStore you want to create. Examples include NSSQLiteStoreType (the default), NSInMemoryStore, and others.
+    - parameter URL:           The URL for the peristent store. Required, but might be unused depending on the store type (an in-memory store doesn't actually save anything to disk)
+    - parameter configuration: The configuration corresponding to this store. Usually nil, but has it's uses. See the model editory.
+    - parameter options:       Standard persistent store options dictionary, this also varies based on type of store
+    - parameter autoMigrating: Send true to have this store handle migration automatically. Defaults to false.
+    
+    - returns: A PersistentStore structure suitable for use in initializing a DataController
+    */
+    public init(
+        storeType: String = NSSQLiteStoreType,
+        URL: NSURL = getDocumentURLForFilename("Data.sqlite"),
+        configuration: String? = nil,
+        options: [NSObject : AnyObject]? = nil,
+        autoMigrating: Bool = false
+        )
     {
         self.storeType = storeType
         self.URL = URL
@@ -45,18 +65,27 @@ public struct PersistentStore : CustomStringConvertible
     }
 }
 
+/// The clearing-house for all things data-related.
 public class DataController
 {
     private let _context: NSManagedObjectContext
     private let savingContext: NSManagedObjectContext
     
-    public var context: NSManagedObjectContext {
+    /// Main-queue context
+    public final var context: NSManagedObjectContext {
         get {
             return _context
         }
     }
     
-    public init(persistentStores: [PersistentStore] = [PersistentStore()])
+    /**
+    DataController initializer.
+    
+    - parameter persistentStores: An array of PersistentStore structs. These will be added to the persistent store coordinator in the order they're passed in. They are added on a background queue, so may not be available immediately.
+    
+    - returns: An initialized DataController.
+    */
+    required public init(persistentStores: [PersistentStore] = [PersistentStore()])
     {
         guard let mom = NSManagedObjectModel.mergedModelFromBundles([NSBundle.mainBundle()]) else
         {
@@ -85,6 +114,11 @@ public class DataController
 
 public extension DataController
 {
+    /**
+    This method always runs on the main thread, regardless of which thread you called it from. You
+    asked to save, so you should expect the hit. Note that the actual save-to-disk part does happen on a 
+    background queue, so the hit will be very small!
+    */
     public func save() {
         if NSThread.currentThread() != NSThread.mainThread()
         {
@@ -121,7 +155,7 @@ public extension DataController
     }
 }
 
-public func getDocumentURLForFilename(filename: String) -> NSURL
+private func getDocumentURLForFilename(filename: String) -> NSURL
 {
     let fileManager = NSFileManager.defaultManager()
     guard let url = try? fileManager.URLForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomain: NSSearchPathDomainMask.UserDomainMask, appropriateForURL: nil, create: false) else {
