@@ -99,8 +99,7 @@ public extension DataController
                 try self.context.save()
             }
             catch let error as NSError {
-                print("Error saving: \(error.localizedDescription)\n\(error.userInfo)")
-                abort()
+                fatalError("Error saving: \(error.localizedDescription)\n\(error.userInfo)")
             }
         }
         
@@ -115,8 +114,8 @@ public extension DataController
             }
             catch let error as NSError
             {
-                print("error saving: \(error.localizedDescription)\n\(error.userInfo)")
-                abort() // if we got here, then saving this same data worked above so we shouldn't be able to get here
+                fatalError("error saving: \(error.localizedDescription)\n\(error.userInfo)")
+                // if we got here, then saving this same data worked above so we shouldn't be able to get here
             }
         }
     }
