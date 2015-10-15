@@ -9,9 +9,7 @@
 import Foundation
 import CoreData
 
-/**
-*  This struct is used to initialize a DataController object.
-*/
+///  This struct is used to initialize a DataController object.
 public struct PersistentStore : CustomStringConvertible
 {
     public let storeType: String
