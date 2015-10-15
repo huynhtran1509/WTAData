@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="qR6-qV-4RN">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="15B30a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="qR6-qV-4RN">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -18,6 +19,7 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="D1p-fb-VbI">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="dataSource" destination="vXZ-lx-hvc" id="Lkd-Yx-8Ws"/>
@@ -25,6 +27,7 @@
                                 </connections>
                             </tableView>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="D1p-fb-VbI" secondAttribute="bottom" id="5yw-QC-STA"/>
@@ -36,6 +39,7 @@
                     <navigationItem key="navigationItem" id="B2f-Qh-2LF"/>
                     <connections>
                         <outlet property="tableView" destination="D1p-fb-VbI" id="fw6-TG-nDw"/>
+                        <segue destination="8g7-13-9BA" kind="show" identifier="otherViewController" id="6Gi-87-434"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
@@ -50,6 +54,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="SkS-qp-kGh">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -59,6 +64,45 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hb2-Ve-Coo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="586" y="-493"/>
+        </scene>
+        <!--Other View Controller-->
+        <scene sceneID="ifz-8W-iv6">
+            <objects>
+                <viewController id="8g7-13-9BA" customClass="OtherViewController" customModule="WTADataExample" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="yi9-ii-bXP"/>
+                        <viewControllerLayoutGuide type="bottom" id="Pu6-lQ-kJy"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="WyH-1F-1oq">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ZeS-E6-RCZ">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <animations/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="8g7-13-9BA" id="vuy-iv-x58"/>
+                                    <outlet property="delegate" destination="8g7-13-9BA" id="EfV-Au-Hzk"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="ZeS-E6-RCZ" firstAttribute="top" secondItem="yi9-ii-bXP" secondAttribute="bottom" constant="-64" id="ExN-kG-6EV"/>
+                            <constraint firstItem="Pu6-lQ-kJy" firstAttribute="top" secondItem="ZeS-E6-RCZ" secondAttribute="bottom" id="KfU-fO-rWW"/>
+                            <constraint firstItem="ZeS-E6-RCZ" firstAttribute="leading" secondItem="WyH-1F-1oq" secondAttribute="leading" id="XPG-wu-hfq"/>
+                            <constraint firstAttribute="trailing" secondItem="ZeS-E6-RCZ" secondAttribute="trailing" id="iNs-DM-SUv"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="ZeS-E6-RCZ" id="OfL-Qg-XIs"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CGt-sy-wB7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="472" y="448"/>
         </scene>
     </scenes>
 </document>
