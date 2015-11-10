@@ -77,6 +77,19 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)defaultConfigurationWithModelNamed:(NSString *)modelName;
 
 /**
+ *  Initialize a data configuration using the specified model. This method will set up the store in 
+ *  the /Library/Caches directory, so it will not be backed up to iCloud. This should only be used for 
+ *  "replaceable" data, never for user-generated data.
+ *
+ *  Also handy on the AppleTV because the default above doesn't work.
+ *
+ *  @param modelName name of the managed object model to load
+ *
+ *  @return instance of the WTADataConfiguration class
+ */
++ (instancetype)defaultCacheConfigurationWithModelNamed:(NSString *)modelName;
+
+/**
  Returns default persistent store coordinator options for use in creating a custom configuration.
  
  @return the default persistent store coordinator options

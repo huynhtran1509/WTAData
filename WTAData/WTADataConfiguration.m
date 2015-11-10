@@ -30,6 +30,16 @@
 
 + (instancetype)defaultConfigurationWithModelNamed:(NSString *)modelName
 {
+    return [self defaultConfigurationWithModelNamed:modelName baseStoreDirectoryURL:[self applicationSupportDirectoryURL]];
+}
+
++ (instancetype)defaultCacheConfigurationWithModelNamed:(NSString *)modelName
+{
+    return [self defaultConfigurationWithModelNamed:modelName baseStoreDirectoryURL:[self cachesDirectoryURL]];
+}
+
++ (instancetype)defaultConfigurationWithModelNamed:(NSString *)modelName baseStoreDirectoryURL:(NSURL*)baseStoreDirectoryURL
+{
     WTADataConfiguration *configuration = [WTADataConfiguration new];
     
     // Set the managed object model file url
@@ -43,7 +53,7 @@
     // Set the default persistent store based on the model name
     NSString *bundleName = (NSString*)[[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString*)kCFBundleNameKey];
     NSString *storeName = [NSString stringWithFormat:@"%@.sqlite", modelName];
-    NSURL *persistentStoreFileURL = [self applicationSupportDirectoryURL];
+    NSURL *persistentStoreFileURL = baseStoreDirectoryURL;
     persistentStoreFileURL = [persistentStoreFileURL URLByAppendingPathComponent:bundleName];
     persistentStoreFileURL = [persistentStoreFileURL URLByAppendingPathComponent:storeName];
     [configuration setPersistentStoreFileURL:persistentStoreFileURL];
@@ -63,6 +73,11 @@
 + (NSURL *)applicationSupportDirectoryURL
 {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject];
+}
+
++ (NSURL *)cachesDirectoryURL
+{
+    return [[[NSFileManager defaultManager] URLsForDirectory:NSCachesDirectory inDomains:NSUserDomainMask] lastObject];
 }
 
 - (BOOL)deleteExistingStoreFile:(NSError **)error
