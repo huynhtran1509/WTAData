@@ -34,30 +34,38 @@
 - (BOOL)saveContext:(NSError **)error
 {
     __block BOOL hasChanges = NO;
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_9_0
     if ([self concurrencyType] == NSConfinementConcurrencyType)
     {
         hasChanges = [self hasChanges];
     }
     else
     {
+#endif
         [self performBlockAndWait:^{
             hasChanges = [self hasChanges];
         }];
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_9_0
     }
+#endif
     
     __block BOOL saveResult = NO;
     @try
     {
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_9_0
         if ([self concurrencyType] == NSConfinementConcurrencyType)
         {
             saveResult = [self save:nil];
         }
         else
         {
+#endif
             [self performBlockAndWait:^{
                 saveResult = [self save:error];
             }];
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_9_0
         }
+#endif
     }
     @catch(NSException *exception)
     {

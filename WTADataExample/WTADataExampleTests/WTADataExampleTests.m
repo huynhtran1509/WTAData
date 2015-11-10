@@ -174,26 +174,28 @@
         entity.stringAttribute = initialStringValue;
         
     } completion:^(BOOL savedChanges, NSError *error) {
-       
-        //When
-        Entity *backgroundThreadEntity = (Entity *)[self.wtaData.backgroundContext existingObjectWithID:entity.objectID error:nil];
-        
-        //Then
-        XCTAssertNotNil(backgroundThreadEntity);
-        XCTAssertEqualObjects(backgroundThreadEntity.stringAttribute, initialStringValue);
-        
-        [self.wtaData.backgroundContext saveBlock:^(NSManagedObjectContext *context) {
-            //Given
-            Entity *localEntity = (Entity *)[self.wtaData.backgroundContext existingObjectWithID:backgroundThreadEntity.objectID error:nil];
-            
+        [self.wtaData.backgroundContext performBlockAndWait:^{
             //When
-            localEntity.stringAttribute = updatedStringValue;
-        } completion:^(BOOL savedChanges, NSError *error) {
+            Entity *backgroundThreadEntity = (Entity *)[self.wtaData.backgroundContext existingObjectWithID:entity.objectID error:nil];
+            
             //Then
-            XCTAssertEqualObjects(backgroundThreadEntity.stringAttribute, updatedStringValue);
-            [expectation fulfill];
+            XCTAssertNotNil(backgroundThreadEntity);
+            XCTAssertEqualObjects(backgroundThreadEntity.stringAttribute, initialStringValue);
+            
+            [self.wtaData.backgroundContext saveBlock:^(NSManagedObjectContext *context) {
+                //Given
+                Entity *localEntity = (Entity *)[self.wtaData.backgroundContext existingObjectWithID:backgroundThreadEntity.objectID error:nil];
+                
+                //When
+                localEntity.stringAttribute = updatedStringValue;
+            } completion:^(BOOL savedChanges, NSError *error) {
+                [self.wtaData.backgroundContext performBlockAndWait:^{
+                    //Then
+                    XCTAssertEqualObjects(backgroundThreadEntity.stringAttribute, updatedStringValue);
+                }];
+                [expectation fulfill];
+            }];
         }];
-        
     }];
 
     
