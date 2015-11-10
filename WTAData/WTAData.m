@@ -40,6 +40,17 @@
 @end
 
 @implementation WTAData
+- (instancetype)init
+{
+    NSString* dataModelPath = [[NSBundle mainBundle] pathForResource:nil ofType:@"momd"];
+    if (!dataModelPath)
+    {
+        dataModelPath = [[NSBundle mainBundle] pathForResource:nil ofType:@"mom"];
+    }
+    
+    NSString* modelName = [[dataModelPath stringByDeletingPathExtension] lastPathComponent];
+    return [self initWithModelNamed:modelName];
+}
 
 - (instancetype)initWithModelNamed:(NSString *)modelName
 {
