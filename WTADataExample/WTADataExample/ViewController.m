@@ -29,6 +29,7 @@
 #import "WTAData.h"
 #import "NSManagedObject+WTAData.h"
 #import "AppDelegate.h"
+#import <WTADataExample-Swift.h>
 
 @interface ViewController ()
 
@@ -52,12 +53,29 @@
                                               withPredicate:nil
                                             sortDescriptors:@[sortAttribute]];
     [self.fetchController performFetch:nil];
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Other" style:UIBarButtonItemStylePlain target:self action:@selector(showOther:)];
     // Do any additional setup after loading the view, typically from a nib.
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)showOther:(id)sender
+{
+    [self performSegueWithIdentifier:@"otherViewController" sender:self];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"otherViewController"])
+    {
+        WTAData *data = [(AppDelegate*)[[UIApplication sharedApplication] delegate] data];
+        OtherViewController* vc = segue.destinationViewController;
+        vc.persistentStoreURL = data.configuration.persistentStoreFileURL;
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView

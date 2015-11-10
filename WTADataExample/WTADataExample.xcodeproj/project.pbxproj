@@ -31,6 +31,8 @@
 		9FB023921A114576009B7C96 /* NSEntityDescription+WTAData.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FB0238F1A114576009B7C96 /* NSEntityDescription+WTAData.m */; };
 		9FB023931A114576009B7C96 /* NSManagedObject+WTAData.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FB023911A114576009B7C96 /* NSManagedObject+WTAData.m */; };
 		BD13A6E81A8275AE0014DB57 /* WTADataConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = BD13A6E71A8275AE0014DB57 /* WTADataConfiguration.m */; };
+		E1DB47101BD017E50023AF4D /* WillowTreeData.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = E1DB470B1BD017400023AF4D /* WillowTreeData.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E1DB47131BD018350023AF4D /* OtherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DB47121BD018350023AF4D /* OtherViewController.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,7 +43,42 @@
 			remoteGlobalIDString = 03F4742C1A013506003A7A86;
 			remoteInfo = WTADataExample;
 		};
+		E1DB470A1BD017400023AF4D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E1DB47051BD017400023AF4D /* WillowTreeData.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E1DB46CF1BD014E00023AF4D;
+			remoteInfo = WillowTreeData;
+		};
+		E1DB470C1BD017400023AF4D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E1DB47051BD017400023AF4D /* WillowTreeData.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E1DB46D91BD014E00023AF4D;
+			remoteInfo = WillowTreeDataTests;
+		};
+		E1DB470E1BD017DE0023AF4D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E1DB47051BD017400023AF4D /* WillowTreeData.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E1DB46CE1BD014E00023AF4D;
+			remoteInfo = WillowTreeData;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E1DB46FA1BD016AB0023AF4D /* Copy Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				E1DB47101BD017E50023AF4D /* WillowTreeData.framework in Copy Frameworks */,
+			);
+			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		038D58611B823C180007D15B /* Entity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Entity.h; sourceTree = "<group>"; };
@@ -86,6 +123,9 @@
 		9FB023911A114576009B7C96 /* NSManagedObject+WTAData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObject+WTAData.m"; path = "../WTAData/categories/NSManagedObject+WTAData.m"; sourceTree = "<group>"; };
 		BD13A6E61A8275AE0014DB57 /* WTADataConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WTADataConfiguration.h; path = ../WTAData/WTADataConfiguration.h; sourceTree = "<group>"; };
 		BD13A6E71A8275AE0014DB57 /* WTADataConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WTADataConfiguration.m; path = ../WTAData/WTADataConfiguration.m; sourceTree = "<group>"; };
+		E1DB47051BD017400023AF4D /* WillowTreeData.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = WillowTreeData.xcodeproj; sourceTree = "<group>"; };
+		E1DB47111BD018350023AF4D /* WTADataExample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WTADataExample-Bridging-Header.h"; sourceTree = "<group>"; };
+		E1DB47121BD018350023AF4D /* OtherViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OtherViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +183,7 @@
 				03F4742F1A013506003A7A86 /* WTADataExample */,
 				03F4744C1A013506003A7A86 /* WTADataExampleTests */,
 				03F4742E1A013506003A7A86 /* Products */,
+				E1DB47051BD017400023AF4D /* WillowTreeData.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -163,11 +204,13 @@
 				03F474351A013506003A7A86 /* AppDelegate.m */,
 				03F4743A1A013506003A7A86 /* ViewController.h */,
 				03F4743B1A013506003A7A86 /* ViewController.m */,
+				E1DB47121BD018350023AF4D /* OtherViewController.swift */,
 				03F4743D1A013506003A7A86 /* Main.storyboard */,
 				03F474401A013506003A7A86 /* Images.xcassets */,
 				03F474421A013506003A7A86 /* LaunchScreen.xib */,
 				03F474371A013506003A7A86 /* WTADataExample.xcdatamodeld */,
 				03F474301A013506003A7A86 /* Supporting Files */,
+				E1DB47111BD018350023AF4D /* WTADataExample-Bridging-Header.h */,
 			);
 			path = WTADataExample;
 			sourceTree = "<group>";
@@ -218,6 +261,15 @@
 			name = WTAData;
 			sourceTree = "<group>";
 		};
+		E1DB47061BD017400023AF4D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E1DB470B1BD017400023AF4D /* WillowTreeData.framework */,
+				E1DB470D1BD017400023AF4D /* WillowTreeDataTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -228,10 +280,12 @@
 				03F474291A013506003A7A86 /* Sources */,
 				03F4742A1A013506003A7A86 /* Frameworks */,
 				03F4742B1A013506003A7A86 /* Resources */,
+				E1DB46FA1BD016AB0023AF4D /* Copy Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				E1DB470F1BD017DE0023AF4D /* PBXTargetDependency */,
 			);
 			name = WTADataExample;
 			productName = WTADataExample;
@@ -263,6 +317,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0710;
+				LastSwiftUpdateCheck = 0700;
 				ORGANIZATIONNAME = "WillowTree, Inc.";
 				TargetAttributes = {
 					03F4742C1A013506003A7A86 = {
@@ -285,6 +340,12 @@
 			mainGroup = 03F474241A013506003A7A86;
 			productRefGroup = 03F4742E1A013506003A7A86 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = E1DB47061BD017400023AF4D /* Products */;
+					ProjectRef = E1DB47051BD017400023AF4D /* WillowTreeData.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				03F4742C1A013506003A7A86 /* WTADataExample */,
@@ -292,6 +353,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		E1DB470B1BD017400023AF4D /* WillowTreeData.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = WillowTreeData.framework;
+			remoteRef = E1DB470A1BD017400023AF4D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E1DB470D1BD017400023AF4D /* WillowTreeDataTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = WillowTreeDataTests.xctest;
+			remoteRef = E1DB470C1BD017400023AF4D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		03F4742B1A013506003A7A86 /* Resources */ = {
@@ -333,6 +411,7 @@
 				03F4745B1A0135B1003A7A86 /* WTAData.m in Sources */,
 				03F10ECE1A163AB8007FD9FB /* NSManagedObject+WTADataImport.m in Sources */,
 				038D586E1B823C180007D15B /* Entity.m in Sources */,
+				E1DB47131BD018350023AF4D /* OtherViewController.swift in Sources */,
 				038D58731B823C180007D15B /* RelationshipEntity.m in Sources */,
 				038D58721B823C180007D15B /* PrimaryKeyEntity.m in Sources */,
 			);
@@ -356,6 +435,11 @@
 			isa = PBXTargetDependency;
 			target = 03F4742C1A013506003A7A86 /* WTADataExample */;
 			targetProxy = 03F4744A1A013506003A7A86 /* PBXContainerItemProxy */;
+		};
+		E1DB470F1BD017DE0023AF4D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = WillowTreeData;
+			targetProxy = E1DB470E1BD017DE0023AF4D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -460,10 +544,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = WTADataExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.willowtreeapps.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "WTADataExample/WTADataExample-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -471,10 +558,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = WTADataExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.willowtreeapps.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "WTADataExample/WTADataExample-Bridging-Header.h";
 			};
 			name = Release;
 		};
