@@ -8,7 +8,9 @@
 
 import UIKit
 import CoreData
-import WillowTreeData
+
+extension NSManagedObject : Fetchable
+{ }
 
 class OtherViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
     
