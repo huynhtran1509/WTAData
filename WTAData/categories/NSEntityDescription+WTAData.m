@@ -37,7 +37,7 @@
     NSString *nameString = [self name];
     NSString *attribute = [NSString stringWithFormat:@"%@%@ID", [[nameString substringToIndex:1] lowercaseString], [nameString substringFromIndex:1]];
     
-    NSString *primaryAttributeKey = [self userInfo][@"PrimaryAttribute"];
+    NSString *primaryAttributeKey = [self userInfo][@"relatedByAttribute"];
     if (primaryAttributeKey)
     {
         attribute = primaryAttributeKey;

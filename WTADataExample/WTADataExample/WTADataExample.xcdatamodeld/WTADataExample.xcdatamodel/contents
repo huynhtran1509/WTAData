@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14F27" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9057" systemVersion="15B42" minimumToolsVersion="Automatic">
     <entity name="Entity" representedClassName="Entity" syncable="YES">
         <attribute name="customDateAttribute" optional="YES" attributeType="Date" syncable="YES">
             <userInfo>
-                <entry key="DateFormat" value="M/d/yyyy"/>
+                <entry key="dateFormat" value="M/d/yyyy"/>
             </userInfo>
         </attribute>
         <attribute name="dateAttribute" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="epochDateAttribute" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="stringAttribute" optional="YES" attributeType="String" syncable="YES"/>
+        <userInfo>
+            <entry key="relatedByAttribute" value="stringAttribute"/>
+        </userInfo>
     </entity>
     <entity name="PrimaryKeyEntity" representedClassName="PrimaryKeyEntity" syncable="YES">
         <attribute name="customImportString" optional="YES" attributeType="String" syncable="YES"/>
@@ -45,7 +48,7 @@
             </userInfo>
         </relationship>
         <userInfo>
-            <entry key="PrimaryAttribute" value="customPrimaryKey"/>
+            <entry key="relatedByAttribute" value="customPrimaryKey"/>
         </userInfo>
     </entity>
     <entity name="RelationshipEntity" representedClassName="RelationshipEntity" syncable="YES">
@@ -58,7 +61,7 @@
         <relationship name="singleMergeParent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PrimaryKeyEntity" inverseName="mergeSingleEntity" inverseEntity="PrimaryKeyEntity" syncable="YES"/>
         <relationship name="singleReplaceParent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PrimaryKeyEntity" inverseName="replaceSingleEntity" inverseEntity="PrimaryKeyEntity" syncable="YES"/>
         <userInfo>
-            <entry key="PrimaryAttribute" value="primaryKey"/>
+            <entry key="relatedByAttribute" value="primaryKey"/>
         </userInfo>
     </entity>
     <elements>

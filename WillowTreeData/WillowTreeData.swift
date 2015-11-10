@@ -117,22 +117,28 @@ public extension DataController
     asked to save, so you should expect the hit. Note that the actual save-to-disk part does happen on a 
     background queue, so the hit will be very small!
     */
-    public func save() {
+    public func save() throws {
+        
         if NSThread.currentThread() != NSThread.mainThread()
         {
+            var error: ErrorType? = nil
+
             dispatch_sync(dispatch_get_main_queue()) {
-                self.save()
+                do {
+                    try self.save()
+                } catch let blockError {
+                    error = blockError
+                }
+            }
+            
+            if error != nil {
+                throw error!
             }
         }
         
         if context.hasChanges
         {
-            do {
-                try self.context.save()
-            }
-            catch let error as NSError {
-                fatalError("Error saving: \(error.localizedDescription)\n\(error.userInfo)")
-            }
+            try self.context.save()
         }
         
         guard let parentContext = self.context.parentContext else { return }
@@ -140,14 +146,10 @@ public extension DataController
         parentContext.performBlock {
             guard parentContext.hasChanges else { return }
             
-            do
-            {
+            do {
                 try parentContext.save()
-            }
-            catch let error as NSError
-            {
-                fatalError("error saving: \(error.localizedDescription)\n\(error.userInfo)")
-                // if we got here, then saving this same data worked above so we shouldn't be able to get here
+            } catch let error as NSError {
+                fatalError("Error saving data that had already been saved! \(error)\n\(error.userInfo)")
             }
         }
     }

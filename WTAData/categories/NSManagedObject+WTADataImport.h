@@ -47,10 +47,10 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - UserInfo Keys
 
 /// Key to specify the name of the JSON key to use when importing an attribute or relationship
-static NSString * const WTAImportNameKey = @"ImportName";
+static NSString * const WTAImportNameKey = @"mappedKeyName";
 
 /// Key to specify the date format to use when importing a JSON string as an NSDate
-static NSString * const WTAImportDateFormatKey = @"DateFormat";
+static NSString * const WTAImportDateFormatKey = @"dateFormat";
 
 /// Key used to specify the merge policy for relationships
 static NSString * const WTAImportRelationshipMergePolicyKey = @"MergePolicy";
