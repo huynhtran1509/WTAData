@@ -8,7 +8,9 @@
 
 import Foundation
 
-///  This struct is used to initialize a DataController object.
+/**
+ This struct is used to initialize a DataController object.
+*/
 public struct PersistentStore : CustomStringConvertible {
     public let storeType: String
     public let URL: NSURL
@@ -73,7 +75,9 @@ public struct PersistentStore : CustomStringConvertible {
     }
 }
 
-/// This is a wrapper class so Objective-C can make PersistentStore structs
+/**
+ This is a wrapper class so Objective-C can make PersistentStore structs
+*/
 public final class WTADataPersistentStore: NSObject {
     internal let persistentStore: PersistentStore
     
@@ -82,7 +86,7 @@ public final class WTADataPersistentStore: NSObject {
      
      - returns: Initialized instance with all default values (see PersistentStore struct)
      */
-    public override init() {
+    public override required init() {
         persistentStore = PersistentStore()
     }
     

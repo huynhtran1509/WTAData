@@ -57,10 +57,24 @@ public class DataController: NSObject
         }
     }
     
-    public convenience init(persistentStores: [WTADataPersistentStore]) {
+    /**
+     Initializer used from Objective-C to
+     
+     - parameter persistentStores: An array of WTADataPersistentStore instances. These will be added to the persistent store coordinator in the order they're passed in. They are added on a background queue, so may not be available immediately.
+     
+     - returns: An initialized DataController.
+     */
+    @objc(initWithPersistentStores:)
+    public convenience init(objCPersistentStores persistentStores: [WTADataPersistentStore]) {
         self.init(persistentStores: persistentStores.map { $0.persistentStore })
     }
     
+    /**
+     Objective-C init, used only from Obj-C by virtue of being both private (so Swift can't see it) and
+     dynamic (so the obj-c runtime *does* see it).
+     
+     - returns: DataController instance initialized to the default values.
+     */
     private dynamic override convenience init() {
         self.init(persistentStores: [PersistentStore()])
     }

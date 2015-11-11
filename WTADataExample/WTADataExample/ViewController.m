@@ -56,6 +56,8 @@
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Other" style:UIBarButtonItemStylePlain target:self action:@selector(showOther:)];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    DataController* dc = [[DataController alloc] init];
 }
 
 - (void)didReceiveMemoryWarning {
