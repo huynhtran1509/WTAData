@@ -9,62 +9,10 @@
 import Foundation
 import CoreData
 
-///  This struct is used to initialize a DataController object.
-public struct PersistentStore : CustomStringConvertible
-{
-    public let storeType: String
-    public let URL: NSURL
-    public let configuration: String?
-    public let options: [NSObject : AnyObject]?
-    public let autoMigrating: Bool
 
-    /**
-    Initializer for PersistentStore struct
-    
-    - parameter storeType:     This is the type of NSPersistentStore you want to create. Examples include NSSQLiteStoreType (the default), NSInMemoryStore, and others.
-    - parameter URL:           The URL for the peristent store. Required, but might be unused depending on the store type (an in-memory store doesn't actually save anything to disk)
-    - parameter configuration: The configuration corresponding to this store. Usually nil, but has it's uses. See the model editory.
-    - parameter options:       Standard persistent store options dictionary, this also varies based on type of store
-    - parameter autoMigrating: Send true to have this store handle migration automatically. Defaults to false.
-    
-    - returns: A PersistentStore structure suitable for use in initializing a DataController
-    */
-    public init(
-        storeType: String = NSSQLiteStoreType,
-        URL: NSURL = getDocumentURLForFilename("Data.sqlite"),
-        configuration: String? = nil,
-        options: [NSObject : AnyObject]? = nil,
-        autoMigrating: Bool = false
-        )
-    {
-        self.storeType = storeType
-        self.URL = URL
-        self.configuration = configuration
-        var newOptions = options ?? [:]
-        if autoMigrating
-        {
-            newOptions[NSInferMappingModelAutomaticallyOption] = true
-            newOptions[NSMigratePersistentStoresAutomaticallyOption] = true
-        }
-        else if (newOptions[NSMigratePersistentStoresAutomaticallyOption] == nil)
-        {
-            newOptions[NSInferMappingModelAutomaticallyOption] = false
-            newOptions[NSMigratePersistentStoresAutomaticallyOption] = false
-        }
-        self.options = newOptions
-        self.autoMigrating = autoMigrating
-    }
-    
-    public var description: String {
-        get {
-            let none = "None"
-            return "{\nstoreType: \(storeType)\nURL: \(URL)\nconfiguration: \(configuration ?? none)\noptions: \(options?.description ?? none)\n}"
-        }
-    }
-}
 
 /// The clearing-house for all things data-related.
-public class DataController
+public class DataController: NSObject
 {
     private let _context: NSManagedObjectContext
     private let savingContext: NSManagedObjectContext
@@ -107,6 +55,14 @@ public class DataController
                 }
             }
         }
+    }
+    
+    public convenience init(persistentStores: [WTADataPersistentStore]) {
+        self.init(persistentStores: persistentStores.map { $0.persistentStore })
+    }
+    
+    private dynamic override convenience init() {
+        self.init(persistentStores: [PersistentStore()])
     }
 }
 
@@ -153,18 +109,5 @@ public extension DataController
             }
         }
     }
-}
-
-private func getDocumentURLForFilename(filename: String) -> NSURL
-{
-    let fileManager = NSFileManager.defaultManager()
-    guard let url = try? fileManager.URLForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomain: NSSearchPathDomainMask.UserDomainMask, appropriateForURL: nil, create: false) else {
-        // if the Document directory doesn't exist, things have gone off the deep end
-        fatalError("No Document directory found!")
-    }
-    
-    let fileURL = url.URLByAppendingPathComponent(filename)
-    
-    return fileURL
 }
 

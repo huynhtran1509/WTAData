@@ -32,6 +32,7 @@
 		E15D31881BF284100023AF4D /* NSManagedObject+Fetchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15D31851BF284100023AF4D /* NSManagedObject+Fetchable.swift */; };
 		E15D318A1BF284100023AF4D /* WillowTreeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15D31871BF284100023AF4D /* WillowTreeData.swift */; };
 		E15D318E1BF286430023AF4D /* WillowTreeDataExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15D318D1BF286430023AF4D /* WillowTreeDataExampleTests.swift */; };
+		E15D31A31BF3BAB80023AF4D /* PersistentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15D31A21BF3BAB80023AF4D /* PersistentStore.swift */; };
 		E1DB47131BD018350023AF4D /* OtherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DB47121BD018350023AF4D /* OtherViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -105,6 +106,7 @@
 		E15D31871BF284100023AF4D /* WillowTreeData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WillowTreeData.swift; path = ../WillowTreeData/WillowTreeData.swift; sourceTree = "<group>"; };
 		E15D318C1BF286420023AF4D /* WTADataExampleTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WTADataExampleTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		E15D318D1BF286430023AF4D /* WillowTreeDataExampleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WillowTreeDataExampleTests.swift; sourceTree = "<group>"; };
+		E15D31A21BF3BAB80023AF4D /* PersistentStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PersistentStore.swift; path = ../WillowTreeData/PersistentStore.swift; sourceTree = "<group>"; };
 		E1DB47111BD018350023AF4D /* WTADataExample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WTADataExample-Bridging-Header.h"; sourceTree = "<group>"; };
 		E1DB47121BD018350023AF4D /* OtherViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OtherViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -241,6 +243,7 @@
 				03F10ECD1A163AB8007FD9FB /* NSManagedObject+WTADataImport.m */,
 				E15D31851BF284100023AF4D /* NSManagedObject+Fetchable.swift */,
 				E15D31871BF284100023AF4D /* WillowTreeData.swift */,
+				E15D31A21BF3BAB80023AF4D /* PersistentStore.swift */,
 			);
 			name = WTAData;
 			sourceTree = "<group>";
@@ -354,6 +357,7 @@
 				9FB023921A114576009B7C96 /* NSEntityDescription+WTAData.m in Sources */,
 				038D586F1B823C180007D15B /* _Entity.m in Sources */,
 				03F474331A013506003A7A86 /* main.m in Sources */,
+				E15D31A31BF3BAB80023AF4D /* PersistentStore.swift in Sources */,
 				E15D31881BF284100023AF4D /* NSManagedObject+Fetchable.swift in Sources */,
 				038D58711B823C180007D15B /* _RelationshipEntity.m in Sources */,
 				03F4743C1A013506003A7A86 /* ViewController.m in Sources */,
