@@ -50,7 +50,18 @@
 
 + (NSString *)entityName
 {
-    return NSStringFromClass([self class]);
+    // NSStringFromClass returns the full module name for swift classes (e.g. WTAData.SwiftEntity),
+    // but this does not match the name of the entity as we would typically name them in the model
+    // (i.e. SwiftEntity). This code attempts to return the properly guessed entity name as a
+    // default
+    NSString *entityName = NSStringFromClass([self class]);
+    NSArray *components = [entityName componentsSeparatedByString:@"."];
+    
+    if (components.count > 1) {
+        return components.lastObject;
+    } else {
+        return entityName;
+    }
 }
 
 + (instancetype)createEntityInContext:(NSManagedObjectContext *)context
