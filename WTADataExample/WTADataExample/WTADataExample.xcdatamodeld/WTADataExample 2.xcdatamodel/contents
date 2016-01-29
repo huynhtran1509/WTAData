@@ -61,9 +61,14 @@
             <entry key="PrimaryAttribute" value="primaryKey"/>
         </userInfo>
     </entity>
+    <entity name="SwiftEntity" representedClassName=".SwiftEntity" syncable="YES">
+        <attribute name="testInteger" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="testString" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <elements>
         <element name="Entity" positionX="-63" positionY="-18" width="128" height="105"/>
         <element name="PrimaryKeyEntity" positionX="-63" positionY="9" width="128" height="180"/>
         <element name="RelationshipEntity" positionX="-54" positionY="18" width="128" height="165"/>
+        <element name="SwiftEntity" positionX="-45" positionY="81" width="128" height="75"/>
     </elements>
 </model>
