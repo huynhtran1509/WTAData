@@ -2,6 +2,38 @@ WTAData
 =======
 [![Build Status](https://travis-ci.org/willowtreeapps/WTAData.svg?branch=develop)](https://travis-ci.org/willowtreeapps/WTAData?branch=develop)
 
+*** Important Note iOS 10 or later ***
+
+*As of iOS 10, Apple has provided the NSPersistentContainer class for managing the setup of core data stacks. This should be the preferred method of setting up a stack going forward and no new development is planned for WTAData.*
+
+*To set up this kind of stack, you simply create an NSPersistentContainer as shown in the following code snippet.*
+```swift
+let container = NSPersistentContainer(name: "iOS10CoreData")
+container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+        // TODO: Appropriate error handling here.
+})
+container.viewContext.automaticallyMergesChangesFromParent = true
+```
+
+*Saving your managed objects in the background is then as simple as *
+
+```swift
+container.performBackgroundTask { (context) in
+    guard let entityName = Entity.entity().name else {
+        return
+    }
+
+    let row = NSEntityDescription.insertNewObject(forEntityName: entityName, into: context) as! Entity
+                row.dateCreated = NSDate()
+
+                do {
+                    try context.save()
+                } catch {
+                    // TODO: Handle save error.
+                }
+}
+```
+
 WTAData provides a light-weight interface for setting up an asynchronous CoreData stack. WTAData utilizes two NSManagedObjectContexts: main and background, for achieving fast and performant core data access.  The main context is generally used for read access to the core data stack.  The main context updates automatically when changes are saved by the background managed object context.  The background context is primarily used for performing saves in background threads, such as when a network call completes.
 
 ## Setup
