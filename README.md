@@ -15,7 +15,7 @@ container.loadPersistentStores(completionHandler: { (storeDescription, error) in
 container.viewContext.automaticallyMergesChangesFromParent = true
 ```
 
-*Saving your managed objects in the background is then as simple as *
+*Saving your managed objects in the background is then as simple as*
 
 ```swift
 container.performBackgroundTask { (context) in
@@ -24,15 +24,18 @@ container.performBackgroundTask { (context) in
     }
 
     let row = NSEntityDescription.insertNewObject(forEntityName: entityName, into: context) as! Entity
-                row.dateCreated = NSDate()
 
-                do {
-                    try context.save()
-                } catch {
-                    // TODO: Handle save error.
-                }
+    // Modify object before saving here.
+
+    do {
+        try context.save()
+    } catch {
+        // TODO: Handle save error.
+    }
 }
 ```
+
+*Additional documentation can be found here https://developer.apple.com/reference/coredata/nspersistentcontainer*
 
 WTAData provides a light-weight interface for setting up an asynchronous CoreData stack. WTAData utilizes two NSManagedObjectContexts: main and background, for achieving fast and performant core data access.  The main context is generally used for read access to the core data stack.  The main context updates automatically when changes are saved by the background managed object context.  The background context is primarily used for performing saves in background threads, such as when a network call completes.
 
